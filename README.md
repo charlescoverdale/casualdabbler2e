@@ -41,11 +41,8 @@ The book is 100% written in R, and published using [Rmarkdown](https://rmarkdown
 
 ## **Limitations**
 
--   All bugs and mistakes remain my own. Please open up an issue on github or email me (charlesfcoverdale\@gmail.com) with issues.
+All bugs and mistakes remain my own. Please open up an issue on github or email me (charlesfcoverdale\@gmail.com) with issues.
 
 ## **How to cite this text**
 
--   All code is open source and free to use. Feel free to use, adapt, and build upon any of the code or ideas.
-
--   You are welcome to cite the text as:\
-    *Coverdale, C 2025, 'R Cookbook for the Casual Dabbler (2nd edition)', Melbourne, Australia*
+*Coverdale, C 2025, 'R Cookbook for the Casual Dabbler (2nd edition)', Melbourne, Australia*
