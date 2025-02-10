@@ -1,6 +1,6 @@
 # R Cookbook for the Casual Dabbler (2nd edition)
 
-*A practical guide for using R for analysis and visualization*
+*A practical guide for using R for visualisation and analysis*
 
 This repo contains the code use to produce [R Cookbook for the Casual Dabbler (2nd edition)](https://charlescoverdale.github.io/casualdabbler2e/).
 

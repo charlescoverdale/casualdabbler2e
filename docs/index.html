@@ -4,29 +4,23 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>A Minimal Book Example</title>
-  <meta name="description" content="<p>This is a minimal example of using the bookdown package to write a book.
-The HTML output format for this example is bookdown::gitbook,
-set in the _output.yml file.</p>" />
+  <title>R cookbook for the casual dabbler (2nd edition)</title>
+  <meta name="description" content="A practical user guide for R in analysis and visualisation." />
   <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="A Minimal Book Example" />
+  <meta property="og:title" content="R cookbook for the casual dabbler (2nd edition)" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="<p>This is a minimal example of using the bookdown package to write a book.
-The HTML output format for this example is bookdown::gitbook,
-set in the _output.yml file.</p>" />
-  <meta name="github-repo" content="rstudio/bookdown-demo" />
+  <meta property="og:description" content="A practical user guide for R in analysis and visualisation." />
+  <meta name="github-repo" content="openscapes/series" />
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="A Minimal Book Example" />
+  <meta name="twitter:title" content="R cookbook for the casual dabbler (2nd edition)" />
   
-  <meta name="twitter:description" content="<p>This is a minimal example of using the bookdown package to write a book.
-The HTML output format for this example is bookdown::gitbook,
-set in the _output.yml file.</p>" />
+  <meta name="twitter:description" content="A practical user guide for R in analysis and visualisation." />
   
 
-<meta name="author" content="John Doe" />
+<meta name="author" content="Charles Coverdale" />
 
 
 <meta name="date" content="2025-02-10" />
@@ -169,11 +163,12 @@ div.csl-indent {
 <li><a href="./">A Minimal Book Example</a></li>
 
 <li class="divider"></li>
-<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> About</a>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
 <ul>
 <li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#usage"><i class="fa fa-check"></i><b>1.1</b> Usage</a></li>
-<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#render-book"><i class="fa fa-check"></i><b>1.2</b> Render book</a></li>
-<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#preview-book"><i class="fa fa-check"></i><b>1.3</b> Preview book</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#additional-resources"><i class="fa fa-check"></i><b>1.2</b> Additional resources</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#limitations"><i class="fa fa-check"></i><b>1.3</b> Limitations</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#about-the-author"><i class="fa fa-check"></i><b>1.4</b> About the author</a></li>
 </ul></li>
 <li class="chapter" data-level="2" data-path="hello-bookdown.html"><a href="hello-bookdown.html"><i class="fa fa-check"></i><b>2</b> Hello bookdown</a>
 <ul>
@@ -218,7 +213,7 @@ div.csl-indent {
       <div class="body-inner">
         <div class="book-header" role="navigation">
           <h1>
-            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">A Minimal Book Example</a>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R cookbook for the casual dabbler (2nd edition)</a>
           </h1>
         </div>
 
@@ -227,34 +222,39 @@ div.csl-indent {
 
             <section class="normal" id="section-">
 <div id="header">
-<h1 class="title">A Minimal Book Example</h1>
-<p class="author"><em>John Doe</em></p>
+<h1 class="title">R cookbook for the casual dabbler (2nd edition)</h1>
+<p class="author"><em>Charles Coverdale</em></p>
 <p class="date"><em>2025-02-10</em></p>
 </div>
-<div id="about" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">Chapter 1</span> About<a href="index.html#about" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>This is a <em>sample</em> book written in <strong>Markdown</strong>. You can use anything that Pandoc’s Markdown supports; for example, a math equation <span class="math inline">\(a^2 + b^2 = c^2\)</span>.</p>
+<div id="introduction" class="section level1 hasAnchor" number="1">
+<h1><span class="header-section-number">Chapter 1</span> Introduction<a href="index.html#introduction" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>G’day and welcome to <em>R cookbook for the casual dabbler (2nd edition).</em></p>
+<p>RCCD 1st edition was originally published in 2020 as a side project during the COVID-19 pandemic in Melbourne.</p>
+<p>As I wrote in the midst of lockdown:</p>
+<blockquote>
+<p>I use R a lot for work and for side projects. Over the years I’ve collated a bunch of useful scripts, from macroeconomic analysis to quick hacks for making map legends format properly.</p>
+<p>Historically my code has been stored in random Rpubs documents, medium articles, and a bunch of .Rmd files on my hardrive. Occasionally I feel like doing things properly - and upload code to a repository on github.</p>
+<p>It doesn’t take a genius to realize this isn’t a very sustainable solution - and it also isn’t very useful for sharing code with others. It turns out 2-years of lockdown in Melbourne was enough incentive to sit down and collate my best and most useful code into a single place. In the spirit of open source, a book seemed like the most logical format. The following is a very rough book written in <strong>markdown</strong> - R’s very own publishing language.</p>
+</blockquote>
+<p>RCCD1e had surprisingly good (and long-lasting reviews). Alas, five-years on, a lot has changed - in both the R community, and the world more broadly. As such, RCCD2e includes significant revisions. The most major of these is a restructure to make the chapters flow more logically. The Australian specific chapters have also been grouped together (e.g. election data).</p>
 <div id="usage" class="section level2 hasAnchor" number="1.1">
 <h2><span class="header-section-number">1.1</span> Usage<a href="index.html#usage" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Each <strong>bookdown</strong> chapter is an .Rmd file, and each .Rmd file can contain one (and only one) chapter. A chapter <em>must</em> start with a first-level heading: <code># A good chapter</code>, and can contain one (and only one) first-level heading.</p>
-<p>Use second-level and higher headings within chapters like: <code>## A short section</code> or <code>### An even shorter section</code>.</p>
-<p>The <code>index.Rmd</code> file is required, and is also your first book chapter. It will be the homepage when you render the book.</p>
+<p>In each chapter I’ve written up the background, methodology and code for a separate piece of analysis.</p>
+<p>Most of this code will not be extraordinary to the seasoned R aficionado. However I find that in classic Pareto style ~20% of my code contributes to the <strong>vast</strong> majority of my work output. Having this 20% on hand will hopefully be useful to both myself and others.</p>
 </div>
-<div id="render-book" class="section level2 hasAnchor" number="1.2">
-<h2><span class="header-section-number">1.2</span> Render book<a href="index.html#render-book" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>You can render the HTML version of this example book without changing anything:</p>
-<ol style="list-style-type: decimal">
-<li><p>Find the <strong>Build</strong> pane in the RStudio IDE, and</p></li>
-<li><p>Click on <strong>Build Book</strong>, then select your output format, or select “All formats” if you’d like to use multiple formats from the same book source files.</p></li>
-</ol>
-<p>Or build the book from the R console:</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="index.html#cb1-1" tabindex="-1"></a>bookdown<span class="sc">::</span><span class="fu">render_book</span>()</span></code></pre></div>
-<p>To render this example to PDF as a <code>bookdown::pdf_book</code>, you’ll need to install XeLaTeX. You are recommended to install TinyTeX (which includes XeLaTeX): <a href="https://yihui.org/tinytex/" class="uri">https://yihui.org/tinytex/</a>.</p>
+<div id="additional-resources" class="section level2 hasAnchor" number="1.2">
+<h2><span class="header-section-number">1.2</span> Additional resources<a href="index.html#additional-resources" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The R community is continually writing new packages and tools. Many of these are covered extensively in various free books available on the <a href="https://bookdown.org/">bookdown.org</a> website.</p>
+<p>The rise of LLM’s over the past 2-years has also made it significantly easier to find, refine, and expand on R code. I recommend using them as a first point of call.</p>
 </div>
-<div id="preview-book" class="section level2 hasAnchor" number="1.3">
-<h2><span class="header-section-number">1.3</span> Preview book<a href="index.html#preview-book" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>As you work, you may start a local server to live preview this HTML book. This preview will update as you edit the book when you save individual .Rmd files. You can start the server in a work session by using the RStudio add-in “Preview book”, or from the R console:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="index.html#cb2-1" tabindex="-1"></a>bookdown<span class="sc">::</span><span class="fu">serve_book</span>()</span></code></pre></div>
+<div id="limitations" class="section level2 hasAnchor" number="1.3">
+<h2><span class="header-section-number">1.3</span> Limitations<a href="index.html#limitations" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>If you find a bug (along with spelling errors etc) please email me at charlesfcoverdale@gmail.com with the subject line ‘RCCD2e’.</p>
+<hr />
+</div>
+<div id="about-the-author" class="section level2 hasAnchor" number="1.4">
+<h2><span class="header-section-number">1.4</span> About the author<a href="index.html#about-the-author" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Charles Coverdale is an economist based in Melbourne, Australia. He is passionate about economics, climate science, and building talented teams. You can get in touch with Charles <a href="https://twitter.com/cfcoverdale">on twitter</a> to hear more about his current projects.</p>
 
 </div>
 </div>
