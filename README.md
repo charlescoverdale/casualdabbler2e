@@ -2,9 +2,13 @@
 
 *A practical guide for using R for analysis and visualization*
 
-This repo contains the code use to produce [R Cookbook for the Casual Dabbler (2nd edition)](https://charlescoverdale.github.io/casualdabbler2e/). The original version (now 5-years old) has been significantly revised. The book is 100% written in R, and published using [Rmarkdown](https://rmarkdown.rstudio.com/) and [Bookdown](https://bookdown.org/).
+This repo contains the code use to produce [R Cookbook for the Casual Dabbler (2nd edition)](https://charlescoverdale.github.io/casualdabbler2e/).
 
-## **Chapters**
+RCCD 1st edition was originally published in 2020 as a side project during the COVID-19 lockdowns in Melbourne. A lot has changed in the R community since, and as such RCCD2e includes significant revisions.
+
+The book is 100% written in R, and published using [Rmarkdown](https://rmarkdown.rstudio.com/) and [Bookdown](https://bookdown.org/).
+
+## **Current chapters**
 
 #### *S*ection 1: Visualization
 
@@ -30,7 +34,7 @@ This repo contains the code use to produce [R Cookbook for the Casual Dabbler (2
 11. ABS economic indicators
 12. Australian election data
 
-#### Section 5: Coming soon
+## Upcoming chapters
 
 13. Bayesian for the common man
 14. Causal inference
@@ -44,4 +48,4 @@ This repo contains the code use to produce [R Cookbook for the Casual Dabbler (2
 -   All code is open source and free to use. Feel free to use, adapt, and build upon any of the code or ideas.
 
 -   You are welcome to cite the text as:\
-    *Coverdale, C 2021, 'R Cookbook for the Casual Dabbler (2nd edition)', Melbourne, Australia*
+    *Coverdale, C 2025, 'R Cookbook for the Casual Dabbler (2nd edition)', Melbourne, Australia*
