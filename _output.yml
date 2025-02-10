@@ -1,17 +1,13 @@
 bookdown::gitbook:
   css: style.css
+  includes:
   config:
     toc:
       before: |
-        <li><a href="./">A Minimal Book Example</a></li>
+        <li><a href="./">R Cookbook for the Casual Dabbler</a></li> 
+        
       after: |
-        <li><a href="https://github.com/rstudio/bookdown" target="blank">Published with bookdown</a></li>
-    edit: https://github.com/USERNAME/REPO/edit/BRANCH/%s
-    download: ["pdf", "epub"]
-bookdown::pdf_book:
-  includes:
-    in_header: preamble.tex
-  latex_engine: xelatex
-  citation_package: natbib
-  keep_tex: yes
-bookdown::epub_book: default
+        <li><a href="https://www.linkedin.com/in/charlescoverdale/" target="blank">Connect with me on linkedin</a></li>
+        <li><a href="https://github.com/charlescoverdale/casualdabbler2e" target="blank">Get the code on github</a></li>
+    edit: https://github.com/charlescoverdale/casualdabbler2e/edit/master/%s
+    download: ["pdf"]
