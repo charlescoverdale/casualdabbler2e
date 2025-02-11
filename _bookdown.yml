@@ -2,4 +2,22 @@ delete_merged_file: true
 language:
   ui:
     chapter_name: "Chapter "
+    
+# rmd_files: [
+#   "index.Rmd",
+#   "02-making-maps-beautiful.Rmd",
+#   "03-basic-modelling-in-R.Rmd",
+#   "04-Raster-data-in-R.Rmd",
+#   "05-Election-data-in-R.Rmd",
+#   "06-Charts.Rmd",
+#   "07-Machine-learning.Rmd",
+#   "08-Hypothesis-testing.Rmd",
+#   "09-Forecasting.Rmd",
+#   "10-Web-scraping.Rmd",
+#   "11-Text-mining.Rmd",
+#   "12-ABS-economic-indicators.Rmd",
+#   "13-Geocoding.Rmd",
+#   "14-Drivetime-analysis.Rmd"
+#   ]
+  
 output_dir: "docs"
