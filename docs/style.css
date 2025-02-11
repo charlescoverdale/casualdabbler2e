@@ -16,6 +16,7 @@ pre code {
 
 /* The next two rules make the horizontal line go straight across in top navbar */
 
+/*
 .summary > li:first-child {
     height: 50px;
     padding-top: 10px;
@@ -25,6 +26,9 @@ pre code {
 .book .book-summary ul.summary li.divider {
     height: 0px;
 }
+
+*/
+
 
 /* Fix code chunks spacing */
 
