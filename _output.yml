@@ -1,5 +1,6 @@
 bookdown::gitbook:
   css: style.css
+  #code_folding: hide
   includes:
   config:
     toc:
@@ -11,3 +12,4 @@ bookdown::gitbook:
         <li><a href="https://github.com/charlescoverdale/casualdabbler2e" target="blank">Get the code on github</a></li>
     edit: https://github.com/charlescoverdale/casualdabbler2e/edit/master/%s
     download: ["pdf"]
+  
