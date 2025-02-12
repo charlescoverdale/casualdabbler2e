@@ -12,7 +12,7 @@ The aim of this chapter is to get you from 'I can make a map in R' to something 
 
 ## Getting started
 
-First up, we need to load a bunch of mapping packages.
+First up, we need to load a bunch of mapping packages. The tidyverse package is a classic for just about everything data manipulation, while, the `sf` and `ggspatial` packages are essential for making maps.
 
 ```{r,results='hide', warning=FALSE,message=FALSE}
 
@@ -29,17 +29,15 @@ library(absmapsdata)
 library(officer)  
 ```
 
-Will Mackey's absmapsdata package contains all the ABS' ASGS shapefiles. The data is now also callable through the strayr package. For example:
+Will Mackey's `absmapsdata` package contains all the ABS' ASGS shapefiles. The data is now also callable through the (thoroughly updated and expanded) `strayr` package. For example:
 
 ```         
 strayr::read_absmap("sa12016")
 ```
 
-## Making your first map
+To get a basic demographic map up and running, we will splice together the shapefile (in this case the SA2 map of Austrlaia) and some data from the 2016 Australian Census.
 
-To get a basic demographic map up and running, we will splice together the ABS SA2 shapefile and some data from the 2016 Australian Census.
-
-Hugh Parsonage put together a fantastic packaged called Census2016 which makes downloading this data in a clean format easy.
+Hugh Parsonage put together a fantastic packaged called `Census2016` which makes downloading this data in a clean format easy.
 
 ```{r,results='hide', warning=FALSE,message=FALSE,attr.output='style="max-height: 300px;"'}
 #Get the shapefile form the absmapsdata package (predefined in the list above)
@@ -70,7 +68,7 @@ SA2_shp_census_2016 <- inner_join(strayr::read_absmap("sa22016"),census_short_20
   map1
 ```
 
-There we go! This looks 'okay'... but it can be much better.
+There we go! A map. This looks 'okay'... but it can be much better.
 
 ## From okay to good
 
@@ -173,6 +171,6 @@ map4
 
 ```
 
-There we go! A 'client-ready' looking map that can be added to a report, presentation, or with a few tweaks a digital dashboard.
+Now we're talking. A 'client-ready' looking map that can be added to a report, presentation, or with a few tweaks - a digital dashboard.
 
-Make sure to export the map as a high quality PNG using the ggsave function.
+Make sure to export the map as a high quality PNG using the `ggplot2:ggsave()` function.
