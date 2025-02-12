@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-02-12" />
+<meta name="date" content="2025-02-13" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -184,7 +184,15 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="4.6" data-path="basic-modelling.html"><a href="basic-modelling.html#linear-regression-with-more-than-one-variable"><i class="fa fa-check"></i><b>4.6</b> Linear regression with more than one variable</a></li>
 <li class="chapter" data-level="4.7" data-path="basic-modelling.html"><a href="basic-modelling.html#fitting-a-polynomial-regression"><i class="fa fa-check"></i><b>4.7</b> Fitting a polynomial regression</a></li>
 </ul></li>
-<li class="chapter" data-level="5" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html"><i class="fa fa-check"></i><b>5</b> Hypothesis testing</a></li>
+<li class="chapter" data-level="5" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html"><i class="fa fa-check"></i><b>5</b> Hypothesis testing</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#a-quick-refresher"><i class="fa fa-check"></i><b>5.1</b> A quick refresher</a></li>
+<li class="chapter" data-level="5.2" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#t-testing-our-first-hypothesis"><i class="fa fa-check"></i><b>5.2</b> T-testing our first hypothesis</a></li>
+<li class="chapter" data-level="5.3" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#understanding-tailed-tests"><i class="fa fa-check"></i><b>5.3</b> Understanding tailed tests</a></li>
+<li class="chapter" data-level="5.4" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#correlation"><i class="fa fa-check"></i><b>5.4</b> Correlation</a></li>
+<li class="chapter" data-level="5.5" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#confidence-intervals-for-the-mean"><i class="fa fa-check"></i><b>5.5</b> Confidence intervals for the mean</a></li>
+<li class="chapter" data-level="5.6" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#confidence-intervals-for-a-model"><i class="fa fa-check"></i><b>5.6</b> Confidence intervals for a model</a></li>
+</ul></li>
 <li class="chapter" data-level="6" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>6</b> Forecasting</a></li>
 <li class="chapter" data-level="7" data-path="web-scraping.html"><a href="web-scraping.html"><i class="fa fa-check"></i><b>7</b> Web scraping</a></li>
 <li class="chapter" data-level="8" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>8</b> Text mining</a></li>
@@ -216,7 +224,354 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="hypothesis-testing" class="section level1 hasAnchor" number="5">
 <h1><span class="header-section-number">Chapter 5</span> Hypothesis testing<a href="hypothesis-testing.html#hypothesis-testing" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="a-quick-refresher" class="section level2 hasAnchor" number="5.1">
+<h2><span class="header-section-number">5.1</span> A quick refresher<a href="hypothesis-testing.html#a-quick-refresher" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Hypothesis testing is a way of validating if a claim about a population (e.g. a data set) is correct. Getting data on a whole population (e.g. everyone in Australia) is hard. So, to validate a hypothesis, we use random samples from a population instead.</p>
+<p>The language when dealing with hypothesis testing is purposefully janky.</p>
+<p>When looking at the outputs of our hypothesis test, we consider p-values. Note: There’s <a href="https://towardsdatascience.com/the-problem-with-p-values-f056245f78a3"><strong><em>lots wrong with p-values</em></strong></a> that we won’t bother getting into right now. The long story short is if you make your null hypothesis ultra specific and only report when your p-value on your millionth iteration of a test is below 0.05… bad science is likely to get published and cited.</p>
+<p>What we need to know:</p>
+<ul>
+<li><p>A small p-value (typically less than or equal to 0.05) indicates strong evidence <strong><em>against</em></strong> the null hypothesis, so we <strong><em>reject</em></strong> it.</p></li>
+<li><p>A large p-value (greater than 0.05) indicates weak evidence <strong><em>against</em></strong> the null hypothesis, so you <strong><em>fail to reject</em></strong> it.</p></li>
+</ul>
+<p>Let’s load in some packages and get started.</p>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="hypothesis-testing.html#cb52-1" tabindex="-1"></a><span class="co"># Load necessary packages</span></span>
+<span id="cb52-2"><a href="hypothesis-testing.html#cb52-2" tabindex="-1"></a><span class="fu">library</span>(ggridges)</span>
+<span id="cb52-3"><a href="hypothesis-testing.html#cb52-3" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb52-4"><a href="hypothesis-testing.html#cb52-4" tabindex="-1"></a><span class="fu">library</span>(ggrepel)       <span class="co"># Avoid overlapping text in plots</span></span>
+<span id="cb52-5"><a href="hypothesis-testing.html#cb52-5" tabindex="-1"></a><span class="fu">library</span>(viridis)       <span class="co"># Color scales</span></span>
+<span id="cb52-6"><a href="hypothesis-testing.html#cb52-6" tabindex="-1"></a><span class="fu">library</span>(readxl)        <span class="co"># Read Excel files</span></span>
+<span id="cb52-7"><a href="hypothesis-testing.html#cb52-7" tabindex="-1"></a><span class="fu">library</span>(dplyr)         <span class="co"># Data manipulation</span></span>
+<span id="cb52-8"><a href="hypothesis-testing.html#cb52-8" tabindex="-1"></a><span class="fu">library</span>(stringr)       <span class="co"># String operations</span></span>
+<span id="cb52-9"><a href="hypothesis-testing.html#cb52-9" tabindex="-1"></a><span class="fu">library</span>(tidyr)         <span class="co"># Data tidying (replaces reshape)</span></span>
+<span id="cb52-10"><a href="hypothesis-testing.html#cb52-10" tabindex="-1"></a><span class="fu">library</span>(lubridate)     <span class="co"># Work with dates</span></span>
+<span id="cb52-11"><a href="hypothesis-testing.html#cb52-11" tabindex="-1"></a><span class="fu">library</span>(gapminder)     <span class="co"># Gapminder dataset</span></span>
+<span id="cb52-12"><a href="hypothesis-testing.html#cb52-12" tabindex="-1"></a><span class="fu">library</span>(ggalt)         <span class="co"># Extensions to ggplot (dumbbell plots, etc.)</span></span>
+<span id="cb52-13"><a href="hypothesis-testing.html#cb52-13" tabindex="-1"></a><span class="fu">library</span>(purrr)         <span class="co"># Functional programming</span></span>
+<span id="cb52-14"><a href="hypothesis-testing.html#cb52-14" tabindex="-1"></a><span class="fu">library</span>(scales)        <span class="co"># Scaling tools for ggplot</span></span>
+<span id="cb52-15"><a href="hypothesis-testing.html#cb52-15" tabindex="-1"></a><span class="fu">library</span>(aTSA)          <span class="co"># Time series analysis</span></span>
+<span id="cb52-16"><a href="hypothesis-testing.html#cb52-16" tabindex="-1"></a><span class="fu">library</span>(readrba)       <span class="co"># For working with Reserve Bank of Australia data</span></span></code></pre></div>
+</div>
+<div id="t-testing-our-first-hypothesis" class="section level2 hasAnchor" number="5.2">
+<h2><span class="header-section-number">5.2</span> T-testing our first hypothesis<a href="hypothesis-testing.html#t-testing-our-first-hypothesis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We’ll start by creating a normally distributed random dataset using <code>rnorm</code>.</p>
+<p>By default the <code>rnorm</code> function will generate a dataset that has a mean of 0 and a standard deviation of 1, but let’s state it explicitly to keep things simple.</p>
+<div class="sourceCode" id="cb53"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb53-1"><a href="hypothesis-testing.html#cb53-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">40</span>)</span>
+<span id="cb53-2"><a href="hypothesis-testing.html#cb53-2" tabindex="-1"></a>dataset1 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">variable1=</span><span class="fu">rnorm</span>(<span class="dv">1000</span>,<span class="at">mean=</span><span class="dv">0</span>,<span class="at">sd=</span><span class="dv">1</span>))</span></code></pre></div>
+<p>Let’s chart the distribution.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb54-1"><a href="hypothesis-testing.html#cb54-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb54-2"><a href="hypothesis-testing.html#cb54-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> dataset1<span class="sc">$</span>variable1, <span class="at">y =</span> ..density..), </span>
+<span id="cb54-3"><a href="hypothesis-testing.html#cb54-3" tabindex="-1"></a>                 <span class="at">binwidth =</span> <span class="fl">0.1</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb54-4"><a href="hypothesis-testing.html#cb54-4" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(dataset1<span class="sc">$</span>variable1), </span>
+<span id="cb54-5"><a href="hypothesis-testing.html#cb54-5" tabindex="-1"></a>                                         <span class="at">sd =</span> <span class="fu">sd</span>(dataset1<span class="sc">$</span>variable1))) <span class="sc">+</span></span>
+<span id="cb54-6"><a href="hypothesis-testing.html#cb54-6" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="dv">0</span>, <span class="at">linetype =</span> <span class="st">&quot;dotted&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb54-7"><a href="hypothesis-testing.html#cb54-7" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Histogram for T-Testing&quot;</span>, <span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> <span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
+<span id="cb54-8"><a href="hypothesis-testing.html#cb54-8" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb54-9"><a href="hypothesis-testing.html#cb54-9" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
+<span id="cb54-10"><a href="hypothesis-testing.html#cb54-10" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
+<span id="cb54-11"><a href="hypothesis-testing.html#cb54-11" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))<span class="sc">+</span></span>
+<span id="cb54-12"><a href="hypothesis-testing.html#cb54-12" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">9</span>))<span class="sc">+</span></span>
+<span id="cb54-13"><a href="hypothesis-testing.html#cb54-13" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb54-14"><a href="hypothesis-testing.html#cb54-14" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb54-15"><a href="hypothesis-testing.html#cb54-15" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">margin=</span>ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">15</span>,<span class="dv">0</span>))) <span class="sc">+</span></span>
+<span id="cb54-16"><a href="hypothesis-testing.html#cb54-16" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.margin=</span><span class="fu">unit</span>(<span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>),<span class="st">&quot;cm&quot;</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-43-1.png" width="672" /></p>
+<p>We know that the mean of dataset1 will be approximately zero (because we set it)… but let’s check anyway.</p>
+<div class="sourceCode" id="cb55"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb55-1"><a href="hypothesis-testing.html#cb55-1" tabindex="-1"></a><span class="co"># Find the mean of dataset1</span></span>
+<span id="cb55-2"><a href="hypothesis-testing.html#cb55-2" tabindex="-1"></a><span class="fu">mean</span>(dataset1<span class="sc">$</span>variable1)</span></code></pre></div>
+<p>Now let’s run our first hypothesis test. We’ll use the <code>t.test</code> function. This is in the format of t.test(data, null_hypothesis).</p>
+<p>We’ll start with the null hypothesis that the mean for dataset1$variable1 is 5. This is a two tailed t-test, as we will reject the null if we’re confident the mean is <em>either</em> above or below 5.</p>
+<div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="hypothesis-testing.html#cb56-1" tabindex="-1"></a><span class="co"># Hypothesis test</span></span>
+<span id="cb56-2"><a href="hypothesis-testing.html#cb56-2" tabindex="-1"></a><span class="fu">t.test</span>(dataset1<span class="sc">$</span>variable1, <span class="at">mu =</span> <span class="dv">5</span>)</span></code></pre></div>
+<p>We see the p-value here is tiny, meaning we reject the null hypothesis. That is to say, the mean for dataset1$variable1 is not 5.</p>
+</div>
+<div id="understanding-tailed-tests" class="section level2 hasAnchor" number="5.3">
+<h2><span class="header-section-number">5.3</span> Understanding tailed tests<a href="hypothesis-testing.html#understanding-tailed-tests" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>By default, <code>t.test</code> assumes a two-tailed test with a 95% confidence level. However, sometimes we need to test if one variable is greater or smaller than another (rather than just different from the null). This is when we use one-tailed tests.</p>
+<p>Next, we test whether the mean is -0.03 using a one-tailed test:</p>
+<div class="sourceCode" id="cb57"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb57-1"><a href="hypothesis-testing.html#cb57-1" tabindex="-1"></a><span class="co"># Hypothesis test</span></span>
+<span id="cb57-2"><a href="hypothesis-testing.html#cb57-2" tabindex="-1"></a><span class="fu">t.test</span>(dataset1<span class="sc">$</span>variable1, <span class="at">mu =</span> <span class="sc">-</span><span class="fl">0.03</span>, <span class="at">alternative=</span><span class="st">&quot;greater&quot;</span>)</span></code></pre></div>
+<p>We see here the p-value is greater than 0.05, leading us to <em>fail to reject</em> the null hypothesis. In a sentence, we cannot say that the mean of dataset1$variable1 is different to 0.01.</p>
+</div>
+<div id="correlation" class="section level2 hasAnchor" number="5.4">
+<h2><span class="header-section-number">5.4</span> Correlation<a href="hypothesis-testing.html#correlation" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>A correlation coefficient measures the direction and strength of the relationship between two variables. However, correlation calculations assume normal distributions.</p>
+<p>Let’s examine the relationship between <code>mpg</code> and <code>hp</code> in the <code>mtcars</code> dataset.</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="hypothesis-testing.html#cb58-1" tabindex="-1"></a>ggplot2<span class="sc">::</span><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg)) <span class="sc">+</span></span>
+<span id="cb58-2"><a href="hypothesis-testing.html#cb58-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb58-3"><a href="hypothesis-testing.html#cb58-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&#39;lm&#39;</span>) <span class="sc">+</span></span>
+<span id="cb58-4"><a href="hypothesis-testing.html#cb58-4" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb58-5"><a href="hypothesis-testing.html#cb58-5" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Horsepower vs. Miles Per Gallon&quot;</span>,</span>
+<span id="cb58-6"><a href="hypothesis-testing.html#cb58-6" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Horsepower&quot;</span>,</span>
+<span id="cb58-7"><a href="hypothesis-testing.html#cb58-7" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Miles Per Gallon&quot;</span></span>
+<span id="cb58-8"><a href="hypothesis-testing.html#cb58-8" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb58-9"><a href="hypothesis-testing.html#cb58-9" tabindex="-1"></a>  <span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">8</span>) <span class="sc">+</span></span>
+<span id="cb58-10"><a href="hypothesis-testing.html#cb58-10" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb58-11"><a href="hypothesis-testing.html#cb58-11" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb58-12"><a href="hypothesis-testing.html#cb58-12" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb58-13"><a href="hypothesis-testing.html#cb58-13" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">0</span>)),</span>
+<span id="cb58-14"><a href="hypothesis-testing.html#cb58-14" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb58-15"><a href="hypothesis-testing.html#cb58-15" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb58-16"><a href="hypothesis-testing.html#cb58-16" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">3</span>)),</span>
+<span id="cb58-17"><a href="hypothesis-testing.html#cb58-17" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">10</span>)),</span>
+<span id="cb58-18"><a href="hypothesis-testing.html#cb58-18" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb58-19"><a href="hypothesis-testing.html#cb58-19" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb58-20"><a href="hypothesis-testing.html#cb58-20" tabindex="-1"></a>    <span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb58-21"><a href="hypothesis-testing.html#cb58-21" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>)</span>
+<span id="cb58-22"><a href="hypothesis-testing.html#cb58-22" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-47-1.png" width="672" /></p>
+<p>We see that miles per gallon is correlated with horsepower. It’s a negative relationship, meaning the more horsepower in a car, the less miles per gallon the car exhibits.</p>
+<p>We can use the <code>cor.test</code> to tell us the correlation coefficient and the p-value of the correlation.</p>
+<p>We specify the method as ‘pearson’ for the Pearson correlation coefficient.</p>
+<div class="sourceCode" id="cb59"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb59-1"><a href="hypothesis-testing.html#cb59-1" tabindex="-1"></a><span class="fu">cor.test</span>(mtcars<span class="sc">$</span>hp, mtcars<span class="sc">$</span>mpg, <span class="at">method=</span><span class="st">&quot;pearson&quot;</span>)</span></code></pre></div>
+<p>Since Pearson’s method assumes normality, we check the distributions. Let’s plot a histogram for both hp and mpg.</p>
+<div class="sourceCode" id="cb60"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb60-1"><a href="hypothesis-testing.html#cb60-1" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb60-2"><a href="hypothesis-testing.html#cb60-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x=</span>mtcars<span class="sc">$</span>mpg,<span class="at">y=</span>..density..),<span class="at">fill=</span><span class="st">&quot;blue&quot;</span>,<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb60-3"><a href="hypothesis-testing.html#cb60-3" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, </span>
+<span id="cb60-4"><a href="hypothesis-testing.html#cb60-4" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(mtcars<span class="sc">$</span>mpg), <span class="at">sd =</span> <span class="fu">sd</span>(mtcars<span class="sc">$</span>mpg)))<span class="sc">+</span></span>
+<span id="cb60-5"><a href="hypothesis-testing.html#cb60-5" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb60-6"><a href="hypothesis-testing.html#cb60-6" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(mtcars<span class="sc">$</span>mpg), <span class="at">linetype=</span><span class="st">&quot;dotted&quot;</span>,<span class="at">alpha=</span><span class="fl">0.5</span>)<span class="sc">+</span></span>
+<span id="cb60-7"><a href="hypothesis-testing.html#cb60-7" tabindex="-1"></a>            <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Histogram of mtcars$mpg&quot;</span>,</span>
+<span id="cb60-8"><a href="hypothesis-testing.html#cb60-8" tabindex="-1"></a>                          <span class="at">caption =</span> <span class="st">&quot;Data: Made from mtcars&quot;</span>,</span>
+<span id="cb60-9"><a href="hypothesis-testing.html#cb60-9" tabindex="-1"></a>                          <span class="at">x=</span><span class="st">&quot;&quot;</span>,</span>
+<span id="cb60-10"><a href="hypothesis-testing.html#cb60-10" tabindex="-1"></a>                          <span class="at">y=</span><span class="st">&quot;&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb60-11"><a href="hypothesis-testing.html#cb60-11" tabindex="-1"></a>            <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb60-12"><a href="hypothesis-testing.html#cb60-12" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.spacing.x =</span> <span class="fu">unit</span>(<span class="dv">10</span>, <span class="st">&quot;mm&quot;</span>))<span class="sc">+</span></span>
+<span id="cb60-13"><a href="hypothesis-testing.html#cb60-13" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
+<span id="cb60-14"><a href="hypothesis-testing.html#cb60-14" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
+<span id="cb60-15"><a href="hypothesis-testing.html#cb60-15" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
+<span id="cb60-16"><a href="hypothesis-testing.html#cb60-16" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))<span class="sc">+</span></span>
+<span id="cb60-17"><a href="hypothesis-testing.html#cb60-17" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">9</span>))<span class="sc">+</span></span>
+<span id="cb60-18"><a href="hypothesis-testing.html#cb60-18" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb60-19"><a href="hypothesis-testing.html#cb60-19" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb60-20"><a href="hypothesis-testing.html#cb60-20" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">margin=</span>ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">15</span>,<span class="dv">0</span>))) <span class="sc">+</span></span>
+<span id="cb60-21"><a href="hypothesis-testing.html#cb60-21" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.margin=</span><span class="fu">unit</span>(<span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>),<span class="st">&quot;cm&quot;</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-49-1.png" width="672" /></p>
+<div class="sourceCode" id="cb61"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb61-1"><a href="hypothesis-testing.html#cb61-1" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb61-2"><a href="hypothesis-testing.html#cb61-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x=</span>mtcars<span class="sc">$</span>hp,<span class="at">y=</span>..density..),<span class="at">fill=</span><span class="st">&quot;blue&quot;</span>,<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb61-3"><a href="hypothesis-testing.html#cb61-3" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, </span>
+<span id="cb61-4"><a href="hypothesis-testing.html#cb61-4" tabindex="-1"></a>                <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(mtcars<span class="sc">$</span>hp), <span class="at">sd =</span> <span class="fu">sd</span>(mtcars<span class="sc">$</span>hp)))<span class="sc">+</span></span>
+<span id="cb61-5"><a href="hypothesis-testing.html#cb61-5" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb61-6"><a href="hypothesis-testing.html#cb61-6" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(mtcars<span class="sc">$</span>hp), <span class="at">linetype=</span><span class="st">&quot;dotted&quot;</span>,<span class="at">alpha=</span><span class="fl">0.5</span>)<span class="sc">+</span></span>
+<span id="cb61-7"><a href="hypothesis-testing.html#cb61-7" tabindex="-1"></a>            </span>
+<span id="cb61-8"><a href="hypothesis-testing.html#cb61-8" tabindex="-1"></a>            <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Histogram of mtcars$hp&quot;</span>,</span>
+<span id="cb61-9"><a href="hypothesis-testing.html#cb61-9" tabindex="-1"></a>                          <span class="at">caption =</span> <span class="st">&quot;Data: Made from mtcars&quot;</span>,</span>
+<span id="cb61-10"><a href="hypothesis-testing.html#cb61-10" tabindex="-1"></a>                          <span class="at">x=</span><span class="st">&quot;&quot;</span>,</span>
+<span id="cb61-11"><a href="hypothesis-testing.html#cb61-11" tabindex="-1"></a>                          <span class="at">y=</span><span class="st">&quot;&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb61-12"><a href="hypothesis-testing.html#cb61-12" tabindex="-1"></a>  </span>
+<span id="cb61-13"><a href="hypothesis-testing.html#cb61-13" tabindex="-1"></a>            <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb61-14"><a href="hypothesis-testing.html#cb61-14" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.spacing.x =</span> <span class="fu">unit</span>(<span class="dv">10</span>, <span class="st">&quot;mm&quot;</span>))<span class="sc">+</span></span>
+<span id="cb61-15"><a href="hypothesis-testing.html#cb61-15" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
+<span id="cb61-16"><a href="hypothesis-testing.html#cb61-16" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
+<span id="cb61-17"><a href="hypothesis-testing.html#cb61-17" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
+<span id="cb61-18"><a href="hypothesis-testing.html#cb61-18" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))<span class="sc">+</span></span>
+<span id="cb61-19"><a href="hypothesis-testing.html#cb61-19" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">9</span>))<span class="sc">+</span></span>
+<span id="cb61-20"><a href="hypothesis-testing.html#cb61-20" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb61-21"><a href="hypothesis-testing.html#cb61-21" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb61-22"><a href="hypothesis-testing.html#cb61-22" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">margin=</span>ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">15</span>,<span class="dv">0</span>))) <span class="sc">+</span></span>
+<span id="cb61-23"><a href="hypothesis-testing.html#cb61-23" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.margin=</span><span class="fu">unit</span>(<span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>),<span class="st">&quot;cm&quot;</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-50-1.png" width="672" /></p>
+<p>Crikey… they don’t look very normal at all.</p>
+<p>Let’s plot QQ plots of our variables and see what’s going on.</p>
+<div class="sourceCode" id="cb62"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb62-1"><a href="hypothesis-testing.html#cb62-1" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">sample =</span> mpg)) <span class="sc">+</span></span>
+<span id="cb62-2"><a href="hypothesis-testing.html#cb62-2" tabindex="-1"></a>  <span class="fu">geom_qq</span>()<span class="sc">+</span></span>
+<span id="cb62-3"><a href="hypothesis-testing.html#cb62-3" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>()<span class="sc">+</span></span>
+<span id="cb62-4"><a href="hypothesis-testing.html#cb62-4" tabindex="-1"></a>            <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;QQ plot of mtcars$mpg&quot;</span>,</span>
+<span id="cb62-5"><a href="hypothesis-testing.html#cb62-5" tabindex="-1"></a>                          <span class="at">caption =</span> <span class="st">&quot;Data: Made from mtcars&quot;</span>,</span>
+<span id="cb62-6"><a href="hypothesis-testing.html#cb62-6" tabindex="-1"></a>                          <span class="at">x=</span><span class="st">&quot;&quot;</span>,</span>
+<span id="cb62-7"><a href="hypothesis-testing.html#cb62-7" tabindex="-1"></a>                          <span class="at">y=</span><span class="st">&quot;&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb62-8"><a href="hypothesis-testing.html#cb62-8" tabindex="-1"></a>            <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb62-9"><a href="hypothesis-testing.html#cb62-9" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.spacing.x =</span> <span class="fu">unit</span>(<span class="dv">10</span>, <span class="st">&quot;mm&quot;</span>))<span class="sc">+</span></span>
+<span id="cb62-10"><a href="hypothesis-testing.html#cb62-10" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
+<span id="cb62-11"><a href="hypothesis-testing.html#cb62-11" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
+<span id="cb62-12"><a href="hypothesis-testing.html#cb62-12" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
+<span id="cb62-13"><a href="hypothesis-testing.html#cb62-13" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))<span class="sc">+</span></span>
+<span id="cb62-14"><a href="hypothesis-testing.html#cb62-14" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">9</span>))<span class="sc">+</span></span>
+<span id="cb62-15"><a href="hypothesis-testing.html#cb62-15" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb62-16"><a href="hypothesis-testing.html#cb62-16" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb62-17"><a href="hypothesis-testing.html#cb62-17" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">margin=</span>ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">15</span>,<span class="dv">0</span>))) <span class="sc">+</span></span>
+<span id="cb62-18"><a href="hypothesis-testing.html#cb62-18" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.margin=</span><span class="fu">unit</span>(<span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>),<span class="st">&quot;cm&quot;</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-51-1.png" width="672" /></p>
+<div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="hypothesis-testing.html#cb63-1" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">sample =</span> hp)) <span class="sc">+</span></span>
+<span id="cb63-2"><a href="hypothesis-testing.html#cb63-2" tabindex="-1"></a>  <span class="fu">geom_qq</span>()<span class="sc">+</span></span>
+<span id="cb63-3"><a href="hypothesis-testing.html#cb63-3" tabindex="-1"></a>  <span class="fu">geom_qq_line</span>()<span class="sc">+</span></span>
+<span id="cb63-4"><a href="hypothesis-testing.html#cb63-4" tabindex="-1"></a>            <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;QQ plot of mtcars$hp&quot;</span>,</span>
+<span id="cb63-5"><a href="hypothesis-testing.html#cb63-5" tabindex="-1"></a>                          <span class="at">caption =</span> <span class="st">&quot;Data: Made from mtcars&quot;</span>,</span>
+<span id="cb63-6"><a href="hypothesis-testing.html#cb63-6" tabindex="-1"></a>                          <span class="at">x=</span><span class="st">&quot;&quot;</span>,</span>
+<span id="cb63-7"><a href="hypothesis-testing.html#cb63-7" tabindex="-1"></a>                          <span class="at">y=</span><span class="st">&quot;&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb63-8"><a href="hypothesis-testing.html#cb63-8" tabindex="-1"></a>            <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb63-9"><a href="hypothesis-testing.html#cb63-9" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.spacing.x =</span> <span class="fu">unit</span>(<span class="dv">10</span>, <span class="st">&quot;mm&quot;</span>))<span class="sc">+</span></span>
+<span id="cb63-10"><a href="hypothesis-testing.html#cb63-10" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
+<span id="cb63-11"><a href="hypothesis-testing.html#cb63-11" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
+<span id="cb63-12"><a href="hypothesis-testing.html#cb63-12" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
+<span id="cb63-13"><a href="hypothesis-testing.html#cb63-13" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))<span class="sc">+</span></span>
+<span id="cb63-14"><a href="hypothesis-testing.html#cb63-14" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">9</span>))<span class="sc">+</span></span>
+<span id="cb63-15"><a href="hypothesis-testing.html#cb63-15" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb63-16"><a href="hypothesis-testing.html#cb63-16" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb63-17"><a href="hypothesis-testing.html#cb63-17" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">margin=</span>ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">15</span>,<span class="dv">0</span>))) <span class="sc">+</span></span>
+<span id="cb63-18"><a href="hypothesis-testing.html#cb63-18" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.margin=</span><span class="fu">unit</span>(<span class="fu">c</span>(<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>,<span class="fl">0.5</span>),<span class="st">&quot;cm&quot;</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-51-2.png" width="672" /></p>
+<p>Hmm okay, both series are a bit all over the shop. Let’s do a statistical test to confirm.</p>
+<p>The Shapiro-Wilk’s method is widely used for normality testing. The null hypothesis of this tests is that the sample distribution is normal. If the test is significant, the distribution is non-normal.</p>
+<div class="sourceCode" id="cb64"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb64-1"><a href="hypothesis-testing.html#cb64-1" tabindex="-1"></a><span class="fu">shapiro.test</span>(mtcars<span class="sc">$</span>mpg)</span>
+<span id="cb64-2"><a href="hypothesis-testing.html#cb64-2" tabindex="-1"></a><span class="fu">shapiro.test</span>(mtcars<span class="sc">$</span>hp)</span></code></pre></div>
+</div>
+<div id="confidence-intervals-for-the-mean" class="section level2 hasAnchor" number="5.5">
+<h2><span class="header-section-number">5.5</span> Confidence intervals for the mean<a href="hypothesis-testing.html#confidence-intervals-for-the-mean" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We can calkcualte the confidence interval for the mean. This measures the variance of the normal distribution, and gives us an idea of how ‘clustered’ the values are to the mean.</p>
+<p>There are 4 steps to do this:</p>
+<ol style="list-style-type: decimal">
+<li><p>Calculate the mean</p></li>
+<li><p>Calculate the standard error of the mean</p></li>
+<li><p>Find the t-score that corresponds to the confidence level</p></li>
+<li><p>Calculate the margin of error and construct the confidence interval</p></li>
+</ol>
+<div class="sourceCode" id="cb65"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb65-1"><a href="hypothesis-testing.html#cb65-1" tabindex="-1"></a>mpg.mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(mtcars<span class="sc">$</span>mpg)</span>
+<span id="cb65-2"><a href="hypothesis-testing.html#cb65-2" tabindex="-1"></a><span class="fu">print</span>(mpg.mean)</span>
+<span id="cb65-3"><a href="hypothesis-testing.html#cb65-3" tabindex="-1"></a></span>
+<span id="cb65-4"><a href="hypothesis-testing.html#cb65-4" tabindex="-1"></a>mpg.n <span class="ot">&lt;-</span> <span class="fu">length</span>(mtcars<span class="sc">$</span>mpg)</span>
+<span id="cb65-5"><a href="hypothesis-testing.html#cb65-5" tabindex="-1"></a>mpg.sd <span class="ot">&lt;-</span> <span class="fu">sd</span>(mtcars<span class="sc">$</span>mpg)</span>
+<span id="cb65-6"><a href="hypothesis-testing.html#cb65-6" tabindex="-1"></a>mpg.se <span class="ot">&lt;-</span> mpg.sd<span class="sc">/</span><span class="fu">sqrt</span>(mpg.n)</span>
+<span id="cb65-7"><a href="hypothesis-testing.html#cb65-7" tabindex="-1"></a><span class="fu">print</span>(mpg.se)</span>
+<span id="cb65-8"><a href="hypothesis-testing.html#cb65-8" tabindex="-1"></a></span>
+<span id="cb65-9"><a href="hypothesis-testing.html#cb65-9" tabindex="-1"></a>alpha <span class="ot">=</span> <span class="fl">0.05</span></span>
+<span id="cb65-10"><a href="hypothesis-testing.html#cb65-10" tabindex="-1"></a>degrees.freedom <span class="ot">=</span> mpg.n <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb65-11"><a href="hypothesis-testing.html#cb65-11" tabindex="-1"></a>t.score <span class="ot">=</span> <span class="fu">qt</span>(<span class="at">p=</span>alpha<span class="sc">/</span><span class="dv">2</span>, <span class="at">df=</span>degrees.freedom,<span class="at">lower.tail=</span>F)</span>
+<span id="cb65-12"><a href="hypothesis-testing.html#cb65-12" tabindex="-1"></a><span class="fu">print</span>(t.score)</span>
+<span id="cb65-13"><a href="hypothesis-testing.html#cb65-13" tabindex="-1"></a></span>
+<span id="cb65-14"><a href="hypothesis-testing.html#cb65-14" tabindex="-1"></a>mpg.error <span class="ot">&lt;-</span> t.score <span class="sc">*</span> mpg.se</span>
+<span id="cb65-15"><a href="hypothesis-testing.html#cb65-15" tabindex="-1"></a></span>
+<span id="cb65-16"><a href="hypothesis-testing.html#cb65-16" tabindex="-1"></a>lower.bound <span class="ot">&lt;-</span> mpg.mean <span class="sc">-</span> mpg.error</span>
+<span id="cb65-17"><a href="hypothesis-testing.html#cb65-17" tabindex="-1"></a>upper.bound <span class="ot">&lt;-</span> mpg.mean <span class="sc">+</span> mpg.error</span>
+<span id="cb65-18"><a href="hypothesis-testing.html#cb65-18" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">c</span>(lower.bound,upper.bound))</span></code></pre></div>
+<p>For the lazy folks among us - there’s also this quick and dirty way of doing it.</p>
+<div class="sourceCode" id="cb66"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb66-1"><a href="hypothesis-testing.html#cb66-1" tabindex="-1"></a><span class="co"># Calculate the mean and standard error</span></span>
+<span id="cb66-2"><a href="hypothesis-testing.html#cb66-2" tabindex="-1"></a>mpg.model <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> <span class="dv">1</span>, mtcars)</span>
+<span id="cb66-3"><a href="hypothesis-testing.html#cb66-3" tabindex="-1"></a></span>
+<span id="cb66-4"><a href="hypothesis-testing.html#cb66-4" tabindex="-1"></a><span class="co"># Calculate the confidence interval</span></span>
+<span id="cb66-5"><a href="hypothesis-testing.html#cb66-5" tabindex="-1"></a><span class="fu">confint</span>(mpg.model, <span class="at">level=</span><span class="fl">0.95</span>)</span></code></pre></div>
+<p>Great. Let’s plot this interval on the distribution.</p>
+<div class="sourceCode" id="cb67"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb67-1"><a href="hypothesis-testing.html#cb67-1" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">x =</span> mpg)) <span class="sc">+</span></span>
+<span id="cb67-2"><a href="hypothesis-testing.html#cb67-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">binwidth =</span> <span class="dv">2</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb67-3"><a href="hypothesis-testing.html#cb67-3" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> <span class="fu">mean</span>(mtcars<span class="sc">$</span>mpg), <span class="at">sd =</span> <span class="fu">sd</span>(mtcars<span class="sc">$</span>mpg))) <span class="sc">+</span></span>
+<span id="cb67-4"><a href="hypothesis-testing.html#cb67-4" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb67-5"><a href="hypothesis-testing.html#cb67-5" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">mean</span>(mtcars<span class="sc">$</span>mpg), <span class="at">linetype =</span> <span class="st">&quot;dotted&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb67-6"><a href="hypothesis-testing.html#cb67-6" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(lower.bound, upper.bound), <span class="at">col =</span> <span class="st">&quot;purple&quot;</span>) <span class="sc">+</span></span>
+<span id="cb67-7"><a href="hypothesis-testing.html#cb67-7" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb67-8"><a href="hypothesis-testing.html#cb67-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Histogram of mtcars$mpg&quot;</span>,</span>
+<span id="cb67-9"><a href="hypothesis-testing.html#cb67-9" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: Made from mtcars&quot;</span>,</span>
+<span id="cb67-10"><a href="hypothesis-testing.html#cb67-10" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb67-11"><a href="hypothesis-testing.html#cb67-11" tabindex="-1"></a>    <span class="at">y =</span> <span class="cn">NULL</span></span>
+<span id="cb67-12"><a href="hypothesis-testing.html#cb67-12" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb67-13"><a href="hypothesis-testing.html#cb67-13" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb67-14"><a href="hypothesis-testing.html#cb67-14" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb67-15"><a href="hypothesis-testing.html#cb67-15" tabindex="-1"></a>    <span class="at">panel.spacing.x =</span> <span class="fu">unit</span>(<span class="dv">10</span>, <span class="st">&quot;mm&quot;</span>),</span>
+<span id="cb67-16"><a href="hypothesis-testing.html#cb67-16" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>,</span>
+<span id="cb67-17"><a href="hypothesis-testing.html#cb67-17" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">15</span>, <span class="dv">0</span>)),</span>
+<span id="cb67-18"><a href="hypothesis-testing.html#cb67-18" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb67-19"><a href="hypothesis-testing.html#cb67-19" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb67-20"><a href="hypothesis-testing.html#cb67-20" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb67-21"><a href="hypothesis-testing.html#cb67-21" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb67-22"><a href="hypothesis-testing.html#cb67-22" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb67-23"><a href="hypothesis-testing.html#cb67-23" tabindex="-1"></a>    <span class="at">plot.margin =</span> <span class="fu">unit</span>(<span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>), <span class="st">&quot;cm&quot;</span>)</span>
+<span id="cb67-24"><a href="hypothesis-testing.html#cb67-24" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-55-1.png" width="672" /></p>
+<p>Two things we note here: Firstly, the distribution doesn’t look <em>that</em> normal. Secondly, the 95% confidence interval looks narrow as a result.</p>
+<p>Let’s do the same analysis with an actual normal distribution and see what happens.</p>
+<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="hypothesis-testing.html#cb68-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">404</span>)</span>
+<span id="cb68-2"><a href="hypothesis-testing.html#cb68-2" tabindex="-1"></a>dataset2 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">variable1 =</span> <span class="fu">rnorm</span>(<span class="dv">1000</span>, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>))</span>
+<span id="cb68-3"><a href="hypothesis-testing.html#cb68-3" tabindex="-1"></a></span>
+<span id="cb68-4"><a href="hypothesis-testing.html#cb68-4" tabindex="-1"></a>df2.mean <span class="ot">&lt;-</span> <span class="fu">mean</span>(dataset2<span class="sc">$</span>variable1)</span>
+<span id="cb68-5"><a href="hypothesis-testing.html#cb68-5" tabindex="-1"></a>df2.n <span class="ot">&lt;-</span> <span class="fu">length</span>(dataset2<span class="sc">$</span>variable1)</span>
+<span id="cb68-6"><a href="hypothesis-testing.html#cb68-6" tabindex="-1"></a>df2.sd <span class="ot">&lt;-</span> <span class="fu">sd</span>(dataset2<span class="sc">$</span>variable1)</span>
+<span id="cb68-7"><a href="hypothesis-testing.html#cb68-7" tabindex="-1"></a>df2.se <span class="ot">&lt;-</span> df2.sd <span class="sc">/</span> <span class="fu">sqrt</span>(df2.n)  <span class="co"># Fixed variable name typo</span></span>
+<span id="cb68-8"><a href="hypothesis-testing.html#cb68-8" tabindex="-1"></a></span>
+<span id="cb68-9"><a href="hypothesis-testing.html#cb68-9" tabindex="-1"></a>alpha <span class="ot">&lt;-</span> <span class="fl">0.05</span></span>
+<span id="cb68-10"><a href="hypothesis-testing.html#cb68-10" tabindex="-1"></a>t.score <span class="ot">&lt;-</span> <span class="fu">qt</span>(<span class="at">p =</span> alpha <span class="sc">/</span> <span class="dv">2</span>, <span class="at">df =</span> df2.n <span class="sc">-</span> <span class="dv">1</span>, <span class="at">lower.tail =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb68-11"><a href="hypothesis-testing.html#cb68-11" tabindex="-1"></a></span>
+<span id="cb68-12"><a href="hypothesis-testing.html#cb68-12" tabindex="-1"></a>df2.error <span class="ot">&lt;-</span> t.score <span class="sc">*</span> df2.se</span>
+<span id="cb68-13"><a href="hypothesis-testing.html#cb68-13" tabindex="-1"></a>lower.bound.df2 <span class="ot">&lt;-</span> df2.mean <span class="sc">-</span> df2.error</span>
+<span id="cb68-14"><a href="hypothesis-testing.html#cb68-14" tabindex="-1"></a>upper.bound.df2 <span class="ot">&lt;-</span> df2.mean <span class="sc">+</span> df2.error</span>
+<span id="cb68-15"><a href="hypothesis-testing.html#cb68-15" tabindex="-1"></a></span>
+<span id="cb68-16"><a href="hypothesis-testing.html#cb68-16" tabindex="-1"></a><span class="co"># Functions to shade the tails</span></span>
+<span id="cb68-17"><a href="hypothesis-testing.html#cb68-17" tabindex="-1"></a>shade_tail <span class="ot">&lt;-</span> <span class="cf">function</span>(x, bound, direction) {</span>
+<span id="cb68-18"><a href="hypothesis-testing.html#cb68-18" tabindex="-1"></a>  y <span class="ot">&lt;-</span> <span class="fu">dnorm</span>(x, <span class="at">mean =</span> <span class="dv">0</span>, <span class="at">sd =</span> <span class="dv">1</span>)</span>
+<span id="cb68-19"><a href="hypothesis-testing.html#cb68-19" tabindex="-1"></a>  y[(direction <span class="sc">==</span> <span class="st">&quot;upper&quot;</span> <span class="sc">&amp;</span> x <span class="sc">&lt;</span> bound) <span class="sc">|</span> (direction <span class="sc">==</span> <span class="st">&quot;lower&quot;</span> <span class="sc">&amp;</span> x <span class="sc">&gt;</span> bound)] <span class="ot">&lt;-</span> <span class="cn">NA</span></span>
+<span id="cb68-20"><a href="hypothesis-testing.html#cb68-20" tabindex="-1"></a>  <span class="fu">return</span>(y)</span>
+<span id="cb68-21"><a href="hypothesis-testing.html#cb68-21" tabindex="-1"></a>}</span>
+<span id="cb68-22"><a href="hypothesis-testing.html#cb68-22" tabindex="-1"></a></span>
+<span id="cb68-23"><a href="hypothesis-testing.html#cb68-23" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb68-24"><a href="hypothesis-testing.html#cb68-24" tabindex="-1"></a><span class="fu">ggplot</span>(dataset2, <span class="fu">aes</span>(<span class="at">x =</span> variable1)) <span class="sc">+</span></span>
+<span id="cb68-25"><a href="hypothesis-testing.html#cb68-25" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), <span class="at">binwidth =</span> <span class="fl">0.1</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb68-26"><a href="hypothesis-testing.html#cb68-26" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> dnorm, <span class="at">args =</span> <span class="fu">list</span>(<span class="at">mean =</span> df2.mean, <span class="at">sd =</span> df2.sd)) <span class="sc">+</span></span>
+<span id="cb68-27"><a href="hypothesis-testing.html#cb68-27" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">0</span>) <span class="sc">+</span></span>
+<span id="cb68-28"><a href="hypothesis-testing.html#cb68-28" tabindex="-1"></a>  <span class="fu">geom_vline</span>(<span class="at">xintercept =</span> <span class="fu">c</span>(df2.mean, lower.bound.df2, upper.bound.df2), </span>
+<span id="cb68-29"><a href="hypothesis-testing.html#cb68-29" tabindex="-1"></a>             <span class="at">linetype =</span> <span class="fu">c</span>(<span class="st">&quot;dotted&quot;</span>, <span class="st">&quot;solid&quot;</span>, <span class="st">&quot;solid&quot;</span>), <span class="at">col =</span> <span class="fu">c</span>(<span class="st">&quot;black&quot;</span>, <span class="st">&quot;purple&quot;</span>, <span class="st">&quot;purple&quot;</span>), <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb68-30"><a href="hypothesis-testing.html#cb68-30" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> <span class="cf">function</span>(x) <span class="fu">shade_tail</span>(x, upper.bound.df2, <span class="st">&quot;upper&quot;</span>), </span>
+<span id="cb68-31"><a href="hypothesis-testing.html#cb68-31" tabindex="-1"></a>                <span class="at">geom =</span> <span class="st">&quot;area&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>, <span class="at">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb68-32"><a href="hypothesis-testing.html#cb68-32" tabindex="-1"></a>  <span class="fu">stat_function</span>(<span class="at">fun =</span> <span class="cf">function</span>(x) <span class="fu">shade_tail</span>(x, lower.bound.df2, <span class="st">&quot;lower&quot;</span>), </span>
+<span id="cb68-33"><a href="hypothesis-testing.html#cb68-33" tabindex="-1"></a>                <span class="at">geom =</span> <span class="st">&quot;area&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>, <span class="at">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb68-34"><a href="hypothesis-testing.html#cb68-34" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb68-35"><a href="hypothesis-testing.html#cb68-35" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;95% Confidence Interval&quot;</span>,</span>
+<span id="cb68-36"><a href="hypothesis-testing.html#cb68-36" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: Generated from rnorm(1000)&quot;</span>,</span>
+<span id="cb68-37"><a href="hypothesis-testing.html#cb68-37" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span>, <span class="at">y =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb68-38"><a href="hypothesis-testing.html#cb68-38" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb68-39"><a href="hypothesis-testing.html#cb68-39" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb68-40"><a href="hypothesis-testing.html#cb68-40" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="at">by =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb68-41"><a href="hypothesis-testing.html#cb68-41" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb68-42"><a href="hypothesis-testing.html#cb68-42" tabindex="-1"></a>    <span class="at">panel.spacing.x =</span> <span class="fu">unit</span>(<span class="dv">10</span>, <span class="st">&quot;mm&quot;</span>),</span>
+<span id="cb68-43"><a href="hypothesis-testing.html#cb68-43" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>,</span>
+<span id="cb68-44"><a href="hypothesis-testing.html#cb68-44" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">15</span>, <span class="dv">0</span>)),</span>
+<span id="cb68-45"><a href="hypothesis-testing.html#cb68-45" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb68-46"><a href="hypothesis-testing.html#cb68-46" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb68-47"><a href="hypothesis-testing.html#cb68-47" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb68-48"><a href="hypothesis-testing.html#cb68-48" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb68-49"><a href="hypothesis-testing.html#cb68-49" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb68-50"><a href="hypothesis-testing.html#cb68-50" tabindex="-1"></a>    <span class="at">plot.margin =</span> <span class="fu">unit</span>(<span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>, <span class="fl">0.5</span>), <span class="st">&quot;cm&quot;</span>)</span>
+<span id="cb68-51"><a href="hypothesis-testing.html#cb68-51" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-56-1.png" width="672" /></p>
+<p>Great - we’ve got a more sensible looking plot, and greyed out the tails where our confidence interval excludes. We expect out observation to fall somewhere between the two purple lines (or more exactly between -2.1 and 2.1)</p>
+</div>
+<div id="confidence-intervals-for-a-model" class="section level2 hasAnchor" number="5.6">
+<h2><span class="header-section-number">5.6</span> Confidence intervals for a model<a href="hypothesis-testing.html#confidence-intervals-for-a-model" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>We can also calculate the confidence interval around a linear model. This process shows how confident we can be about any single point in the linear estimate. If the confidence interval is wide, the estimate at that point is likely unreliable.</p>
+<p>We’ll create a linear model of mpg on the y-axis and horsepower on the x-axis.</p>
+<div class="sourceCode" id="cb69"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb69-1"><a href="hypothesis-testing.html#cb69-1" tabindex="-1"></a>mtcars.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> hp, <span class="at">data =</span> mtcars)</span>
+<span id="cb69-2"><a href="hypothesis-testing.html#cb69-2" tabindex="-1"></a><span class="fu">summary</span>(mtcars.lm)</span>
+<span id="cb69-3"><a href="hypothesis-testing.html#cb69-3" tabindex="-1"></a></span>
+<span id="cb69-4"><a href="hypothesis-testing.html#cb69-4" tabindex="-1"></a><span class="fu">predict</span>(mtcars.lm, <span class="at">newdata =</span> mtcars, <span class="at">interval =</span> <span class="st">&#39;confidence&#39;</span>)</span></code></pre></div>
+<p>The<code>geom_smooth()</code>function presents an easy way to plot a confidence interval on a chart.</p>
+<p>The syntax in this example is:<br />
+<code>geom_smooth(aes(x = hp, y = mpg), method='lm', level=0.95)</code></p>
+<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="hypothesis-testing.html#cb70-1" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg)) <span class="sc">+</span></span>
+<span id="cb70-2"><a href="hypothesis-testing.html#cb70-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">col =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb70-3"><a href="hypothesis-testing.html#cb70-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>, <span class="at">level =</span> <span class="fl">0.95</span>) <span class="sc">+</span></span>
+<span id="cb70-4"><a href="hypothesis-testing.html#cb70-4" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb70-5"><a href="hypothesis-testing.html#cb70-5" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Building a Regression Model&quot;</span>,</span>
+<span id="cb70-6"><a href="hypothesis-testing.html#cb70-6" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Higher horsepower cars get fewer miles per gallon&quot;</span>,</span>
+<span id="cb70-7"><a href="hypothesis-testing.html#cb70-7" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: mtcars dataset&quot;</span>,</span>
+<span id="cb70-8"><a href="hypothesis-testing.html#cb70-8" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Horsepower&quot;</span>,</span>
+<span id="cb70-9"><a href="hypothesis-testing.html#cb70-9" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Miles per Gallon&quot;</span></span>
+<span id="cb70-10"><a href="hypothesis-testing.html#cb70-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb70-11"><a href="hypothesis-testing.html#cb70-11" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb70-12"><a href="hypothesis-testing.html#cb70-12" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb70-13"><a href="hypothesis-testing.html#cb70-13" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb70-14"><a href="hypothesis-testing.html#cb70-14" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb70-15"><a href="hypothesis-testing.html#cb70-15" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">0</span>)),</span>
+<span id="cb70-16"><a href="hypothesis-testing.html#cb70-16" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb70-17"><a href="hypothesis-testing.html#cb70-17" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb70-18"><a href="hypothesis-testing.html#cb70-18" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb70-19"><a href="hypothesis-testing.html#cb70-19" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb70-20"><a href="hypothesis-testing.html#cb70-20" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">3</span>)),</span>
+<span id="cb70-21"><a href="hypothesis-testing.html#cb70-21" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">10</span>)),</span>
+<span id="cb70-22"><a href="hypothesis-testing.html#cb70-22" tabindex="-1"></a>    <span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb70-23"><a href="hypothesis-testing.html#cb70-23" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>)</span>
+<span id="cb70-24"><a href="hypothesis-testing.html#cb70-24" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-58-1.png" width="672" /></p>
+<p>For a sanity check, let’s crank up the confidence level to 0.999 (meaning our interval should capture just about all the observations). We see the confidence interval band increases… but not by <em>that</em> much. Why?</p>
+<p>Well remember how the data isn’t a very good normal distribution? That means the confidence interval function won’t be super accurate - especially at the extremes.</p>
 
+</div>
 </div>
             </section>
 

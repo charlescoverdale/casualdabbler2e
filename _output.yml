@@ -1,4 +1,5 @@
 bookdown::gitbook:
+  latex_engine: xelatex
   css: style.css
   #code_folding: hide
   includes:
@@ -12,4 +13,5 @@ bookdown::gitbook:
         <li><a href="https://github.com/charlescoverdale/casualdabbler2e" target="blank">Get the code on github</a></li>
     edit: https://github.com/charlescoverdale/casualdabbler2e/edit/master/%s
     download: ["pdf"]
+  
   
