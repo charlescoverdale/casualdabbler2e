@@ -21,7 +21,6 @@ library(reshape)
 library(tidyr)
 library(lubridate)
 library(gapminder)
-#library(grattantheme)
 library(patchwork)
 library(scales)
 library(purrr)
@@ -73,49 +72,45 @@ MEL_temp_daily <- MEL_temp_daily %>% dplyr::mutate(Seven_day_rolling =
 
 ```{r,results='hide', warning=FALSE,message=FALSE}
 
-plot_MEL_temp <- ggplot(MEL_temp_daily)+
-                          geom_line(aes(x = Date, y = Temp), col = "blue")+
-                          geom_line(aes(x = Date, y = Mean), col = "orange")+
-                          labs(title="Hot in the summer and cool in the winter",
-                          subtitle = "Analysing temperature in Melbourne",
-                          caption = "Data: Bureau of Meterology 2019",
-                          x="",
-                          y="") + 
-
-                          scale_x_date(date_breaks = "1 month",
-                                       date_labels = "%b",
-                                       limits = as.Date(c('2019-01-01','2019-12-14')))+
-  
-                          scale_y_continuous(label = unit_format(unit="\u00b0C", sep="")) +
-  
-                          theme_minimal() +
-                          theme(legend.position="bottom")+
-  
-                          theme(plot.title=element_text(face="bold",size=12))+
-                          theme(plot.subtitle=element_text(size=11))+
-                          theme(plot.caption=element_text(size=8))+
-
-                          theme(axis.text=element_text(size=8))+
-                          theme(panel.grid.minor = element_blank())+
-                          theme(panel.grid.major.x = element_blank()) +
-
-                          theme(axis.title.y = 
-                               element_text(margin = margin(t = 0, r = 0, b = 0, l = 0)))+
-                         
-                          theme(axis.text.y = element_text(vjust = -0.5, 
-                                                           margin = margin(l = 20, r = -20)))+
-  
-                          theme(axis.line.x = element_line(colour ="black",size=0.4))+
-                          theme(axis.ticks.x = element_line(colour ="black",size=0.4))+
-                          
-                          annotate(geom='curve',
-                                   x=as.Date('2019-08-01'), y=23,
-                                   xend=as.Date('2019-08-01'),yend=17,
-                                   curvature=-0.5,arrow=arrow(length=unit(2,"mm")))+
-                                   annotate(geom='text',x=as.Date('2019-07-15'),y=25,
-                                   label="Below 20°C all winter")
-
-
+plot_MEL_temp <- ggplot(MEL_temp_daily, aes(x = Date)) +
+  geom_line(aes(y = Temp), col = "blue") +
+  geom_line(aes(y = Mean), col = "orange") +
+  labs(
+    title = "Hot in the summer and cool in the winter",
+    subtitle = "Analysing temperature in Melbourne",
+    caption = "Data: Bureau of Meteorology 2019",
+    x = "",
+    y = ""
+  ) +
+  scale_x_date(
+    date_breaks = "1 month",
+    date_labels = "%b",
+    limits = as.Date(c('2019-01-01', '2019-12-14'))
+  ) +
+  scale_y_continuous(labels = unit_format(unit = "\u00b0C", sep = "")) +
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(face = "bold", size = 12),
+    plot.subtitle = element_text(size = 11),
+    plot.caption = element_text(size = 8),
+    axis.text = element_text(size = 8),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    axis.line.x = element_line(colour = "black", size = 0.4),
+    axis.ticks.x = element_line(colour = "black", size = 0.4)
+  ) +
+  annotate(
+    geom = "curve",
+    x = as.Date('2019-08-01'), y = 23,
+    xend = as.Date('2019-08-01'), yend = 17,
+    curvature = -0.5, arrow = arrow(length = unit(2, "mm"))
+  ) +
+  annotate(
+    geom = "text",
+    x = as.Date('2019-07-15'), y = 25,
+    label = "Below 20°C all winter"
+  )
 
 plot_MEL_temp
 
@@ -125,49 +120,51 @@ plot_MEL_temp
 
 ```{r,results='hide', warning=FALSE,message=FALSE}
 
-MEL_temp_Jan <- MEL_temp_daily %>% filter(MEL_temp_daily$Date<as.Date("2019-01-31"))
+MEL_temp_Jan <- MEL_temp_daily %>% filter(Date < as.Date("2019-01-31"))
 
-ggplot(MEL_temp_Jan)+
-  geom_point(aes(x = Date, y = Temp), col = "purple",alpha=0.4)+
-  geom_smooth(aes(x = Date, y = Temp), col = "purple",fill="purple", alpha=0.1,method = "lm")+
-  #scale_colour_manual(values = c("purple"),labels="Trend") +
-  #scale_fill_manual(values = c("purple"),labels="Confidence interval")+
-  labs(title="January is a hot one",
-  subtitle = "Analysing temperature in Melbourne",
-  caption = "Data: Bureau of Meterology 2019",
-  x="",
-  y="Temperature °C") + 
-  
-  scale_x_date(date_breaks = "1 week",
-               date_labels = "%d-%b",
-               limits = as.Date(c('2019-01-01','2019-01-31')),
-               expand = c(0,0)) +
-  
+ggplot(MEL_temp_Jan, aes(x = Date, y = Temp)) +
+  geom_point(col = "purple", alpha = 0.4) +
+  geom_smooth(col = "purple", fill = "purple", alpha = 0.1, method = "lm") +
+  labs(
+    title = "January is a hot one",
+    subtitle = "Analysing temperature in Melbourne",
+    caption = "Data: Bureau of Meteorology 2019",
+    x = "",
+    y = "Temperature °C"
+  ) +
+  scale_x_date(
+    date_breaks = "1 week",
+    date_labels = "%d-%b",
+    limits = as.Date(c('2019-01-01', '2019-01-31')),
+    expand = c(0, 0)
+  ) +
+  geom_hline(yintercept = 45, colour = "black", size = 0.4) +
+  annotate(
+    geom = "curve",
+    x = as.Date('2019-01-22'), y = 37.5,
+    xend = as.Date('2019-01-25'), yend = 42,
+    curvature = 0.5,
+    col = "#575757",
+    arrow = arrow(length = unit(2, "mm"))
+  ) +
+  annotate(
+    geom = "text",
+    x = as.Date('2019-01-16'), y = 37.5,
+    label = "January saw some extreme temperatures",
+    size = 3.2, col = "#575757"
+  ) +
   theme_minimal() +
-  
-  theme(plot.title=element_text(face="bold",size=12))+
-  theme(plot.subtitle=element_text(size=11))+
-  theme(plot.caption=element_text(size=8))+
-  
-  theme(axis.text=element_text(size=8))+
-  theme(axis.title.y = element_text(size=9,margin=margin(t = 0, r = 10, b = 0, l = 0)))+
-  theme(panel.grid.minor = element_blank())+
-  theme(panel.grid.major.x = element_blank()) +
-  
-  theme(axis.line.x = element_line(colour ="black",size=0.4))+
-  theme(axis.ticks.x = element_line(colour ="black",size=0.4))+
-  
-  geom_hline(yintercept=45,colour ="black",size=0.4) +
-  
-  annotate(geom='curve',
-  x=as.Date('2019-01-22'), y=37.5,
-  xend=as.Date('2019-01-25'),yend=42,
-  curvature=0.5,
-  col="#575757",
-  arrow=arrow(length=unit(2,"mm"))) +
-  
-  annotate(geom='text',x=as.Date('2019-01-16'),y=37.5,
-  label="January saw some extreme temperatures",size=3.2,col="#575757")
+  theme(
+    plot.title = element_text(face = "bold", size = 12),
+    plot.subtitle = element_text(size = 11),
+    plot.caption = element_text(size = 8),
+    axis.text = element_text(size = 8),
+    axis.title.y = element_text(size = 9, margin = margin(r = 10)),
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    axis.line.x = element_line(colour = "black", size = 0.4),
+    axis.ticks.x = element_line(colour = "black", size = 0.4)
+  )
   
 
 ```
@@ -180,143 +177,100 @@ Adding shading under a particular model line? A little trickier. See both exampl
 
 ```{r,results='hide', warning=FALSE,message=FALSE}
 
-#Example 1
-#Set a custom limit for the y-axis threshold
+# Example 1: Custom y-axis threshold shading
 threshold <- 20
 
-ggplot() +
-  geom_point(data = mtcars,
-             aes(x = hp, y = mpg)) +
-  
-  #Add an intercept line
+ggplot(mtcars, aes(x = hp, y = mpg)) +
+  geom_point() +
   geom_hline(yintercept = threshold) +
   
-  # Shade area under y_lim
-  geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = threshold),
-            alpha = 1/5,
-            fill = "blue") +
-  
-  # Shade area above y_lim
-  geom_rect(aes(xmin = -Inf, xmax = Inf, ymin = threshold, ymax = Inf),
-            alpha = 1/5,
-            fill = "red")
+  # Shade areas below and above threshold
+  geom_rect(xmin = -Inf, xmax = Inf, ymin = -Inf, ymax = threshold, 
+            fill = "blue", alpha = 0.2) +
+  geom_rect(xmin = -Inf, xmax = Inf, ymin = threshold, ymax = Inf, 
+            fill = "red", alpha = 0.2)
 
-#Example 2
-#Now to add colour either way of a model line
-
-#Define the model
+# Example 2: Model line with shaded areas
 model <- lm(mpg ~ log(hp), data = mtcars)
 
-# Get the predictions for plotting. Here, df_line, is a data frame with new
-# coordinates that will be used for plotting the trend line and further for
-# building the polygons for shading.
-min_x <- min(mtcars$hp)
-max_x <- max(mtcars$hp)
-
-df_line <- data.frame(hp = seq(from = min_x, to = max_x, by = 1))
+# Generate predicted values for plotting
+df_line <- data.frame(hp = seq(min(mtcars$hp), max(mtcars$hp), by = 1))
 df_line$mpg <- predict(model, newdata = df_line)
 
-  p <- ggplot() +
-  geom_point(data = mtcars,
-             aes(x = hp, y = mpg),color="grey",alpha=0.5) +
-  
-  geom_line(data = df_line,
-            aes(x = hp, y = mpg),col="black")
+# Define polygons above and below the model line
+df_poly_under <- bind_rows(df_line, tibble(hp = c(max(df_line$hp), min(df_line$hp)), mpg = c(-Inf, -Inf)))
+df_poly_above <- bind_rows(df_line, tibble(hp = c(max(df_line$hp), min(df_line$hp)), mpg = c(Inf, Inf)))
 
-#Define two polygons (one above, and one below the line)
-  df_poly_under <- df_line %>%
-  tibble::add_row(hp = c(max_x, min_x),
-                  mpg = c(-Inf, -Inf))
-
-  df_poly_above <- df_line %>%
-  tibble::add_row(hp = c(max_x, min_x),
-                  mpg = c(Inf, Inf))
-
-#Plot the data, line, and the shades above and below the line
-  p +
+# Plot the data, model line, and shaded areas
+ggplot(mtcars, aes(x = hp, y = mpg)) +
+  geom_point(color = "grey", alpha = 0.5) +
+  geom_line(data = df_line, aes(x = hp, y = mpg), color = "black") +
   
-  geom_polygon(data = df_poly_under,
-               aes(x = hp, y = mpg),
-               fill = "blue",
-               alpha = 1/5) +
+  # Shaded areas
+  geom_polygon(data = df_poly_under, aes(x = hp, y = mpg), fill = "blue", alpha = 0.2) +
+  geom_polygon(data = df_poly_above, aes(x = hp, y = mpg), fill = "red", alpha = 0.2) +
   
-  geom_polygon(data = df_poly_above,
-               aes(x = hp, y = mpg),
-               fill = "red",
-               alpha = 1/5)+
-    
-  scale_x_discrete(expand = c(0,0))+
+  scale_x_continuous(expand = c(0, 0)) +
+  
+  labs(
+    title = "Look at that snazzy red/blue shaded area",
+    subtitle = "Subtitle goes here",
+    caption = "Data: Made up from scratch",
+    x = "",
+    y = ""
+  ) +
   
   theme_minimal() +
-    
-    labs(title="Look at that snazzy red/blue shaded area",
-                          subtitle = "Subtitle goes here",
-                          caption = "Data: Made up from scratch",
-                          x="",
-                          y="") + 
-
-  theme(panel.grid.minor = element_blank())+
-  theme(panel.grid.major.x = element_blank()) +
-    
-  theme(axis.title.y=element_blank(),
-        axis.text.y=element_blank(),
-        axis.ticks.y=element_blank())+
-    
-  theme(axis.title.x=element_blank(),
-        axis.text.x=element_blank(),
-        axis.ticks.x=element_blank())
+  theme(
+    panel.grid.minor = element_blank(),
+    panel.grid.major.x = element_blank(),
+    axis.title = element_blank(),
+    axis.text = element_blank(),
+    axis.ticks = element_blank()
+  )
 
 ```
 
-## Bar chart (numercial)
+## Bar chart
 
 ```{r,results='hide', warning=FALSE,message=FALSE}
 
-Year = c("2018", "2019", "2020", "2021")
+# Create data frame directly
+bar_data_single <- data.frame(
+  Year = c("2018", "2019", "2020", "2021"),
+  Value = c(1000000, 3000000, 2000000, 5000000)
+)
 
-Value = (c(1000000,3000000, 2000000, 5000000))
-
-bar_data_single <- (cbind(Year, Value))
-
-bar_data_single <- as.data.frame(bar_data_single)
-
-bar_data_single$Value = as.integer(bar_data_single$Value)
-
-
-ggplot(bar_data_single, aes(x = Year, y = Value, label=Value)) +
-  geom_bar(stat='identity',fill="blue",width=0.8)+
-  geom_text(size = 5, 
-            col="white",fontface="bold",
-            position = position_stack(vjust = 0.5),
-            label=scales::dollar(Value,scale=1/1e6,suffix="m"))+
+ggplot(bar_data_single, aes(x = Year, y = Value)) +
+  geom_bar(stat = "identity", fill = "blue", width = 0.8) +
   
-  labs(title="Bar chart example",
-                          subtitle = "Subtitle goes here",
-                          caption = "Data: Made up from scratch",
-                          x="",
-                          y="") + 
-
+  # Labels in the middle of the bars
+  geom_text(aes(y = Value / 2, label = scales::dollar(Value, scale = 1/1e6, suffix = "m")), 
+            size = 5, color = "white", fontface = "bold") +
+  
+  labs(
+    title = "Bar chart example",
+    subtitle = "Subtitle goes here",
+    caption = "Data: Made up from scratch",
+    x = "",
+    y = ""
+  ) +
+  
   theme_minimal() +
-  
-  theme(plot.title=element_text(face="bold",size=12))+
-  theme(plot.subtitle=element_text(size=11))+
-  theme(plot.caption=element_text(size=12))+
+  theme(
+    plot.title = element_text(face = "bold", size = 12),
+    plot.subtitle = element_text(size = 11),
+    plot.caption = element_text(size = 12),
+    axis.text = element_text(size = 12),
+    panel.grid.minor = element_blank(),
+    panel.grid.major = element_blank(),
+    axis.title.y = element_blank(),
+    axis.text.y = element_blank(),
+    axis.ticks.y = element_blank()
+  )
 
-  theme(axis.text=element_text(size=12))+
-  theme(panel.grid.minor = element_blank())+
-  theme(panel.grid.major.x = element_blank())+
-  theme(panel.grid.major.y = element_blank()) +
-  
-  theme(axis.title.y=element_blank(),
-        axis.text.y=element_blank(),
-        axis.ticks.y=element_blank())
-
-# ggsave(plot=last_plot(),
-#        width=10,
-#        height=10,
-#        units="cm",
-#        dpi = 600, 
-#        filename = "/Users/charlescoverdale/Desktop/test.png")
+# Save the plot
+# ggsave("test.png", width = 10, height = 10, units = "cm", dpi = 600)
 ```
 
 ## Stacked bar chart

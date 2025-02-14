@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-02-13" />
+<meta name="date" content="2025-02-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -162,7 +162,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.3" data-path="charts.html"><a href="charts.html#line-plot"><i class="fa fa-check"></i><b>3.3</b> Line plot</a></li>
 <li class="chapter" data-level="3.4" data-path="charts.html"><a href="charts.html#scatter-and-trend-plot"><i class="fa fa-check"></i><b>3.4</b> Scatter and trend plot</a></li>
 <li class="chapter" data-level="3.5" data-path="charts.html"><a href="charts.html#shading-areas-on-plots"><i class="fa fa-check"></i><b>3.5</b> Shading areas on plots</a></li>
-<li class="chapter" data-level="3.6" data-path="charts.html"><a href="charts.html#bar-chart-numercial"><i class="fa fa-check"></i><b>3.6</b> Bar chart (numercial)</a></li>
+<li class="chapter" data-level="3.6" data-path="charts.html"><a href="charts.html#bar-chart"><i class="fa fa-check"></i><b>3.6</b> Bar chart</a></li>
 <li class="chapter" data-level="3.7" data-path="charts.html"><a href="charts.html#stacked-bar-chart"><i class="fa fa-check"></i><b>3.7</b> Stacked bar chart</a></li>
 <li class="chapter" data-level="3.8" data-path="charts.html"><a href="charts.html#histogram"><i class="fa fa-check"></i><b>3.8</b> Histogram</a></li>
 <li class="chapter" data-level="3.9" data-path="charts.html"><a href="charts.html#ridge-chart"><i class="fa fa-check"></i><b>3.9</b> Ridge chart</a></li>
@@ -193,9 +193,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.5" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#confidence-intervals-for-the-mean"><i class="fa fa-check"></i><b>5.5</b> Confidence intervals for the mean</a></li>
 <li class="chapter" data-level="5.6" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#confidence-intervals-for-a-model"><i class="fa fa-check"></i><b>5.6</b> Confidence intervals for a model</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>6</b> Forecasting</a></li>
+<li class="chapter" data-level="6" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>6</b> Forecasting</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="forecasting.html"><a href="forecasting.html#whats-in-a-forecast"><i class="fa fa-check"></i><b>6.1</b> What’s in a forecast?</a></li>
+<li class="chapter" data-level="6.2" data-path="forecasting.html"><a href="forecasting.html#arima-models"><i class="fa fa-check"></i><b>6.2</b> ARIMA models</a></li>
+</ul></li>
 <li class="chapter" data-level="7" data-path="web-scraping.html"><a href="web-scraping.html"><i class="fa fa-check"></i><b>7</b> Web scraping</a></li>
-<li class="chapter" data-level="8" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>8</b> Text mining</a></li>
+<li class="chapter" data-level="8" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>8</b> Text mining</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="text-mining.html"><a href="text-mining.html#frequency-analysis"><i class="fa fa-check"></i><b>8.1</b> Frequency analysis</a></li>
+<li class="chapter" data-level="8.2" data-path="text-mining.html"><a href="text-mining.html#sentiment-analysis"><i class="fa fa-check"></i><b>8.2</b> Sentiment analysis</a></li>
+</ul></li>
 <li class="chapter" data-level="9" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>9</b> Geocoding</a></li>
 <li class="chapter" data-level="10" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html"><i class="fa fa-check"></i><b>10</b> Drivetime analysis</a></li>
 <li class="chapter" data-level="11" data-path="raster-data.html"><a href="raster-data.html"><i class="fa fa-check"></i><b>11</b> Raster data</a></li>
@@ -241,10 +249,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb7-10"><a href="charts.html#cb7-10" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
 <span id="cb7-11"><a href="charts.html#cb7-11" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
 <span id="cb7-12"><a href="charts.html#cb7-12" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span>
-<span id="cb7-13"><a href="charts.html#cb7-13" tabindex="-1"></a><span class="co">#library(grattantheme)</span></span>
-<span id="cb7-14"><a href="charts.html#cb7-14" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb7-15"><a href="charts.html#cb7-15" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
-<span id="cb7-16"><a href="charts.html#cb7-16" tabindex="-1"></a><span class="fu">library</span>(purrr)</span></code></pre></div>
+<span id="cb7-13"><a href="charts.html#cb7-13" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb7-14"><a href="charts.html#cb7-14" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb7-15"><a href="charts.html#cb7-15" tabindex="-1"></a><span class="fu">library</span>(purrr)</span></code></pre></div>
 </div>
 <div id="make-the-data-tidy" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Make the data tidy<a href="charts.html#make-the-data-tidy" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -285,238 +292,193 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </div>
 <div id="line-plot" class="section level2 hasAnchor" number="3.3">
 <h2><span class="header-section-number">3.3</span> Line plot<a href="charts.html#line-plot" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="charts.html#cb9-1" tabindex="-1"></a>plot_MEL_temp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(MEL_temp_daily)<span class="sc">+</span></span>
-<span id="cb9-2"><a href="charts.html#cb9-2" tabindex="-1"></a>                          <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> Date, <span class="at">y =</span> Temp), <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>)<span class="sc">+</span></span>
-<span id="cb9-3"><a href="charts.html#cb9-3" tabindex="-1"></a>                          <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> Date, <span class="at">y =</span> Mean), <span class="at">col =</span> <span class="st">&quot;orange&quot;</span>)<span class="sc">+</span></span>
-<span id="cb9-4"><a href="charts.html#cb9-4" tabindex="-1"></a>                          <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Hot in the summer and cool in the winter&quot;</span>,</span>
-<span id="cb9-5"><a href="charts.html#cb9-5" tabindex="-1"></a>                          <span class="at">subtitle =</span> <span class="st">&quot;Analysing temperature in Melbourne&quot;</span>,</span>
-<span id="cb9-6"><a href="charts.html#cb9-6" tabindex="-1"></a>                          <span class="at">caption =</span> <span class="st">&quot;Data: Bureau of Meterology 2019&quot;</span>,</span>
-<span id="cb9-7"><a href="charts.html#cb9-7" tabindex="-1"></a>                          <span class="at">x=</span><span class="st">&quot;&quot;</span>,</span>
-<span id="cb9-8"><a href="charts.html#cb9-8" tabindex="-1"></a>                          <span class="at">y=</span><span class="st">&quot;&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb9-9"><a href="charts.html#cb9-9" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="charts.html#cb9-10" tabindex="-1"></a>                          <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">&quot;1 month&quot;</span>,</span>
-<span id="cb9-11"><a href="charts.html#cb9-11" tabindex="-1"></a>                                       <span class="at">date_labels =</span> <span class="st">&quot;%b&quot;</span>,</span>
-<span id="cb9-12"><a href="charts.html#cb9-12" tabindex="-1"></a>                                       <span class="at">limits =</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">&#39;2019-01-01&#39;</span>,<span class="st">&#39;2019-12-14&#39;</span>)))<span class="sc">+</span></span>
-<span id="cb9-13"><a href="charts.html#cb9-13" tabindex="-1"></a>  </span>
-<span id="cb9-14"><a href="charts.html#cb9-14" tabindex="-1"></a>                          <span class="fu">scale_y_continuous</span>(<span class="at">label =</span> <span class="fu">unit_format</span>(<span class="at">unit=</span><span class="st">&quot;\u00b0C&quot;</span>, <span class="at">sep=</span><span class="st">&quot;&quot;</span>)) <span class="sc">+</span></span>
-<span id="cb9-15"><a href="charts.html#cb9-15" tabindex="-1"></a>  </span>
-<span id="cb9-16"><a href="charts.html#cb9-16" tabindex="-1"></a>                          <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb9-17"><a href="charts.html#cb9-17" tabindex="-1"></a>                          <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;bottom&quot;</span>)<span class="sc">+</span></span>
-<span id="cb9-18"><a href="charts.html#cb9-18" tabindex="-1"></a>  </span>
-<span id="cb9-19"><a href="charts.html#cb9-19" tabindex="-1"></a>                          <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
-<span id="cb9-20"><a href="charts.html#cb9-20" tabindex="-1"></a>                          <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
-<span id="cb9-21"><a href="charts.html#cb9-21" tabindex="-1"></a>                          <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))<span class="sc">+</span></span>
-<span id="cb9-22"><a href="charts.html#cb9-22" tabindex="-1"></a></span>
-<span id="cb9-23"><a href="charts.html#cb9-23" tabindex="-1"></a>                          <span class="fu">theme</span>(<span class="at">axis.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))<span class="sc">+</span></span>
-<span id="cb9-24"><a href="charts.html#cb9-24" tabindex="-1"></a>                          <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb9-25"><a href="charts.html#cb9-25" tabindex="-1"></a>                          <span class="fu">theme</span>(<span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
-<span id="cb9-26"><a href="charts.html#cb9-26" tabindex="-1"></a></span>
-<span id="cb9-27"><a href="charts.html#cb9-27" tabindex="-1"></a>                          <span class="fu">theme</span>(<span class="at">axis.title.y =</span> </span>
-<span id="cb9-28"><a href="charts.html#cb9-28" tabindex="-1"></a>                               <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">l =</span> <span class="dv">0</span>)))<span class="sc">+</span></span>
-<span id="cb9-29"><a href="charts.html#cb9-29" tabindex="-1"></a>                         </span>
-<span id="cb9-30"><a href="charts.html#cb9-30" tabindex="-1"></a>                          <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, </span>
-<span id="cb9-31"><a href="charts.html#cb9-31" tabindex="-1"></a>                                                           <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">20</span>)))<span class="sc">+</span></span>
-<span id="cb9-32"><a href="charts.html#cb9-32" tabindex="-1"></a>  </span>
-<span id="cb9-33"><a href="charts.html#cb9-33" tabindex="-1"></a>                          <span class="fu">theme</span>(<span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span><span class="st">&quot;black&quot;</span>,<span class="at">size=</span><span class="fl">0.4</span>))<span class="sc">+</span></span>
-<span id="cb9-34"><a href="charts.html#cb9-34" tabindex="-1"></a>                          <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span><span class="st">&quot;black&quot;</span>,<span class="at">size=</span><span class="fl">0.4</span>))<span class="sc">+</span></span>
-<span id="cb9-35"><a href="charts.html#cb9-35" tabindex="-1"></a>                          </span>
-<span id="cb9-36"><a href="charts.html#cb9-36" tabindex="-1"></a>                          <span class="fu">annotate</span>(<span class="at">geom=</span><span class="st">&#39;curve&#39;</span>,</span>
-<span id="cb9-37"><a href="charts.html#cb9-37" tabindex="-1"></a>                                   <span class="at">x=</span><span class="fu">as.Date</span>(<span class="st">&#39;2019-08-01&#39;</span>), <span class="at">y=</span><span class="dv">23</span>,</span>
-<span id="cb9-38"><a href="charts.html#cb9-38" tabindex="-1"></a>                                   <span class="at">xend=</span><span class="fu">as.Date</span>(<span class="st">&#39;2019-08-01&#39;</span>),<span class="at">yend=</span><span class="dv">17</span>,</span>
-<span id="cb9-39"><a href="charts.html#cb9-39" tabindex="-1"></a>                                   <span class="at">curvature=</span><span class="sc">-</span><span class="fl">0.5</span>,<span class="at">arrow=</span><span class="fu">arrow</span>(<span class="at">length=</span><span class="fu">unit</span>(<span class="dv">2</span>,<span class="st">&quot;mm&quot;</span>)))<span class="sc">+</span></span>
-<span id="cb9-40"><a href="charts.html#cb9-40" tabindex="-1"></a>                                   <span class="fu">annotate</span>(<span class="at">geom=</span><span class="st">&#39;text&#39;</span>,<span class="at">x=</span><span class="fu">as.Date</span>(<span class="st">&#39;2019-07-15&#39;</span>),<span class="at">y=</span><span class="dv">25</span>,</span>
-<span id="cb9-41"><a href="charts.html#cb9-41" tabindex="-1"></a>                                   <span class="at">label=</span><span class="st">&quot;Below 20°C all winter&quot;</span>)</span>
-<span id="cb9-42"><a href="charts.html#cb9-42" tabindex="-1"></a></span>
-<span id="cb9-43"><a href="charts.html#cb9-43" tabindex="-1"></a></span>
-<span id="cb9-44"><a href="charts.html#cb9-44" tabindex="-1"></a></span>
-<span id="cb9-45"><a href="charts.html#cb9-45" tabindex="-1"></a>plot_MEL_temp</span></code></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="charts.html#cb9-1" tabindex="-1"></a>plot_MEL_temp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(MEL_temp_daily, <span class="fu">aes</span>(<span class="at">x =</span> Date)) <span class="sc">+</span></span>
+<span id="cb9-2"><a href="charts.html#cb9-2" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Temp), <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb9-3"><a href="charts.html#cb9-3" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> Mean), <span class="at">col =</span> <span class="st">&quot;orange&quot;</span>) <span class="sc">+</span></span>
+<span id="cb9-4"><a href="charts.html#cb9-4" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb9-5"><a href="charts.html#cb9-5" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Hot in the summer and cool in the winter&quot;</span>,</span>
+<span id="cb9-6"><a href="charts.html#cb9-6" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Analysing temperature in Melbourne&quot;</span>,</span>
+<span id="cb9-7"><a href="charts.html#cb9-7" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: Bureau of Meteorology 2019&quot;</span>,</span>
+<span id="cb9-8"><a href="charts.html#cb9-8" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb9-9"><a href="charts.html#cb9-9" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb9-10"><a href="charts.html#cb9-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-11"><a href="charts.html#cb9-11" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(</span>
+<span id="cb9-12"><a href="charts.html#cb9-12" tabindex="-1"></a>    <span class="at">date_breaks =</span> <span class="st">&quot;1 month&quot;</span>,</span>
+<span id="cb9-13"><a href="charts.html#cb9-13" tabindex="-1"></a>    <span class="at">date_labels =</span> <span class="st">&quot;%b&quot;</span>,</span>
+<span id="cb9-14"><a href="charts.html#cb9-14" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">&#39;2019-01-01&#39;</span>, <span class="st">&#39;2019-12-14&#39;</span>))</span>
+<span id="cb9-15"><a href="charts.html#cb9-15" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-16"><a href="charts.html#cb9-16" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> <span class="fu">unit_format</span>(<span class="at">unit =</span> <span class="st">&quot;\u00b0C&quot;</span>, <span class="at">sep =</span> <span class="st">&quot;&quot;</span>)) <span class="sc">+</span></span>
+<span id="cb9-17"><a href="charts.html#cb9-17" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb9-18"><a href="charts.html#cb9-18" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb9-19"><a href="charts.html#cb9-19" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb9-20"><a href="charts.html#cb9-20" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb9-21"><a href="charts.html#cb9-21" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb9-22"><a href="charts.html#cb9-22" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb9-23"><a href="charts.html#cb9-23" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb9-24"><a href="charts.html#cb9-24" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb9-25"><a href="charts.html#cb9-25" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb9-26"><a href="charts.html#cb9-26" tabindex="-1"></a>    <span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb9-27"><a href="charts.html#cb9-27" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>)</span>
+<span id="cb9-28"><a href="charts.html#cb9-28" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-29"><a href="charts.html#cb9-29" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb9-30"><a href="charts.html#cb9-30" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">&quot;curve&quot;</span>,</span>
+<span id="cb9-31"><a href="charts.html#cb9-31" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">as.Date</span>(<span class="st">&#39;2019-08-01&#39;</span>), <span class="at">y =</span> <span class="dv">23</span>,</span>
+<span id="cb9-32"><a href="charts.html#cb9-32" tabindex="-1"></a>    <span class="at">xend =</span> <span class="fu">as.Date</span>(<span class="st">&#39;2019-08-01&#39;</span>), <span class="at">yend =</span> <span class="dv">17</span>,</span>
+<span id="cb9-33"><a href="charts.html#cb9-33" tabindex="-1"></a>    <span class="at">curvature =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="dv">2</span>, <span class="st">&quot;mm&quot;</span>))</span>
+<span id="cb9-34"><a href="charts.html#cb9-34" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-35"><a href="charts.html#cb9-35" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb9-36"><a href="charts.html#cb9-36" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">&quot;text&quot;</span>,</span>
+<span id="cb9-37"><a href="charts.html#cb9-37" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">as.Date</span>(<span class="st">&#39;2019-07-15&#39;</span>), <span class="at">y =</span> <span class="dv">25</span>,</span>
+<span id="cb9-38"><a href="charts.html#cb9-38" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">&quot;Below 20°C all winter&quot;</span></span>
+<span id="cb9-39"><a href="charts.html#cb9-39" tabindex="-1"></a>  )</span>
+<span id="cb9-40"><a href="charts.html#cb9-40" tabindex="-1"></a></span>
+<span id="cb9-41"><a href="charts.html#cb9-41" tabindex="-1"></a>plot_MEL_temp</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 </div>
 <div id="scatter-and-trend-plot" class="section level2 hasAnchor" number="3.4">
 <h2><span class="header-section-number">3.4</span> Scatter and trend plot<a href="charts.html#scatter-and-trend-plot" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="charts.html#cb10-1" tabindex="-1"></a>MEL_temp_Jan <span class="ot">&lt;-</span> MEL_temp_daily <span class="sc">%&gt;%</span> <span class="fu">filter</span>(MEL_temp_daily<span class="sc">$</span>Date<span class="sc">&lt;</span><span class="fu">as.Date</span>(<span class="st">&quot;2019-01-31&quot;</span>))</span>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="charts.html#cb10-1" tabindex="-1"></a>MEL_temp_Jan <span class="ot">&lt;-</span> MEL_temp_daily <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Date <span class="sc">&lt;</span> <span class="fu">as.Date</span>(<span class="st">&quot;2019-01-31&quot;</span>))</span>
 <span id="cb10-2"><a href="charts.html#cb10-2" tabindex="-1"></a></span>
-<span id="cb10-3"><a href="charts.html#cb10-3" tabindex="-1"></a><span class="fu">ggplot</span>(MEL_temp_Jan)<span class="sc">+</span></span>
-<span id="cb10-4"><a href="charts.html#cb10-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> Date, <span class="at">y =</span> Temp), <span class="at">col =</span> <span class="st">&quot;purple&quot;</span>,<span class="at">alpha=</span><span class="fl">0.4</span>)<span class="sc">+</span></span>
-<span id="cb10-5"><a href="charts.html#cb10-5" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> Date, <span class="at">y =</span> Temp), <span class="at">col =</span> <span class="st">&quot;purple&quot;</span>,<span class="at">fill=</span><span class="st">&quot;purple&quot;</span>, <span class="at">alpha=</span><span class="fl">0.1</span>,<span class="at">method =</span> <span class="st">&quot;lm&quot;</span>)<span class="sc">+</span></span>
-<span id="cb10-6"><a href="charts.html#cb10-6" tabindex="-1"></a>  <span class="co">#scale_colour_manual(values = c(&quot;purple&quot;),labels=&quot;Trend&quot;) +</span></span>
-<span id="cb10-7"><a href="charts.html#cb10-7" tabindex="-1"></a>  <span class="co">#scale_fill_manual(values = c(&quot;purple&quot;),labels=&quot;Confidence interval&quot;)+</span></span>
-<span id="cb10-8"><a href="charts.html#cb10-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;January is a hot one&quot;</span>,</span>
-<span id="cb10-9"><a href="charts.html#cb10-9" tabindex="-1"></a>  <span class="at">subtitle =</span> <span class="st">&quot;Analysing temperature in Melbourne&quot;</span>,</span>
-<span id="cb10-10"><a href="charts.html#cb10-10" tabindex="-1"></a>  <span class="at">caption =</span> <span class="st">&quot;Data: Bureau of Meterology 2019&quot;</span>,</span>
-<span id="cb10-11"><a href="charts.html#cb10-11" tabindex="-1"></a>  <span class="at">x=</span><span class="st">&quot;&quot;</span>,</span>
-<span id="cb10-12"><a href="charts.html#cb10-12" tabindex="-1"></a>  <span class="at">y=</span><span class="st">&quot;Temperature °C&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb10-13"><a href="charts.html#cb10-13" tabindex="-1"></a>  </span>
-<span id="cb10-14"><a href="charts.html#cb10-14" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">&quot;1 week&quot;</span>,</span>
-<span id="cb10-15"><a href="charts.html#cb10-15" tabindex="-1"></a>               <span class="at">date_labels =</span> <span class="st">&quot;%d-%b&quot;</span>,</span>
-<span id="cb10-16"><a href="charts.html#cb10-16" tabindex="-1"></a>               <span class="at">limits =</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">&#39;2019-01-01&#39;</span>,<span class="st">&#39;2019-01-31&#39;</span>)),</span>
-<span id="cb10-17"><a href="charts.html#cb10-17" tabindex="-1"></a>               <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>)) <span class="sc">+</span></span>
-<span id="cb10-18"><a href="charts.html#cb10-18" tabindex="-1"></a>  </span>
-<span id="cb10-19"><a href="charts.html#cb10-19" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb10-20"><a href="charts.html#cb10-20" tabindex="-1"></a>  </span>
-<span id="cb10-21"><a href="charts.html#cb10-21" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
-<span id="cb10-22"><a href="charts.html#cb10-22" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
-<span id="cb10-23"><a href="charts.html#cb10-23" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))<span class="sc">+</span></span>
-<span id="cb10-24"><a href="charts.html#cb10-24" tabindex="-1"></a>  </span>
-<span id="cb10-25"><a href="charts.html#cb10-25" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))<span class="sc">+</span></span>
-<span id="cb10-26"><a href="charts.html#cb10-26" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">9</span>,<span class="at">margin=</span><span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">10</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">l =</span> <span class="dv">0</span>)))<span class="sc">+</span></span>
-<span id="cb10-27"><a href="charts.html#cb10-27" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb10-28"><a href="charts.html#cb10-28" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
-<span id="cb10-29"><a href="charts.html#cb10-29" tabindex="-1"></a>  </span>
-<span id="cb10-30"><a href="charts.html#cb10-30" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span><span class="st">&quot;black&quot;</span>,<span class="at">size=</span><span class="fl">0.4</span>))<span class="sc">+</span></span>
-<span id="cb10-31"><a href="charts.html#cb10-31" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span><span class="st">&quot;black&quot;</span>,<span class="at">size=</span><span class="fl">0.4</span>))<span class="sc">+</span></span>
-<span id="cb10-32"><a href="charts.html#cb10-32" tabindex="-1"></a>  </span>
-<span id="cb10-33"><a href="charts.html#cb10-33" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept=</span><span class="dv">45</span>,<span class="at">colour =</span><span class="st">&quot;black&quot;</span>,<span class="at">size=</span><span class="fl">0.4</span>) <span class="sc">+</span></span>
-<span id="cb10-34"><a href="charts.html#cb10-34" tabindex="-1"></a>  </span>
-<span id="cb10-35"><a href="charts.html#cb10-35" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="at">geom=</span><span class="st">&#39;curve&#39;</span>,</span>
-<span id="cb10-36"><a href="charts.html#cb10-36" tabindex="-1"></a>  <span class="at">x=</span><span class="fu">as.Date</span>(<span class="st">&#39;2019-01-22&#39;</span>), <span class="at">y=</span><span class="fl">37.5</span>,</span>
-<span id="cb10-37"><a href="charts.html#cb10-37" tabindex="-1"></a>  <span class="at">xend=</span><span class="fu">as.Date</span>(<span class="st">&#39;2019-01-25&#39;</span>),<span class="at">yend=</span><span class="dv">42</span>,</span>
-<span id="cb10-38"><a href="charts.html#cb10-38" tabindex="-1"></a>  <span class="at">curvature=</span><span class="fl">0.5</span>,</span>
-<span id="cb10-39"><a href="charts.html#cb10-39" tabindex="-1"></a>  <span class="at">col=</span><span class="st">&quot;#575757&quot;</span>,</span>
-<span id="cb10-40"><a href="charts.html#cb10-40" tabindex="-1"></a>  <span class="at">arrow=</span><span class="fu">arrow</span>(<span class="at">length=</span><span class="fu">unit</span>(<span class="dv">2</span>,<span class="st">&quot;mm&quot;</span>))) <span class="sc">+</span></span>
-<span id="cb10-41"><a href="charts.html#cb10-41" tabindex="-1"></a>  </span>
-<span id="cb10-42"><a href="charts.html#cb10-42" tabindex="-1"></a>  <span class="fu">annotate</span>(<span class="at">geom=</span><span class="st">&#39;text&#39;</span>,<span class="at">x=</span><span class="fu">as.Date</span>(<span class="st">&#39;2019-01-16&#39;</span>),<span class="at">y=</span><span class="fl">37.5</span>,</span>
-<span id="cb10-43"><a href="charts.html#cb10-43" tabindex="-1"></a>  <span class="at">label=</span><span class="st">&quot;January saw some extreme temperatures&quot;</span>,<span class="at">size=</span><span class="fl">3.2</span>,<span class="at">col=</span><span class="st">&quot;#575757&quot;</span>)</span></code></pre></div>
+<span id="cb10-3"><a href="charts.html#cb10-3" tabindex="-1"></a><span class="fu">ggplot</span>(MEL_temp_Jan, <span class="fu">aes</span>(<span class="at">x =</span> Date, <span class="at">y =</span> Temp)) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="charts.html#cb10-4" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">col =</span> <span class="st">&quot;purple&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb10-5"><a href="charts.html#cb10-5" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">col =</span> <span class="st">&quot;purple&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;purple&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">method =</span> <span class="st">&quot;lm&quot;</span>) <span class="sc">+</span></span>
+<span id="cb10-6"><a href="charts.html#cb10-6" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb10-7"><a href="charts.html#cb10-7" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;January is a hot one&quot;</span>,</span>
+<span id="cb10-8"><a href="charts.html#cb10-8" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Analysing temperature in Melbourne&quot;</span>,</span>
+<span id="cb10-9"><a href="charts.html#cb10-9" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: Bureau of Meteorology 2019&quot;</span>,</span>
+<span id="cb10-10"><a href="charts.html#cb10-10" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb10-11"><a href="charts.html#cb10-11" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Temperature °C&quot;</span></span>
+<span id="cb10-12"><a href="charts.html#cb10-12" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-13"><a href="charts.html#cb10-13" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(</span>
+<span id="cb10-14"><a href="charts.html#cb10-14" tabindex="-1"></a>    <span class="at">date_breaks =</span> <span class="st">&quot;1 week&quot;</span>,</span>
+<span id="cb10-15"><a href="charts.html#cb10-15" tabindex="-1"></a>    <span class="at">date_labels =</span> <span class="st">&quot;%d-%b&quot;</span>,</span>
+<span id="cb10-16"><a href="charts.html#cb10-16" tabindex="-1"></a>    <span class="at">limits =</span> <span class="fu">as.Date</span>(<span class="fu">c</span>(<span class="st">&#39;2019-01-01&#39;</span>, <span class="st">&#39;2019-01-31&#39;</span>)),</span>
+<span id="cb10-17"><a href="charts.html#cb10-17" tabindex="-1"></a>    <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)</span>
+<span id="cb10-18"><a href="charts.html#cb10-18" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-19"><a href="charts.html#cb10-19" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> <span class="dv">45</span>, <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb10-20"><a href="charts.html#cb10-20" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb10-21"><a href="charts.html#cb10-21" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">&quot;curve&quot;</span>,</span>
+<span id="cb10-22"><a href="charts.html#cb10-22" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">as.Date</span>(<span class="st">&#39;2019-01-22&#39;</span>), <span class="at">y =</span> <span class="fl">37.5</span>,</span>
+<span id="cb10-23"><a href="charts.html#cb10-23" tabindex="-1"></a>    <span class="at">xend =</span> <span class="fu">as.Date</span>(<span class="st">&#39;2019-01-25&#39;</span>), <span class="at">yend =</span> <span class="dv">42</span>,</span>
+<span id="cb10-24"><a href="charts.html#cb10-24" tabindex="-1"></a>    <span class="at">curvature =</span> <span class="fl">0.5</span>,</span>
+<span id="cb10-25"><a href="charts.html#cb10-25" tabindex="-1"></a>    <span class="at">col =</span> <span class="st">&quot;#575757&quot;</span>,</span>
+<span id="cb10-26"><a href="charts.html#cb10-26" tabindex="-1"></a>    <span class="at">arrow =</span> <span class="fu">arrow</span>(<span class="at">length =</span> <span class="fu">unit</span>(<span class="dv">2</span>, <span class="st">&quot;mm&quot;</span>))</span>
+<span id="cb10-27"><a href="charts.html#cb10-27" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-28"><a href="charts.html#cb10-28" tabindex="-1"></a>  <span class="fu">annotate</span>(</span>
+<span id="cb10-29"><a href="charts.html#cb10-29" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">&quot;text&quot;</span>,</span>
+<span id="cb10-30"><a href="charts.html#cb10-30" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">as.Date</span>(<span class="st">&#39;2019-01-16&#39;</span>), <span class="at">y =</span> <span class="fl">37.5</span>,</span>
+<span id="cb10-31"><a href="charts.html#cb10-31" tabindex="-1"></a>    <span class="at">label =</span> <span class="st">&quot;January saw some extreme temperatures&quot;</span>,</span>
+<span id="cb10-32"><a href="charts.html#cb10-32" tabindex="-1"></a>    <span class="at">size =</span> <span class="fl">3.2</span>, <span class="at">col =</span> <span class="st">&quot;#575757&quot;</span></span>
+<span id="cb10-33"><a href="charts.html#cb10-33" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-34"><a href="charts.html#cb10-34" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb10-35"><a href="charts.html#cb10-35" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb10-36"><a href="charts.html#cb10-36" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb10-37"><a href="charts.html#cb10-37" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb10-38"><a href="charts.html#cb10-38" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb10-39"><a href="charts.html#cb10-39" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb10-40"><a href="charts.html#cb10-40" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">9</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">10</span>)),</span>
+<span id="cb10-41"><a href="charts.html#cb10-41" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb10-42"><a href="charts.html#cb10-42" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb10-43"><a href="charts.html#cb10-43" tabindex="-1"></a>    <span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb10-44"><a href="charts.html#cb10-44" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>)</span>
+<span id="cb10-45"><a href="charts.html#cb10-45" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-9-1.png" width="672" /></p>
 </div>
 <div id="shading-areas-on-plots" class="section level2 hasAnchor" number="3.5">
 <h2><span class="header-section-number">3.5</span> Shading areas on plots<a href="charts.html#shading-areas-on-plots" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Adding shading behind a plot area is simple using <code>geom_rect.</code></p>
 <p>Adding shading under a particular model line? A little trickier. See both example below.</p>
-<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="charts.html#cb11-1" tabindex="-1"></a><span class="co">#Example 1</span></span>
-<span id="cb11-2"><a href="charts.html#cb11-2" tabindex="-1"></a><span class="co">#Set a custom limit for the y-axis threshold</span></span>
-<span id="cb11-3"><a href="charts.html#cb11-3" tabindex="-1"></a>threshold <span class="ot">&lt;-</span> <span class="dv">20</span></span>
-<span id="cb11-4"><a href="charts.html#cb11-4" tabindex="-1"></a></span>
-<span id="cb11-5"><a href="charts.html#cb11-5" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb11-6"><a href="charts.html#cb11-6" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> mtcars,</span>
-<span id="cb11-7"><a href="charts.html#cb11-7" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg)) <span class="sc">+</span></span>
-<span id="cb11-8"><a href="charts.html#cb11-8" tabindex="-1"></a>  </span>
-<span id="cb11-9"><a href="charts.html#cb11-9" tabindex="-1"></a>  <span class="co">#Add an intercept line</span></span>
-<span id="cb11-10"><a href="charts.html#cb11-10" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> threshold) <span class="sc">+</span></span>
-<span id="cb11-11"><a href="charts.html#cb11-11" tabindex="-1"></a>  </span>
-<span id="cb11-12"><a href="charts.html#cb11-12" tabindex="-1"></a>  <span class="co"># Shade area under y_lim</span></span>
-<span id="cb11-13"><a href="charts.html#cb11-13" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">xmax =</span> <span class="cn">Inf</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> threshold),</span>
-<span id="cb11-14"><a href="charts.html#cb11-14" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>,</span>
-<span id="cb11-15"><a href="charts.html#cb11-15" tabindex="-1"></a>            <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
-<span id="cb11-16"><a href="charts.html#cb11-16" tabindex="-1"></a>  </span>
-<span id="cb11-17"><a href="charts.html#cb11-17" tabindex="-1"></a>  <span class="co"># Shade area above y_lim</span></span>
-<span id="cb11-18"><a href="charts.html#cb11-18" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">xmax =</span> <span class="cn">Inf</span>, <span class="at">ymin =</span> threshold, <span class="at">ymax =</span> <span class="cn">Inf</span>),</span>
-<span id="cb11-19"><a href="charts.html#cb11-19" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>,</span>
-<span id="cb11-20"><a href="charts.html#cb11-20" tabindex="-1"></a>            <span class="at">fill =</span> <span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="charts.html#cb11-1" tabindex="-1"></a><span class="co"># Example 1: Custom y-axis threshold shading</span></span>
+<span id="cb11-2"><a href="charts.html#cb11-2" tabindex="-1"></a>threshold <span class="ot">&lt;-</span> <span class="dv">20</span></span>
+<span id="cb11-3"><a href="charts.html#cb11-3" tabindex="-1"></a></span>
+<span id="cb11-4"><a href="charts.html#cb11-4" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg)) <span class="sc">+</span></span>
+<span id="cb11-5"><a href="charts.html#cb11-5" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb11-6"><a href="charts.html#cb11-6" tabindex="-1"></a>  <span class="fu">geom_hline</span>(<span class="at">yintercept =</span> threshold) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="charts.html#cb11-7" tabindex="-1"></a>  </span>
+<span id="cb11-8"><a href="charts.html#cb11-8" tabindex="-1"></a>  <span class="co"># Shade areas below and above threshold</span></span>
+<span id="cb11-9"><a href="charts.html#cb11-9" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">xmax =</span> <span class="cn">Inf</span>, <span class="at">ymin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">ymax =</span> threshold, </span>
+<span id="cb11-10"><a href="charts.html#cb11-10" tabindex="-1"></a>            <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb11-11"><a href="charts.html#cb11-11" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="at">xmin =</span> <span class="sc">-</span><span class="cn">Inf</span>, <span class="at">xmax =</span> <span class="cn">Inf</span>, <span class="at">ymin =</span> threshold, <span class="at">ymax =</span> <span class="cn">Inf</span>, </span>
+<span id="cb11-12"><a href="charts.html#cb11-12" tabindex="-1"></a>            <span class="at">fill =</span> <span class="st">&quot;red&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>)</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-10-1.png" width="672" /></p>
-<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="charts.html#cb12-1" tabindex="-1"></a><span class="co">#Example 2</span></span>
-<span id="cb12-2"><a href="charts.html#cb12-2" tabindex="-1"></a><span class="co">#Now to add colour either way of a model line</span></span>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="charts.html#cb12-1" tabindex="-1"></a><span class="co"># Example 2: Model line with shaded areas</span></span>
+<span id="cb12-2"><a href="charts.html#cb12-2" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> <span class="fu">log</span>(hp), <span class="at">data =</span> mtcars)</span>
 <span id="cb12-3"><a href="charts.html#cb12-3" tabindex="-1"></a></span>
-<span id="cb12-4"><a href="charts.html#cb12-4" tabindex="-1"></a><span class="co">#Define the model</span></span>
-<span id="cb12-5"><a href="charts.html#cb12-5" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> <span class="fu">log</span>(hp), <span class="at">data =</span> mtcars)</span>
-<span id="cb12-6"><a href="charts.html#cb12-6" tabindex="-1"></a></span>
-<span id="cb12-7"><a href="charts.html#cb12-7" tabindex="-1"></a><span class="co"># Get the predictions for plotting. Here, df_line, is a data frame with new</span></span>
-<span id="cb12-8"><a href="charts.html#cb12-8" tabindex="-1"></a><span class="co"># coordinates that will be used for plotting the trend line and further for</span></span>
-<span id="cb12-9"><a href="charts.html#cb12-9" tabindex="-1"></a><span class="co"># building the polygons for shading.</span></span>
-<span id="cb12-10"><a href="charts.html#cb12-10" tabindex="-1"></a>min_x <span class="ot">&lt;-</span> <span class="fu">min</span>(mtcars<span class="sc">$</span>hp)</span>
-<span id="cb12-11"><a href="charts.html#cb12-11" tabindex="-1"></a>max_x <span class="ot">&lt;-</span> <span class="fu">max</span>(mtcars<span class="sc">$</span>hp)</span>
-<span id="cb12-12"><a href="charts.html#cb12-12" tabindex="-1"></a></span>
-<span id="cb12-13"><a href="charts.html#cb12-13" tabindex="-1"></a>df_line <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">hp =</span> <span class="fu">seq</span>(<span class="at">from =</span> min_x, <span class="at">to =</span> max_x, <span class="at">by =</span> <span class="dv">1</span>))</span>
-<span id="cb12-14"><a href="charts.html#cb12-14" tabindex="-1"></a>df_line<span class="sc">$</span>mpg <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, <span class="at">newdata =</span> df_line)</span>
-<span id="cb12-15"><a href="charts.html#cb12-15" tabindex="-1"></a></span>
-<span id="cb12-16"><a href="charts.html#cb12-16" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb12-17"><a href="charts.html#cb12-17" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> mtcars,</span>
-<span id="cb12-18"><a href="charts.html#cb12-18" tabindex="-1"></a>             <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg),<span class="at">color=</span><span class="st">&quot;grey&quot;</span>,<span class="at">alpha=</span><span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb12-19"><a href="charts.html#cb12-19" tabindex="-1"></a>  </span>
-<span id="cb12-20"><a href="charts.html#cb12-20" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> df_line,</span>
-<span id="cb12-21"><a href="charts.html#cb12-21" tabindex="-1"></a>            <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg),<span class="at">col=</span><span class="st">&quot;black&quot;</span>)</span>
-<span id="cb12-22"><a href="charts.html#cb12-22" tabindex="-1"></a></span>
-<span id="cb12-23"><a href="charts.html#cb12-23" tabindex="-1"></a><span class="co">#Define two polygons (one above, and one below the line)</span></span>
-<span id="cb12-24"><a href="charts.html#cb12-24" tabindex="-1"></a>  df_poly_under <span class="ot">&lt;-</span> df_line <span class="sc">%&gt;%</span></span>
-<span id="cb12-25"><a href="charts.html#cb12-25" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">add_row</span>(<span class="at">hp =</span> <span class="fu">c</span>(max_x, min_x),</span>
-<span id="cb12-26"><a href="charts.html#cb12-26" tabindex="-1"></a>                  <span class="at">mpg =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="sc">-</span><span class="cn">Inf</span>))</span>
-<span id="cb12-27"><a href="charts.html#cb12-27" tabindex="-1"></a></span>
-<span id="cb12-28"><a href="charts.html#cb12-28" tabindex="-1"></a>  df_poly_above <span class="ot">&lt;-</span> df_line <span class="sc">%&gt;%</span></span>
-<span id="cb12-29"><a href="charts.html#cb12-29" tabindex="-1"></a>  tibble<span class="sc">::</span><span class="fu">add_row</span>(<span class="at">hp =</span> <span class="fu">c</span>(max_x, min_x),</span>
-<span id="cb12-30"><a href="charts.html#cb12-30" tabindex="-1"></a>                  <span class="at">mpg =</span> <span class="fu">c</span>(<span class="cn">Inf</span>, <span class="cn">Inf</span>))</span>
-<span id="cb12-31"><a href="charts.html#cb12-31" tabindex="-1"></a></span>
-<span id="cb12-32"><a href="charts.html#cb12-32" tabindex="-1"></a><span class="co">#Plot the data, line, and the shades above and below the line</span></span>
-<span id="cb12-33"><a href="charts.html#cb12-33" tabindex="-1"></a>  p <span class="sc">+</span></span>
-<span id="cb12-34"><a href="charts.html#cb12-34" tabindex="-1"></a>  </span>
-<span id="cb12-35"><a href="charts.html#cb12-35" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="at">data =</span> df_poly_under,</span>
-<span id="cb12-36"><a href="charts.html#cb12-36" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg),</span>
-<span id="cb12-37"><a href="charts.html#cb12-37" tabindex="-1"></a>               <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>,</span>
-<span id="cb12-38"><a href="charts.html#cb12-38" tabindex="-1"></a>               <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>) <span class="sc">+</span></span>
-<span id="cb12-39"><a href="charts.html#cb12-39" tabindex="-1"></a>  </span>
-<span id="cb12-40"><a href="charts.html#cb12-40" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="at">data =</span> df_poly_above,</span>
-<span id="cb12-41"><a href="charts.html#cb12-41" tabindex="-1"></a>               <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg),</span>
-<span id="cb12-42"><a href="charts.html#cb12-42" tabindex="-1"></a>               <span class="at">fill =</span> <span class="st">&quot;red&quot;</span>,</span>
-<span id="cb12-43"><a href="charts.html#cb12-43" tabindex="-1"></a>               <span class="at">alpha =</span> <span class="dv">1</span><span class="sc">/</span><span class="dv">5</span>)<span class="sc">+</span></span>
-<span id="cb12-44"><a href="charts.html#cb12-44" tabindex="-1"></a>    </span>
-<span id="cb12-45"><a href="charts.html#cb12-45" tabindex="-1"></a>  <span class="fu">scale_x_discrete</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>))<span class="sc">+</span></span>
-<span id="cb12-46"><a href="charts.html#cb12-46" tabindex="-1"></a>  </span>
-<span id="cb12-47"><a href="charts.html#cb12-47" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb12-48"><a href="charts.html#cb12-48" tabindex="-1"></a>    </span>
-<span id="cb12-49"><a href="charts.html#cb12-49" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Look at that snazzy red/blue shaded area&quot;</span>,</span>
-<span id="cb12-50"><a href="charts.html#cb12-50" tabindex="-1"></a>                          <span class="at">subtitle =</span> <span class="st">&quot;Subtitle goes here&quot;</span>,</span>
-<span id="cb12-51"><a href="charts.html#cb12-51" tabindex="-1"></a>                          <span class="at">caption =</span> <span class="st">&quot;Data: Made up from scratch&quot;</span>,</span>
-<span id="cb12-52"><a href="charts.html#cb12-52" tabindex="-1"></a>                          <span class="at">x=</span><span class="st">&quot;&quot;</span>,</span>
-<span id="cb12-53"><a href="charts.html#cb12-53" tabindex="-1"></a>                          <span class="at">y=</span><span class="st">&quot;&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb12-54"><a href="charts.html#cb12-54" tabindex="-1"></a></span>
-<span id="cb12-55"><a href="charts.html#cb12-55" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb12-56"><a href="charts.html#cb12-56" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
-<span id="cb12-57"><a href="charts.html#cb12-57" tabindex="-1"></a>    </span>
-<span id="cb12-58"><a href="charts.html#cb12-58" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb12-59"><a href="charts.html#cb12-59" tabindex="-1"></a>        <span class="at">axis.text.y=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb12-60"><a href="charts.html#cb12-60" tabindex="-1"></a>        <span class="at">axis.ticks.y=</span><span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb12-61"><a href="charts.html#cb12-61" tabindex="-1"></a>    </span>
-<span id="cb12-62"><a href="charts.html#cb12-62" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.x=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb12-63"><a href="charts.html#cb12-63" tabindex="-1"></a>        <span class="at">axis.text.x=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb12-64"><a href="charts.html#cb12-64" tabindex="-1"></a>        <span class="at">axis.ticks.x=</span><span class="fu">element_blank</span>())</span></code></pre></div>
+<span id="cb12-4"><a href="charts.html#cb12-4" tabindex="-1"></a><span class="co"># Generate predicted values for plotting</span></span>
+<span id="cb12-5"><a href="charts.html#cb12-5" tabindex="-1"></a>df_line <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">hp =</span> <span class="fu">seq</span>(<span class="fu">min</span>(mtcars<span class="sc">$</span>hp), <span class="fu">max</span>(mtcars<span class="sc">$</span>hp), <span class="at">by =</span> <span class="dv">1</span>))</span>
+<span id="cb12-6"><a href="charts.html#cb12-6" tabindex="-1"></a>df_line<span class="sc">$</span>mpg <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, <span class="at">newdata =</span> df_line)</span>
+<span id="cb12-7"><a href="charts.html#cb12-7" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="charts.html#cb12-8" tabindex="-1"></a><span class="co"># Define polygons above and below the model line</span></span>
+<span id="cb12-9"><a href="charts.html#cb12-9" tabindex="-1"></a>df_poly_under <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(df_line, <span class="fu">tibble</span>(<span class="at">hp =</span> <span class="fu">c</span>(<span class="fu">max</span>(df_line<span class="sc">$</span>hp), <span class="fu">min</span>(df_line<span class="sc">$</span>hp)), <span class="at">mpg =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="cn">Inf</span>, <span class="sc">-</span><span class="cn">Inf</span>)))</span>
+<span id="cb12-10"><a href="charts.html#cb12-10" tabindex="-1"></a>df_poly_above <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(df_line, <span class="fu">tibble</span>(<span class="at">hp =</span> <span class="fu">c</span>(<span class="fu">max</span>(df_line<span class="sc">$</span>hp), <span class="fu">min</span>(df_line<span class="sc">$</span>hp)), <span class="at">mpg =</span> <span class="fu">c</span>(<span class="cn">Inf</span>, <span class="cn">Inf</span>)))</span>
+<span id="cb12-11"><a href="charts.html#cb12-11" tabindex="-1"></a></span>
+<span id="cb12-12"><a href="charts.html#cb12-12" tabindex="-1"></a><span class="co"># Plot the data, model line, and shaded areas</span></span>
+<span id="cb12-13"><a href="charts.html#cb12-13" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars, <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg)) <span class="sc">+</span></span>
+<span id="cb12-14"><a href="charts.html#cb12-14" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">color =</span> <span class="st">&quot;grey&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb12-15"><a href="charts.html#cb12-15" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="at">data =</span> df_line, <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg), <span class="at">color =</span> <span class="st">&quot;black&quot;</span>) <span class="sc">+</span></span>
+<span id="cb12-16"><a href="charts.html#cb12-16" tabindex="-1"></a>  </span>
+<span id="cb12-17"><a href="charts.html#cb12-17" tabindex="-1"></a>  <span class="co"># Shaded areas</span></span>
+<span id="cb12-18"><a href="charts.html#cb12-18" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="at">data =</span> df_poly_under, <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg), <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb12-19"><a href="charts.html#cb12-19" tabindex="-1"></a>  <span class="fu">geom_polygon</span>(<span class="at">data =</span> df_poly_above, <span class="fu">aes</span>(<span class="at">x =</span> hp, <span class="at">y =</span> mpg), <span class="at">fill =</span> <span class="st">&quot;red&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb12-20"><a href="charts.html#cb12-20" tabindex="-1"></a>  </span>
+<span id="cb12-21"><a href="charts.html#cb12-21" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span></span>
+<span id="cb12-22"><a href="charts.html#cb12-22" tabindex="-1"></a>  </span>
+<span id="cb12-23"><a href="charts.html#cb12-23" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb12-24"><a href="charts.html#cb12-24" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Look at that snazzy red/blue shaded area&quot;</span>,</span>
+<span id="cb12-25"><a href="charts.html#cb12-25" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Subtitle goes here&quot;</span>,</span>
+<span id="cb12-26"><a href="charts.html#cb12-26" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: Made up from scratch&quot;</span>,</span>
+<span id="cb12-27"><a href="charts.html#cb12-27" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb12-28"><a href="charts.html#cb12-28" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb12-29"><a href="charts.html#cb12-29" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-30"><a href="charts.html#cb12-30" tabindex="-1"></a>  </span>
+<span id="cb12-31"><a href="charts.html#cb12-31" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb12-32"><a href="charts.html#cb12-32" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb12-33"><a href="charts.html#cb12-33" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb12-34"><a href="charts.html#cb12-34" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb12-35"><a href="charts.html#cb12-35" tabindex="-1"></a>    <span class="at">axis.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb12-36"><a href="charts.html#cb12-36" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb12-37"><a href="charts.html#cb12-37" tabindex="-1"></a>    <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb12-38"><a href="charts.html#cb12-38" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-10-2.png" width="672" /></p>
 </div>
-<div id="bar-chart-numercial" class="section level2 hasAnchor" number="3.6">
-<h2><span class="header-section-number">3.6</span> Bar chart (numercial)<a href="charts.html#bar-chart-numercial" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="charts.html#cb13-1" tabindex="-1"></a>Year <span class="ot">=</span> <span class="fu">c</span>(<span class="st">&quot;2018&quot;</span>, <span class="st">&quot;2019&quot;</span>, <span class="st">&quot;2020&quot;</span>, <span class="st">&quot;2021&quot;</span>)</span>
-<span id="cb13-2"><a href="charts.html#cb13-2" tabindex="-1"></a></span>
-<span id="cb13-3"><a href="charts.html#cb13-3" tabindex="-1"></a>Value <span class="ot">=</span> (<span class="fu">c</span>(<span class="dv">1000000</span>,<span class="dv">3000000</span>, <span class="dv">2000000</span>, <span class="dv">5000000</span>))</span>
-<span id="cb13-4"><a href="charts.html#cb13-4" tabindex="-1"></a></span>
-<span id="cb13-5"><a href="charts.html#cb13-5" tabindex="-1"></a>bar_data_single <span class="ot">&lt;-</span> (<span class="fu">cbind</span>(Year, Value))</span>
+<div id="bar-chart" class="section level2 hasAnchor" number="3.6">
+<h2><span class="header-section-number">3.6</span> Bar chart<a href="charts.html#bar-chart" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="charts.html#cb13-1" tabindex="-1"></a><span class="co"># Create data frame directly</span></span>
+<span id="cb13-2"><a href="charts.html#cb13-2" tabindex="-1"></a>bar_data_single <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb13-3"><a href="charts.html#cb13-3" tabindex="-1"></a>  <span class="at">Year =</span> <span class="fu">c</span>(<span class="st">&quot;2018&quot;</span>, <span class="st">&quot;2019&quot;</span>, <span class="st">&quot;2020&quot;</span>, <span class="st">&quot;2021&quot;</span>),</span>
+<span id="cb13-4"><a href="charts.html#cb13-4" tabindex="-1"></a>  <span class="at">Value =</span> <span class="fu">c</span>(<span class="dv">1000000</span>, <span class="dv">3000000</span>, <span class="dv">2000000</span>, <span class="dv">5000000</span>)</span>
+<span id="cb13-5"><a href="charts.html#cb13-5" tabindex="-1"></a>)</span>
 <span id="cb13-6"><a href="charts.html#cb13-6" tabindex="-1"></a></span>
-<span id="cb13-7"><a href="charts.html#cb13-7" tabindex="-1"></a>bar_data_single <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(bar_data_single)</span>
-<span id="cb13-8"><a href="charts.html#cb13-8" tabindex="-1"></a></span>
-<span id="cb13-9"><a href="charts.html#cb13-9" tabindex="-1"></a>bar_data_single<span class="sc">$</span>Value <span class="ot">=</span> <span class="fu">as.integer</span>(bar_data_single<span class="sc">$</span>Value)</span>
-<span id="cb13-10"><a href="charts.html#cb13-10" tabindex="-1"></a></span>
-<span id="cb13-11"><a href="charts.html#cb13-11" tabindex="-1"></a></span>
-<span id="cb13-12"><a href="charts.html#cb13-12" tabindex="-1"></a><span class="fu">ggplot</span>(bar_data_single, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Value, <span class="at">label=</span>Value)) <span class="sc">+</span></span>
-<span id="cb13-13"><a href="charts.html#cb13-13" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat=</span><span class="st">&#39;identity&#39;</span>,<span class="at">fill=</span><span class="st">&quot;blue&quot;</span>,<span class="at">width=</span><span class="fl">0.8</span>)<span class="sc">+</span></span>
-<span id="cb13-14"><a href="charts.html#cb13-14" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="at">size =</span> <span class="dv">5</span>, </span>
-<span id="cb13-15"><a href="charts.html#cb13-15" tabindex="-1"></a>            <span class="at">col=</span><span class="st">&quot;white&quot;</span>,<span class="at">fontface=</span><span class="st">&quot;bold&quot;</span>,</span>
-<span id="cb13-16"><a href="charts.html#cb13-16" tabindex="-1"></a>            <span class="at">position =</span> <span class="fu">position_stack</span>(<span class="at">vjust =</span> <span class="fl">0.5</span>),</span>
-<span id="cb13-17"><a href="charts.html#cb13-17" tabindex="-1"></a>            <span class="at">label=</span>scales<span class="sc">::</span><span class="fu">dollar</span>(Value,<span class="at">scale=</span><span class="dv">1</span><span class="sc">/</span><span class="fl">1e6</span>,<span class="at">suffix=</span><span class="st">&quot;m&quot;</span>))<span class="sc">+</span></span>
-<span id="cb13-18"><a href="charts.html#cb13-18" tabindex="-1"></a>  </span>
-<span id="cb13-19"><a href="charts.html#cb13-19" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Bar chart example&quot;</span>,</span>
-<span id="cb13-20"><a href="charts.html#cb13-20" tabindex="-1"></a>                          <span class="at">subtitle =</span> <span class="st">&quot;Subtitle goes here&quot;</span>,</span>
-<span id="cb13-21"><a href="charts.html#cb13-21" tabindex="-1"></a>                          <span class="at">caption =</span> <span class="st">&quot;Data: Made up from scratch&quot;</span>,</span>
-<span id="cb13-22"><a href="charts.html#cb13-22" tabindex="-1"></a>                          <span class="at">x=</span><span class="st">&quot;&quot;</span>,</span>
-<span id="cb13-23"><a href="charts.html#cb13-23" tabindex="-1"></a>                          <span class="at">y=</span><span class="st">&quot;&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb13-24"><a href="charts.html#cb13-24" tabindex="-1"></a></span>
-<span id="cb13-25"><a href="charts.html#cb13-25" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb13-26"><a href="charts.html#cb13-26" tabindex="-1"></a>  </span>
-<span id="cb13-27"><a href="charts.html#cb13-27" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
-<span id="cb13-28"><a href="charts.html#cb13-28" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
-<span id="cb13-29"><a href="charts.html#cb13-29" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
-<span id="cb13-30"><a href="charts.html#cb13-30" tabindex="-1"></a></span>
-<span id="cb13-31"><a href="charts.html#cb13-31" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
-<span id="cb13-32"><a href="charts.html#cb13-32" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb13-33"><a href="charts.html#cb13-33" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb13-34"><a href="charts.html#cb13-34" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major.y =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
-<span id="cb13-35"><a href="charts.html#cb13-35" tabindex="-1"></a>  </span>
-<span id="cb13-36"><a href="charts.html#cb13-36" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb13-37"><a href="charts.html#cb13-37" tabindex="-1"></a>        <span class="at">axis.text.y=</span><span class="fu">element_blank</span>(),</span>
-<span id="cb13-38"><a href="charts.html#cb13-38" tabindex="-1"></a>        <span class="at">axis.ticks.y=</span><span class="fu">element_blank</span>())</span></code></pre></div>
+<span id="cb13-7"><a href="charts.html#cb13-7" tabindex="-1"></a><span class="fu">ggplot</span>(bar_data_single, <span class="fu">aes</span>(<span class="at">x =</span> Year, <span class="at">y =</span> Value)) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="charts.html#cb13-8" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">&quot;identity&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">width =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="charts.html#cb13-9" tabindex="-1"></a>  </span>
+<span id="cb13-10"><a href="charts.html#cb13-10" tabindex="-1"></a>  <span class="co"># Labels in the middle of the bars</span></span>
+<span id="cb13-11"><a href="charts.html#cb13-11" tabindex="-1"></a>  <span class="fu">geom_text</span>(<span class="fu">aes</span>(<span class="at">y =</span> Value <span class="sc">/</span> <span class="dv">2</span>, <span class="at">label =</span> scales<span class="sc">::</span><span class="fu">dollar</span>(Value, <span class="at">scale =</span> <span class="dv">1</span><span class="sc">/</span><span class="fl">1e6</span>, <span class="at">suffix =</span> <span class="st">&quot;m&quot;</span>)), </span>
+<span id="cb13-12"><a href="charts.html#cb13-12" tabindex="-1"></a>            <span class="at">size =</span> <span class="dv">5</span>, <span class="at">color =</span> <span class="st">&quot;white&quot;</span>, <span class="at">fontface =</span> <span class="st">&quot;bold&quot;</span>) <span class="sc">+</span></span>
+<span id="cb13-13"><a href="charts.html#cb13-13" tabindex="-1"></a>  </span>
+<span id="cb13-14"><a href="charts.html#cb13-14" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb13-15"><a href="charts.html#cb13-15" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Bar chart example&quot;</span>,</span>
+<span id="cb13-16"><a href="charts.html#cb13-16" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Subtitle goes here&quot;</span>,</span>
+<span id="cb13-17"><a href="charts.html#cb13-17" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: Made up from scratch&quot;</span>,</span>
+<span id="cb13-18"><a href="charts.html#cb13-18" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb13-19"><a href="charts.html#cb13-19" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb13-20"><a href="charts.html#cb13-20" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-21"><a href="charts.html#cb13-21" tabindex="-1"></a>  </span>
+<span id="cb13-22"><a href="charts.html#cb13-22" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-23"><a href="charts.html#cb13-23" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb13-24"><a href="charts.html#cb13-24" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb13-25"><a href="charts.html#cb13-25" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb13-26"><a href="charts.html#cb13-26" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb13-27"><a href="charts.html#cb13-27" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb13-28"><a href="charts.html#cb13-28" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb13-29"><a href="charts.html#cb13-29" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb13-30"><a href="charts.html#cb13-30" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb13-31"><a href="charts.html#cb13-31" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb13-32"><a href="charts.html#cb13-32" tabindex="-1"></a>    <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb13-33"><a href="charts.html#cb13-33" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-11-1.png" width="672" /></p>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="charts.html#cb14-1" tabindex="-1"></a><span class="co"># ggsave(plot=last_plot(),</span></span>
-<span id="cb14-2"><a href="charts.html#cb14-2" tabindex="-1"></a><span class="co">#        width=10,</span></span>
-<span id="cb14-3"><a href="charts.html#cb14-3" tabindex="-1"></a><span class="co">#        height=10,</span></span>
-<span id="cb14-4"><a href="charts.html#cb14-4" tabindex="-1"></a><span class="co">#        units=&quot;cm&quot;,</span></span>
-<span id="cb14-5"><a href="charts.html#cb14-5" tabindex="-1"></a><span class="co">#        dpi = 600, </span></span>
-<span id="cb14-6"><a href="charts.html#cb14-6" tabindex="-1"></a><span class="co">#        filename = &quot;/Users/charlescoverdale/Desktop/test.png&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="charts.html#cb14-1" tabindex="-1"></a><span class="co"># Save the plot</span></span>
+<span id="cb14-2"><a href="charts.html#cb14-2" tabindex="-1"></a><span class="co"># ggsave(&quot;test.png&quot;, width = 10, height = 10, units = &quot;cm&quot;, dpi = 600)</span></span></code></pre></div>
 </div>
 <div id="stacked-bar-chart" class="section level2 hasAnchor" number="3.7">
 <h2><span class="header-section-number">3.7</span> Stacked bar chart<a href="charts.html#stacked-bar-chart" class="anchor-section" aria-label="Anchor link to header"></a></h2>

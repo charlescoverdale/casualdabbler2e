@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-02-13" />
+<meta name="date" content="2025-02-14" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -162,7 +162,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="3.3" data-path="charts.html"><a href="charts.html#line-plot"><i class="fa fa-check"></i><b>3.3</b> Line plot</a></li>
 <li class="chapter" data-level="3.4" data-path="charts.html"><a href="charts.html#scatter-and-trend-plot"><i class="fa fa-check"></i><b>3.4</b> Scatter and trend plot</a></li>
 <li class="chapter" data-level="3.5" data-path="charts.html"><a href="charts.html#shading-areas-on-plots"><i class="fa fa-check"></i><b>3.5</b> Shading areas on plots</a></li>
-<li class="chapter" data-level="3.6" data-path="charts.html"><a href="charts.html#bar-chart-numercial"><i class="fa fa-check"></i><b>3.6</b> Bar chart (numercial)</a></li>
+<li class="chapter" data-level="3.6" data-path="charts.html"><a href="charts.html#bar-chart"><i class="fa fa-check"></i><b>3.6</b> Bar chart</a></li>
 <li class="chapter" data-level="3.7" data-path="charts.html"><a href="charts.html#stacked-bar-chart"><i class="fa fa-check"></i><b>3.7</b> Stacked bar chart</a></li>
 <li class="chapter" data-level="3.8" data-path="charts.html"><a href="charts.html#histogram"><i class="fa fa-check"></i><b>3.8</b> Histogram</a></li>
 <li class="chapter" data-level="3.9" data-path="charts.html"><a href="charts.html#ridge-chart"><i class="fa fa-check"></i><b>3.9</b> Ridge chart</a></li>
@@ -193,9 +193,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.5" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#confidence-intervals-for-the-mean"><i class="fa fa-check"></i><b>5.5</b> Confidence intervals for the mean</a></li>
 <li class="chapter" data-level="5.6" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#confidence-intervals-for-a-model"><i class="fa fa-check"></i><b>5.6</b> Confidence intervals for a model</a></li>
 </ul></li>
-<li class="chapter" data-level="6" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>6</b> Forecasting</a></li>
+<li class="chapter" data-level="6" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>6</b> Forecasting</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="forecasting.html"><a href="forecasting.html#whats-in-a-forecast"><i class="fa fa-check"></i><b>6.1</b> What’s in a forecast?</a></li>
+<li class="chapter" data-level="6.2" data-path="forecasting.html"><a href="forecasting.html#arima-models"><i class="fa fa-check"></i><b>6.2</b> ARIMA models</a></li>
+</ul></li>
 <li class="chapter" data-level="7" data-path="web-scraping.html"><a href="web-scraping.html"><i class="fa fa-check"></i><b>7</b> Web scraping</a></li>
-<li class="chapter" data-level="8" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>8</b> Text mining</a></li>
+<li class="chapter" data-level="8" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>8</b> Text mining</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="text-mining.html"><a href="text-mining.html#frequency-analysis"><i class="fa fa-check"></i><b>8.1</b> Frequency analysis</a></li>
+<li class="chapter" data-level="8.2" data-path="text-mining.html"><a href="text-mining.html#sentiment-analysis"><i class="fa fa-check"></i><b>8.2</b> Sentiment analysis</a></li>
+</ul></li>
 <li class="chapter" data-level="9" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>9</b> Geocoding</a></li>
 <li class="chapter" data-level="10" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html"><i class="fa fa-check"></i><b>10</b> Drivetime analysis</a></li>
 <li class="chapter" data-level="11" data-path="raster-data.html"><a href="raster-data.html"><i class="fa fa-check"></i><b>11</b> Raster data</a></li>
@@ -224,7 +232,114 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="forecasting" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">Chapter 6</span> Forecasting<a href="forecasting.html#forecasting" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="whats-in-a-forecast" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> What’s in a forecast?<a href="forecasting.html#whats-in-a-forecast" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>So, we’ve got a time series dataset… but what is a reasonable forecast for how it might behave in the future?</p>
+<p>Sure we can build a confidence interval (as we learned in the previous chapter) and figure out a reasonable value - but what about forecasting for multiple periods into the future?</p>
+<p>That’s where we need to build models. Let’s load in some packages.</p>
+<div class="sourceCode" id="cb71"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb71-1"><a href="forecasting.html#cb71-1" tabindex="-1"></a><span class="co"># Load in required packages</span></span>
+<span id="cb71-2"><a href="forecasting.html#cb71-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)   <span class="co"># Includes ggplot2, dplyr, purrr, stringr, etc.</span></span>
+<span id="cb71-3"><a href="forecasting.html#cb71-3" tabindex="-1"></a><span class="fu">library</span>(ggridges)    <span class="co"># For ridge plots</span></span>
+<span id="cb71-4"><a href="forecasting.html#cb71-4" tabindex="-1"></a><span class="fu">library</span>(forecast)    <span class="co"># Time series forecasting</span></span>
+<span id="cb71-5"><a href="forecasting.html#cb71-5" tabindex="-1"></a><span class="fu">library</span>(ggrepel)     <span class="co"># For better text label placement</span></span>
+<span id="cb71-6"><a href="forecasting.html#cb71-6" tabindex="-1"></a><span class="fu">library</span>(viridis)     <span class="co"># Color scales</span></span>
+<span id="cb71-7"><a href="forecasting.html#cb71-7" tabindex="-1"></a><span class="fu">library</span>(readxl)      <span class="co"># Excel file reading</span></span>
+<span id="cb71-8"><a href="forecasting.html#cb71-8" tabindex="-1"></a><span class="fu">library</span>(lubridate)   <span class="co"># Date and time manipulation</span></span>
+<span id="cb71-9"><a href="forecasting.html#cb71-9" tabindex="-1"></a><span class="fu">library</span>(gapminder)   <span class="co"># Gapminder data for examples</span></span>
+<span id="cb71-10"><a href="forecasting.html#cb71-10" tabindex="-1"></a><span class="fu">library</span>(ggalt)       <span class="co"># Additional ggplot2 geoms</span></span>
+<span id="cb71-11"><a href="forecasting.html#cb71-11" tabindex="-1"></a><span class="fu">library</span>(scales)      <span class="co"># Scale functions for ggplot2</span></span></code></pre></div>
+<p>We’ll start with some pre-loaded time series data. The <code>ggplot2</code> package includes a data set called ‘economics’ that contains US economic indicators from the 1960’s to 2015.</p>
+<div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="forecasting.html#cb72-1" tabindex="-1"></a>econ_data <span class="ot">&lt;-</span> economics <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(<span class="st">&quot;date&quot;</span>, <span class="st">&quot;uempmed&quot;</span>))</span>
+<span id="cb72-2"><a href="forecasting.html#cb72-2" tabindex="-1"></a>econ_data <span class="ot">&lt;-</span> econ_data <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>((date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;1970-01-01&quot;</span>) </span>
+<span id="cb72-3"><a href="forecasting.html#cb72-3" tabindex="-1"></a>                                          <span class="sc">&amp;</span> date <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;1999-12-31&quot;</span>)))</span></code></pre></div>
+<p>As a side note: We can also get Australian unemployment rate data using the <code>readrba</code> function.</p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="forecasting.html#cb73-1" tabindex="-1"></a>aus_unemp_rate <span class="ot">&lt;-</span> <span class="fu">read_rba</span>(<span class="at">series_id =</span> <span class="st">&quot;GLFSURSA&quot;</span>) </span>
+<span id="cb73-2"><a href="forecasting.html#cb73-2" tabindex="-1"></a><span class="fu">head</span>(aus_unemp_rate)</span></code></pre></div>
+<p>Let’s plot the US data to see what we are working with.</p>
+<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="forecasting.html#cb74-1" tabindex="-1"></a><span class="fu">ggplot</span>(econ_data) <span class="sc">+</span></span>
+<span id="cb74-2"><a href="forecasting.html#cb74-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> uempmed), <span class="at">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb74-3"><a href="forecasting.html#cb74-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> uempmed), <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb74-4"><a href="forecasting.html#cb74-4" tabindex="-1"></a>  </span>
+<span id="cb74-5"><a href="forecasting.html#cb74-5" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Unemployment rate&quot;</span>,</span>
+<span id="cb74-6"><a href="forecasting.html#cb74-6" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&quot;Data: ggplot2::economics&quot;</span>,</span>
+<span id="cb74-7"><a href="forecasting.html#cb74-7" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb74-8"><a href="forecasting.html#cb74-8" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
+<span id="cb74-9"><a href="forecasting.html#cb74-9" tabindex="-1"></a>  </span>
+<span id="cb74-10"><a href="forecasting.html#cb74-10" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb74-11"><a href="forecasting.html#cb74-11" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb74-12"><a href="forecasting.html#cb74-12" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">0</span>)),</span>
+<span id="cb74-13"><a href="forecasting.html#cb74-13" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb74-14"><a href="forecasting.html#cb74-14" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb74-15"><a href="forecasting.html#cb74-15" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb74-16"><a href="forecasting.html#cb74-16" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">3</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">l =</span> <span class="dv">0</span>)),</span>
+<span id="cb74-17"><a href="forecasting.html#cb74-17" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">10</span>)),</span>
+<span id="cb74-18"><a href="forecasting.html#cb74-18" tabindex="-1"></a>    <span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb74-19"><a href="forecasting.html#cb74-19" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb74-20"><a href="forecasting.html#cb74-20" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb74-21"><a href="forecasting.html#cb74-21" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb74-22"><a href="forecasting.html#cb74-22" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span></span>
+<span id="cb74-23"><a href="forecasting.html#cb74-23" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
+</div>
+<div id="arima-models" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> ARIMA models<a href="forecasting.html#arima-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>AutoRegressive Integrated Moving Average (ARIMA) models are a handy tool to have in the toolbox. An ARIMA model describes where Yt depends on its own lags. A moving average (MA only) model is one where Yt depends only on the lagged forecast errors. We combine these together (technically we integrate them) and get ARIMA.</p>
+<p>When working with ARIMAs, we need to ‘difference’ our series to make it stationary.</p>
+<p>We check if it is stationary using the augmented Dickey-Fuller test. The null hypothesis assumes that the series is non-stationary. A series is said to be stationary when its mean, variance, and autocovariance don’t change much over time.</p>
+<div class="sourceCode" id="cb75"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb75-1"><a href="forecasting.html#cb75-1" tabindex="-1"></a><span class="co"># Test for stationarity</span></span>
+<span id="cb75-2"><a href="forecasting.html#cb75-2" tabindex="-1"></a>aTSA<span class="sc">::</span><span class="fu">adf.test</span>(econ_data<span class="sc">$</span>uempmed)</span>
+<span id="cb75-3"><a href="forecasting.html#cb75-3" tabindex="-1"></a></span>
+<span id="cb75-4"><a href="forecasting.html#cb75-4" tabindex="-1"></a><span class="co"># See the auto correlation</span></span>
+<span id="cb75-5"><a href="forecasting.html#cb75-5" tabindex="-1"></a><span class="fu">acf</span>(econ_data<span class="sc">$</span>uempmed)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-63-1.png" width="672" /></p>
+<div class="sourceCode" id="cb76"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb76-1"><a href="forecasting.html#cb76-1" tabindex="-1"></a><span class="co"># Identify partial auto correlation</span></span>
+<span id="cb76-2"><a href="forecasting.html#cb76-2" tabindex="-1"></a><span class="fu">pacf</span>(econ_data<span class="sc">$</span>uempmed)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-63-2.png" width="672" /></p>
+<div class="sourceCode" id="cb77"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb77-1"><a href="forecasting.html#cb77-1" tabindex="-1"></a><span class="co"># Take the first differences of the series</span></span>
+<span id="cb77-2"><a href="forecasting.html#cb77-2" tabindex="-1"></a>econ_data <span class="ot">&lt;-</span> econ_data <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">diff =</span> uempmed <span class="sc">-</span> <span class="fu">lag</span>(uempmed))</span>
+<span id="cb77-3"><a href="forecasting.html#cb77-3" tabindex="-1"></a></span>
+<span id="cb77-4"><a href="forecasting.html#cb77-4" tabindex="-1"></a><span class="co"># Plot the first differences</span></span>
+<span id="cb77-5"><a href="forecasting.html#cb77-5" tabindex="-1"></a><span class="fu">ggplot</span>(econ_data, <span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> diff)) <span class="sc">+</span></span>
+<span id="cb77-6"><a href="forecasting.html#cb77-6" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">col =</span> <span class="st">&quot;grey&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb77-7"><a href="forecasting.html#cb77-7" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">col =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb77-8"><a href="forecasting.html#cb77-8" tabindex="-1"></a>  </span>
+<span id="cb77-9"><a href="forecasting.html#cb77-9" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb77-10"><a href="forecasting.html#cb77-10" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;1st Difference (Unemployment Rate)&quot;</span>,</span>
+<span id="cb77-11"><a href="forecasting.html#cb77-11" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: ggplot2::economics&quot;</span>,</span>
+<span id="cb77-12"><a href="forecasting.html#cb77-12" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb77-13"><a href="forecasting.html#cb77-13" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb77-14"><a href="forecasting.html#cb77-14" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb77-15"><a href="forecasting.html#cb77-15" tabindex="-1"></a>  </span>
+<span id="cb77-16"><a href="forecasting.html#cb77-16" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb77-17"><a href="forecasting.html#cb77-17" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb77-18"><a href="forecasting.html#cb77-18" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb77-19"><a href="forecasting.html#cb77-19" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">0</span>)),</span>
+<span id="cb77-20"><a href="forecasting.html#cb77-20" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb77-21"><a href="forecasting.html#cb77-21" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb77-22"><a href="forecasting.html#cb77-22" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb77-23"><a href="forecasting.html#cb77-23" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">3</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">l =</span> <span class="dv">0</span>)),</span>
+<span id="cb77-24"><a href="forecasting.html#cb77-24" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">10</span>)),</span>
+<span id="cb77-25"><a href="forecasting.html#cb77-25" tabindex="-1"></a>    <span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb77-26"><a href="forecasting.html#cb77-26" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb77-27"><a href="forecasting.html#cb77-27" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb77-28"><a href="forecasting.html#cb77-28" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb77-29"><a href="forecasting.html#cb77-29" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-63-3.png" width="672" /></p>
+<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="forecasting.html#cb78-1" tabindex="-1"></a><span class="co"># Fit an ARIMA model</span></span>
+<span id="cb78-2"><a href="forecasting.html#cb78-2" tabindex="-1"></a>ARIMA_model <span class="ot">&lt;-</span> forecast<span class="sc">::</span><span class="fu">auto.arima</span>(econ_data<span class="sc">$</span>uempmed)</span>
+<span id="cb78-3"><a href="forecasting.html#cb78-3" tabindex="-1"></a></span>
+<span id="cb78-4"><a href="forecasting.html#cb78-4" tabindex="-1"></a><span class="co"># Display model summary and residual diagnostics</span></span>
+<span id="cb78-5"><a href="forecasting.html#cb78-5" tabindex="-1"></a><span class="fu">summary</span>(ARIMA_model)</span>
+<span id="cb78-6"><a href="forecasting.html#cb78-6" tabindex="-1"></a>forecast<span class="sc">::</span><span class="fu">checkresiduals</span>(ARIMA_model)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-64-1.png" width="672" /></p>
+<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="forecasting.html#cb79-1" tabindex="-1"></a><span class="co"># Forecast for the next 36 time periods</span></span>
+<span id="cb79-2"><a href="forecasting.html#cb79-2" tabindex="-1"></a>ARIMA_forecast <span class="ot">&lt;-</span> forecast<span class="sc">::</span><span class="fu">forecast</span>(ARIMA_model, <span class="at">h =</span> <span class="dv">36</span>, <span class="at">level =</span> <span class="fu">c</span>(<span class="dv">95</span>))</span>
+<span id="cb79-3"><a href="forecasting.html#cb79-3" tabindex="-1"></a></span>
+<span id="cb79-4"><a href="forecasting.html#cb79-4" tabindex="-1"></a><span class="co"># Plot the forecast</span></span>
+<span id="cb79-5"><a href="forecasting.html#cb79-5" tabindex="-1"></a><span class="fu">plot</span>(ARIMA_forecast)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-64-2.png" width="672" /></p>
 
+</div>
 </div>
             </section>
 
