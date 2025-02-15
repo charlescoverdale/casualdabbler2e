@@ -28,7 +28,7 @@ As I wrote in the midst of lockdown:
 >
 > It doesn't take a genius to realize this isn't a very sustainable solution - and it also isn't very useful for sharing code with others. It turns out 2-years of lockdown in Melbourne was enough incentive to sit down and collate my best and most useful code into a single place. In the spirit of open source, a book seemed like the most logical format. The following is a very rough book written in **markdown** - R's very own publishing language.
 
-RCCD1e had surprisingly good (and long-lasting reviews). Alas, five-years on, a lot has changed - in both the R community, and the world more broadly. As such, RCCD2e includes significant revisions. The most major of these is a restructure to make the chapters flow more logically. The Australian specific chapters have also been grouped together (e.g. election data).
+RCCD1e had surprisingly good (and long-lasting reviews). Alas, five-years on, a lot has changed - in both the R community, and the world more broadly. As such, RCCD2e includes significant revisions. The most major of these is a restructure to make the chapters flow more logically. The Australian specific chapters have also been grouped together (e.g. election data and ABS economic indicators).
 
 ## Usage
 
@@ -40,7 +40,9 @@ Most of this code will not be extraordinary to the seasoned R aficionado. Howeve
 
 The R community is continually writing new packages and tools. Many of these are covered extensively in various free books available on the [bookdown.org](https://bookdown.org/) website.
 
-The rise of LLM's over the past 2-years has also made it significantly easier to find, refine, and expand on R code. I recommend using them as a first point of call.
+The rise of LLM's over the past 2-years has also made it significantly easier to find, refine, and expand on R code. RCCD2e includes optimized (and better formated code) which has gone through the scrutiny of many of the different LLM's.
+
+I encourage users to paste in code snippets to language models for deeper explanations or alternate examples.
 
 ## Limitations
 
@@ -50,4 +52,4 @@ If you find a bug (along with spelling errors etc) please email me at charlesfco
 
 ## About the author
 
-Charles Coverdale is an economist based in Melbourne, Australia. He is passionate about economics, climate science, and building talented teams. You can get in touch with Charles [on twitter](https://twitter.com/cfcoverdale) to hear more about his current projects.
+Charles Coverdale is an economist working across London and Melbourne. He is passionate about economics, climate science, and building talented teams. You can get in touch with Charles [on twitter](https://twitter.com/cfcoverdale) to hear more about his current projects.
