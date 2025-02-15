@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-02-14" />
+<meta name="date" content="2025-02-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -157,7 +157,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3" data-path="charts.html"><a href="charts.html"><i class="fa fa-check"></i><b>3</b> Charts</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="charts.html"><a href="charts.html#getting-started-1"><i class="fa fa-check"></i><b>3.1</b> Getting started</a></li>
+<li class="chapter" data-level="3.1" data-path="charts.html"><a href="charts.html#packages-matter"><i class="fa fa-check"></i><b>3.1</b> Packages matter</a></li>
 <li class="chapter" data-level="3.2" data-path="charts.html"><a href="charts.html#make-the-data-tidy"><i class="fa fa-check"></i><b>3.2</b> Make the data tidy</a></li>
 <li class="chapter" data-level="3.3" data-path="charts.html"><a href="charts.html#line-plot"><i class="fa fa-check"></i><b>3.3</b> Line plot</a></li>
 <li class="chapter" data-level="3.4" data-path="charts.html"><a href="charts.html#scatter-and-trend-plot"><i class="fa fa-check"></i><b>3.4</b> Scatter and trend plot</a></li>
@@ -195,10 +195,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>6</b> Forecasting</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="forecasting.html"><a href="forecasting.html#whats-in-a-forecast"><i class="fa fa-check"></i><b>6.1</b> What’s in a forecast?</a></li>
-<li class="chapter" data-level="6.2" data-path="forecasting.html"><a href="forecasting.html#arima-models"><i class="fa fa-check"></i><b>6.2</b> ARIMA models</a></li>
+<li class="chapter" data-level="6.1" data-path="forecasting.html"><a href="forecasting.html#arima-models"><i class="fa fa-check"></i><b>6.1</b> ARIMA models</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="web-scraping.html"><a href="web-scraping.html"><i class="fa fa-check"></i><b>7</b> Web scraping</a></li>
+<li class="chapter" data-level="7" data-path="web-scraping.html"><a href="web-scraping.html"><i class="fa fa-check"></i><b>7</b> Web scraping</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="web-scraping.html"><a href="web-scraping.html#why-it-matters"><i class="fa fa-check"></i><b>7.1</b> Why it matters</a></li>
+<li class="chapter" data-level="7.2" data-path="web-scraping.html"><a href="web-scraping.html#anatomy-of-a-webpage"><i class="fa fa-check"></i><b>7.2</b> Anatomy of a webpage</a></li>
+<li class="chapter" data-level="7.3" data-path="web-scraping.html"><a href="web-scraping.html#scraping-a-table"><i class="fa fa-check"></i><b>7.3</b> Scraping a table</a></li>
+</ul></li>
 <li class="chapter" data-level="8" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>8</b> Text mining</a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="text-mining.html"><a href="text-mining.html#frequency-analysis"><i class="fa fa-check"></i><b>8.1</b> Frequency analysis</a></li>
@@ -232,8 +236,6 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="forecasting" class="section level1 hasAnchor" number="6">
 <h1><span class="header-section-number">Chapter 6</span> Forecasting<a href="forecasting.html#forecasting" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="whats-in-a-forecast" class="section level2 hasAnchor" number="6.1">
-<h2><span class="header-section-number">6.1</span> What’s in a forecast?<a href="forecasting.html#whats-in-a-forecast" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>So, we’ve got a time series dataset… but what is a reasonable forecast for how it might behave in the future?</p>
 <p>Sure we can build a confidence interval (as we learned in the previous chapter) and figure out a reasonable value - but what about forecasting for multiple periods into the future?</p>
 <p>That’s where we need to build models. Let’s load in some packages.</p>
@@ -280,9 +282,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb74-22"><a href="forecasting.html#cb74-22" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span></span>
 <span id="cb74-23"><a href="forecasting.html#cb74-23" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
-</div>
-<div id="arima-models" class="section level2 hasAnchor" number="6.2">
-<h2><span class="header-section-number">6.2</span> ARIMA models<a href="forecasting.html#arima-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="arima-models" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> ARIMA models<a href="forecasting.html#arima-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>AutoRegressive Integrated Moving Average (ARIMA) models are a handy tool to have in the toolbox. An ARIMA model describes where Yt depends on its own lags. A moving average (MA only) model is one where Yt depends only on the lagged forecast errors. We combine these together (technically we integrate them) and get ARIMA.</p>
 <p>When working with ARIMAs, we need to ‘difference’ our series to make it stationary.</p>
 <p>We check if it is stationary using the augmented Dickey-Fuller test. The null hypothesis assumes that the series is non-stationary. A series is said to be stationary when its mean, variance, and autocovariance don’t change much over time.</p>

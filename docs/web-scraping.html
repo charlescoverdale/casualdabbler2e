@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-02-14" />
+<meta name="date" content="2025-02-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -157,7 +157,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3" data-path="charts.html"><a href="charts.html"><i class="fa fa-check"></i><b>3</b> Charts</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="charts.html"><a href="charts.html#getting-started-1"><i class="fa fa-check"></i><b>3.1</b> Getting started</a></li>
+<li class="chapter" data-level="3.1" data-path="charts.html"><a href="charts.html#packages-matter"><i class="fa fa-check"></i><b>3.1</b> Packages matter</a></li>
 <li class="chapter" data-level="3.2" data-path="charts.html"><a href="charts.html#make-the-data-tidy"><i class="fa fa-check"></i><b>3.2</b> Make the data tidy</a></li>
 <li class="chapter" data-level="3.3" data-path="charts.html"><a href="charts.html#line-plot"><i class="fa fa-check"></i><b>3.3</b> Line plot</a></li>
 <li class="chapter" data-level="3.4" data-path="charts.html"><a href="charts.html#scatter-and-trend-plot"><i class="fa fa-check"></i><b>3.4</b> Scatter and trend plot</a></li>
@@ -195,10 +195,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>6</b> Forecasting</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="forecasting.html"><a href="forecasting.html#whats-in-a-forecast"><i class="fa fa-check"></i><b>6.1</b> What’s in a forecast?</a></li>
-<li class="chapter" data-level="6.2" data-path="forecasting.html"><a href="forecasting.html#arima-models"><i class="fa fa-check"></i><b>6.2</b> ARIMA models</a></li>
+<li class="chapter" data-level="6.1" data-path="forecasting.html"><a href="forecasting.html#arima-models"><i class="fa fa-check"></i><b>6.1</b> ARIMA models</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="web-scraping.html"><a href="web-scraping.html"><i class="fa fa-check"></i><b>7</b> Web scraping</a></li>
+<li class="chapter" data-level="7" data-path="web-scraping.html"><a href="web-scraping.html"><i class="fa fa-check"></i><b>7</b> Web scraping</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="web-scraping.html"><a href="web-scraping.html#why-it-matters"><i class="fa fa-check"></i><b>7.1</b> Why it matters</a></li>
+<li class="chapter" data-level="7.2" data-path="web-scraping.html"><a href="web-scraping.html#anatomy-of-a-webpage"><i class="fa fa-check"></i><b>7.2</b> Anatomy of a webpage</a></li>
+<li class="chapter" data-level="7.3" data-path="web-scraping.html"><a href="web-scraping.html#scraping-a-table"><i class="fa fa-check"></i><b>7.3</b> Scraping a table</a></li>
+</ul></li>
 <li class="chapter" data-level="8" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>8</b> Text mining</a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="text-mining.html"><a href="text-mining.html#frequency-analysis"><i class="fa fa-check"></i><b>8.1</b> Frequency analysis</a></li>
@@ -232,7 +236,188 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="web-scraping" class="section level1 hasAnchor" number="7">
 <h1><span class="header-section-number">Chapter 7</span> Web scraping<a href="web-scraping.html#web-scraping" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="why-it-matters" class="section level2 hasAnchor" number="7.1">
+<h2><span class="header-section-number">7.1</span> Why it matters<a href="web-scraping.html#why-it-matters" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Collecting data off websites can be a nightmare. The worst case is manually typing data from a web-page into spreadsheets… but there are <em>many</em> steps we can do before resorting to that.</p>
+<p>This chapter will outline the process for pulling data off the web, and particularly for understanding the exact web-page element we want to extract.</p>
+<p>The notes and code loosely follow the fabulous data tutorial by Grant R. McDermott in his <a href="https://raw.githack.com/uo-ec607/lectures/master/06-web-css/06-web-css.html"><em>Data Science for Economists</em></a> series. It has been updated to scrape the most recent version and structure of the relevant Wikipedia pages.</p>
+<p>First up, let’s load some packages.</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="web-scraping.html#cb80-1" tabindex="-1"></a><span class="co"># Install development version of rvest if necessary</span></span>
+<span id="cb80-2"><a href="web-scraping.html#cb80-2" tabindex="-1"></a><span class="cf">if</span> (<span class="fu">numeric_version</span>(<span class="fu">packageVersion</span>(<span class="st">&quot;rvest&quot;</span>)) <span class="sc">&lt;</span> <span class="fu">numeric_version</span>(<span class="st">&#39;0.99.0&#39;</span>)) {</span>
+<span id="cb80-3"><a href="web-scraping.html#cb80-3" tabindex="-1"></a>  remotes<span class="sc">::</span><span class="fu">install_github</span>(<span class="st">&#39;tidyverse/rvest&#39;</span>)</span>
+<span id="cb80-4"><a href="web-scraping.html#cb80-4" tabindex="-1"></a>}</span>
+<span id="cb80-5"><a href="web-scraping.html#cb80-5" tabindex="-1"></a></span>
+<span id="cb80-6"><a href="web-scraping.html#cb80-6" tabindex="-1"></a><span class="co"># Load and install the packages that we&#39;ll be using today</span></span>
+<span id="cb80-7"><a href="web-scraping.html#cb80-7" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">&quot;pacman&quot;</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;pacman&quot;</span>)</span>
+<span id="cb80-8"><a href="web-scraping.html#cb80-8" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, rvest, lubridate, janitor, data.table, hrbrthemes)</span>
+<span id="cb80-9"><a href="web-scraping.html#cb80-9" tabindex="-1"></a></span>
+<span id="cb80-10"><a href="web-scraping.html#cb80-10" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb80-11"><a href="web-scraping.html#cb80-11" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb80-12"><a href="web-scraping.html#cb80-12" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code></pre></div>
+</div>
+<div id="anatomy-of-a-webpage" class="section level2 hasAnchor" number="7.2">
+<h2><span class="header-section-number">7.2</span> Anatomy of a webpage<a href="web-scraping.html#anatomy-of-a-webpage" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Web pages can be categorized as either <em>server-side rendered</em> (where content is embedded in the HTML) or <em>client-side rendered</em> (where content loads dynamically using JavaScript). When scraping server-side rendered pages, locating the correct CSS or XPath selectors is crucial.</p>
+<p>Trawling through CSS code on a webpage is a bit of a nightmare - so we’ll use a chrome extension called <a href="https://chrome.google.com/webstore/detail/selectorgadget/mhjhnkcfbdhnjickkkdbjoemdmbfginb">SelectGadget</a> to help.</p>
+<p>The R package that’s going to do the heavy lifting is called <a href="https://github.com/tidyverse/rvest"><code>rvest</code></a> and is based on the python package called Beauty Soup.</p>
+</div>
+<div id="scraping-a-table" class="section level2 hasAnchor" number="7.3">
+<h2><span class="header-section-number">7.3</span> Scraping a table<a href="web-scraping.html#scraping-a-table" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Let’s use this <a href="https://en.wikipedia.org/wiki/Men%27s_100_metres_world_record_progression#Unofficial_progression_before_the_IAAF">wikipedia page</a> as a starting example. It contains various entries for the men’s 100m running record.</p>
+<p>We can start by pulling all the data from the webpage.</p>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="web-scraping.html#cb81-1" tabindex="-1"></a>m100 <span class="ot">&lt;-</span> rvest<span class="sc">::</span> <span class="fu">read_html</span>(</span>
+<span id="cb81-2"><a href="web-scraping.html#cb81-2" tabindex="-1"></a>               <span class="st">&quot;http://en.wikipedia.org/wiki/Men%27s_100_metres_world_record_progression&quot;</span>) </span>
+<span id="cb81-3"><a href="web-scraping.html#cb81-3" tabindex="-1"></a>m100</span></code></pre></div>
+<pre><code>## {html_document}
+## &lt;html class=&quot;client-nojs vector-feature-language-in-header-enabled vector-feature-language-in-main-page-header-disabled vector-feature-page-tools-pinned-disabled vector-feature-toc-pinned-clientpref-1 vector-feature-main-menu-pinned-disabled vector-feature-limited-width-clientpref-1 vector-feature-limited-width-content-enabled vector-feature-custom-font-size-clientpref-1 vector-feature-appearance-pinned-clientpref-1 vector-feature-night-mode-enabled skin-theme-clientpref-day vector-sticky-header-enabled vector-toc-available&quot; lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;
+## [1] &lt;head&gt;\n&lt;meta http-equiv=&quot;Content-Type&quot; content=&quot;text/html; charset=UTF-8 ...
+## [2] &lt;body class=&quot;skin--responsive skin-vector skin-vector-search-vue mediawik ...</code></pre>
+<p>…and we get a whole heap of mumbo jumbo.</p>
+<p>To get the table of ‘Unofficial progression before the IAAF’ we’re going to have to be more specific.</p>
+<p>Using the SelectGadget tool we can click around and identify that that specific table.</p>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="web-scraping.html#cb83-1" tabindex="-1"></a>pre_iaaf <span class="ot">=</span> </span>
+<span id="cb83-2"><a href="web-scraping.html#cb83-2" tabindex="-1"></a>  m100 <span class="sc">%&gt;%</span></span>
+<span id="cb83-3"><a href="web-scraping.html#cb83-3" tabindex="-1"></a>  <span class="fu">html_element</span>(<span class="st">&quot;div+ .wikitable :nth-child(1)&quot;</span>) <span class="sc">%&gt;%</span> <span class="do">## select table element</span></span>
+<span id="cb83-4"><a href="web-scraping.html#cb83-4" tabindex="-1"></a>  <span class="fu">html_table</span>()                                      <span class="do">## convert to data frame</span></span>
+<span id="cb83-5"><a href="web-scraping.html#cb83-5" tabindex="-1"></a></span>
+<span id="cb83-6"><a href="web-scraping.html#cb83-6" tabindex="-1"></a>pre_iaaf</span></code></pre></div>
+<pre><code>## # A tibble: 21 × 5
+##     Time Athlete               Nationality    `Location of races`     Date      
+##    &lt;dbl&gt; &lt;chr&gt;                 &lt;chr&gt;          &lt;chr&gt;                   &lt;chr&gt;     
+##  1  10.8 Luther Cary           United States  Paris, France           July 4, 1…
+##  2  10.8 Cecil Lee             United Kingdom Brussels, Belgium       September…
+##  3  10.8 Étienne De Ré         Belgium        Brussels, Belgium       August 4,…
+##  4  10.8 L. Atcherley          United Kingdom Frankfurt/Main, Germany April 13,…
+##  5  10.8 Harry Beaton          United Kingdom Rotterdam, Netherlands  August 28…
+##  6  10.8 Harald Anderson-Arbin Sweden         Helsingborg, Sweden     August 9,…
+##  7  10.8 Isaac Westergren      Sweden         Gävle, Sweden           September…
+##  8  10.8 Isaac Westergren      Sweden         Gävle, Sweden           September…
+##  9  10.8 Frank Jarvis          United States  Paris, France           July 14, …
+## 10  10.8 Walter Tewksbury      United States  Paris, France           July 14, …
+## # ℹ 11 more rows</code></pre>
+<p>Niiiiice - now that’s better. Let’s do some quick data cleaning.</p>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="web-scraping.html#cb85-1" tabindex="-1"></a>pre_iaaf <span class="ot">&lt;-</span> pre_iaaf <span class="sc">%&gt;%</span></span>
+<span id="cb85-2"><a href="web-scraping.html#cb85-2" tabindex="-1"></a>            <span class="fu">clean_names</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb85-3"><a href="web-scraping.html#cb85-3" tabindex="-1"></a>            <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">mdy</span>(date))</span>
+<span id="cb85-4"><a href="web-scraping.html#cb85-4" tabindex="-1"></a>  </span>
+<span id="cb85-5"><a href="web-scraping.html#cb85-5" tabindex="-1"></a>pre_iaaf</span></code></pre></div>
+<pre><code>## # A tibble: 21 × 5
+##     time athlete               nationality    location_of_races       date      
+##    &lt;dbl&gt; &lt;chr&gt;                 &lt;chr&gt;          &lt;chr&gt;                   &lt;date&gt;    
+##  1  10.8 Luther Cary           United States  Paris, France           1891-07-04
+##  2  10.8 Cecil Lee             United Kingdom Brussels, Belgium       1892-09-25
+##  3  10.8 Étienne De Ré         Belgium        Brussels, Belgium       1893-08-04
+##  4  10.8 L. Atcherley          United Kingdom Frankfurt/Main, Germany 1895-04-13
+##  5  10.8 Harry Beaton          United Kingdom Rotterdam, Netherlands  1895-08-28
+##  6  10.8 Harald Anderson-Arbin Sweden         Helsingborg, Sweden     1896-08-09
+##  7  10.8 Isaac Westergren      Sweden         Gävle, Sweden           1898-09-11
+##  8  10.8 Isaac Westergren      Sweden         Gävle, Sweden           1899-09-10
+##  9  10.8 Frank Jarvis          United States  Paris, France           1900-07-14
+## 10  10.8 Walter Tewksbury      United States  Paris, France           1900-07-14
+## # ℹ 11 more rows</code></pre>
+<p>Let’s also scrape the data for the more recent running records. That’s the tables named ‘Records (1912-1976)’ and ‘Records since 1977’.</p>
+<p>For the second table:</p>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="web-scraping.html#cb87-1" tabindex="-1"></a>iaaf_76 <span class="ot">=</span> m100 <span class="sc">%&gt;%</span></span>
+<span id="cb87-2"><a href="web-scraping.html#cb87-2" tabindex="-1"></a>  <span class="fu">html_element</span>(<span class="st">&quot;#mw-content-text &gt; div &gt; table:nth-child(17)&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb87-3"><a href="web-scraping.html#cb87-3" tabindex="-1"></a>  <span class="fu">html_table</span>()</span>
+<span id="cb87-4"><a href="web-scraping.html#cb87-4" tabindex="-1"></a></span>
+<span id="cb87-5"><a href="web-scraping.html#cb87-5" tabindex="-1"></a>iaaf_76 <span class="ot">&lt;-</span>iaaf_76 <span class="sc">%&gt;%</span></span>
+<span id="cb87-6"><a href="web-scraping.html#cb87-6" tabindex="-1"></a>  <span class="fu">clean_names</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb87-7"><a href="web-scraping.html#cb87-7" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">mdy</span>(date))</span>
+<span id="cb87-8"><a href="web-scraping.html#cb87-8" tabindex="-1"></a></span>
+<span id="cb87-9"><a href="web-scraping.html#cb87-9" tabindex="-1"></a>iaaf_76</span></code></pre></div>
+<pre><code>## # A tibble: 54 × 8
+##     time wind   auto athlete       nationality location_of_race date       ref  
+##    &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;       &lt;chr&gt;            &lt;date&gt;     &lt;chr&gt;
+##  1  10.6 &quot;&quot;     NA   Donald Lippi… United Sta… Stockholm, Swed… 1912-07-06 [2]  
+##  2  10.6 &quot;&quot;     NA   Jackson Scho… United Sta… Stockholm, Swed… 1920-09-16 [2]  
+##  3  10.4 &quot;&quot;     NA   Charley Padd… United Sta… Redlands, USA    1921-04-23 [2]  
+##  4  10.4 &quot;0.0&quot;  NA   Eddie Tolan   United Sta… Stockholm, Swed… 1929-08-08 [2]  
+##  5  10.4 &quot;&quot;     NA   Eddie Tolan   United Sta… Copenhagen, Den… 1929-08-25 [2]  
+##  6  10.3 &quot;&quot;     NA   Percy Willia… Canada      Toronto, Canada  1930-08-09 [2]  
+##  7  10.3 &quot;0.4&quot;  10.4 Eddie Tolan   United Sta… Los Angeles, USA 1932-08-01 [2]  
+##  8  10.3 &quot;&quot;     NA   Ralph Metcal… United Sta… Budapest, Hunga… 1933-08-12 [2]  
+##  9  10.3 &quot;&quot;     NA   Eulace Peaco… United Sta… Oslo, Norway     1934-08-06 [2]  
+## 10  10.3 &quot;&quot;     NA   Chris Berger  Netherlands Amsterdam, Neth… 1934-08-26 [2]  
+## # ℹ 44 more rows</code></pre>
+<p>And now for the third table:</p>
+<div class="sourceCode" id="cb89"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb89-1"><a href="web-scraping.html#cb89-1" tabindex="-1"></a>iaaf <span class="ot">&lt;-</span> m100 <span class="sc">%&gt;%</span></span>
+<span id="cb89-2"><a href="web-scraping.html#cb89-2" tabindex="-1"></a>        <span class="fu">html_element</span>(<span class="st">&quot;#mw-content-text &gt; div.mw-parser-output &gt; table:nth-child(23)&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb89-3"><a href="web-scraping.html#cb89-3" tabindex="-1"></a>        <span class="fu">html_table</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb89-4"><a href="web-scraping.html#cb89-4" tabindex="-1"></a>        <span class="fu">clean_names</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb89-5"><a href="web-scraping.html#cb89-5" tabindex="-1"></a>        <span class="fu">mutate</span>(<span class="at">date =</span> <span class="fu">mdy</span>(date))</span>
+<span id="cb89-6"><a href="web-scraping.html#cb89-6" tabindex="-1"></a>iaaf</span></code></pre></div>
+<pre><code>## # A tibble: 24 × 9
+##     time wind   auto athlete        nationality   location_of_race    date      
+##    &lt;dbl&gt; &lt;chr&gt; &lt;dbl&gt; &lt;chr&gt;          &lt;chr&gt;         &lt;chr&gt;               &lt;date&gt;    
+##  1 10.1  1.3      NA Bob Hayes      United States Tokyo, Japan        1964-10-15
+##  2 10.0  0.8      NA Jim Hines      United States Sacramento, USA     1968-06-20
+##  3 10.0  2.0      NA Charles Greene United States Mexico City, Mexico 1968-10-13
+##  4  9.95 0.3      NA Jim Hines      United States Mexico City, Mexico 1968-10-14
+##  5  9.93 1.4      NA Calvin Smith   United States Colorado Springs, … 1983-07-03
+##  6  9.83 1.0      NA Ben Johnson    Canada        Rome, Italy         1987-08-30
+##  7  9.93 1.0      NA Carl Lewis     United States Rome, Italy         1987-08-30
+##  8  9.93 1.1      NA Carl Lewis     United States Zürich, Switzerland 1988-08-17
+##  9  9.79 1.1      NA Ben Johnson    Canada        Seoul, South Korea  1988-09-24
+## 10  9.92 1.1      NA Carl Lewis     United States Seoul, South Korea  1988-09-24
+## # ℹ 14 more rows
+## # ℹ 2 more variables: notes_note_2 &lt;chr&gt;, duration_of_record &lt;chr&gt;</code></pre>
+<p>How good. Now let’s bind the rows together to make a master data set.</p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="web-scraping.html#cb91-1" tabindex="-1"></a>wr100 <span class="ot">&lt;-</span> <span class="fu">rbind</span>(</span>
+<span id="cb91-2"><a href="web-scraping.html#cb91-2" tabindex="-1"></a>    pre_iaaf <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(time, athlete, nationality, date) <span class="sc">%&gt;%</span> </span>
+<span id="cb91-3"><a href="web-scraping.html#cb91-3" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">era =</span> <span class="st">&quot;Pre-IAAF&quot;</span>),</span>
+<span id="cb91-4"><a href="web-scraping.html#cb91-4" tabindex="-1"></a>    iaaf_76 <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(time, athlete, nationality, date) <span class="sc">%&gt;%</span> </span>
+<span id="cb91-5"><a href="web-scraping.html#cb91-5" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">era =</span> <span class="st">&quot;Pre-automatic&quot;</span>),</span>
+<span id="cb91-6"><a href="web-scraping.html#cb91-6" tabindex="-1"></a>    iaaf <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(time, athlete, nationality, date) <span class="sc">%&gt;%</span> </span>
+<span id="cb91-7"><a href="web-scraping.html#cb91-7" tabindex="-1"></a>    <span class="fu">mutate</span>(<span class="at">era =</span> <span class="st">&quot;Modern&quot;</span>)</span>
+<span id="cb91-8"><a href="web-scraping.html#cb91-8" tabindex="-1"></a>    )</span>
+<span id="cb91-9"><a href="web-scraping.html#cb91-9" tabindex="-1"></a></span>
+<span id="cb91-10"><a href="web-scraping.html#cb91-10" tabindex="-1"></a>wr100</span></code></pre></div>
+<pre><code>## # A tibble: 99 × 5
+##     time athlete               nationality    date       era     
+##    &lt;dbl&gt; &lt;chr&gt;                 &lt;chr&gt;          &lt;date&gt;     &lt;chr&gt;   
+##  1  10.8 Luther Cary           United States  1891-07-04 Pre-IAAF
+##  2  10.8 Cecil Lee             United Kingdom 1892-09-25 Pre-IAAF
+##  3  10.8 Étienne De Ré         Belgium        1893-08-04 Pre-IAAF
+##  4  10.8 L. Atcherley          United Kingdom 1895-04-13 Pre-IAAF
+##  5  10.8 Harry Beaton          United Kingdom 1895-08-28 Pre-IAAF
+##  6  10.8 Harald Anderson-Arbin Sweden         1896-08-09 Pre-IAAF
+##  7  10.8 Isaac Westergren      Sweden         1898-09-11 Pre-IAAF
+##  8  10.8 Isaac Westergren      Sweden         1899-09-10 Pre-IAAF
+##  9  10.8 Frank Jarvis          United States  1900-07-14 Pre-IAAF
+## 10  10.8 Walter Tewksbury      United States  1900-07-14 Pre-IAAF
+## # ℹ 89 more rows</code></pre>
+<p>Excellent. Let’s plot the results.</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="web-scraping.html#cb93-1" tabindex="-1"></a><span class="fu">ggplot</span>(wr100) <span class="sc">+</span></span>
+<span id="cb93-2"><a href="web-scraping.html#cb93-2" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> time, <span class="at">col =</span> era), <span class="at">alpha =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb93-3"><a href="web-scraping.html#cb93-3" tabindex="-1"></a>  </span>
+<span id="cb93-4"><a href="web-scraping.html#cb93-4" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb93-5"><a href="web-scraping.html#cb93-5" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Men&#39;s 100m World Record Progression&quot;</span>,</span>
+<span id="cb93-6"><a href="web-scraping.html#cb93-6" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Analysing how times have improved over the past 130 years&quot;</span>,</span>
+<span id="cb93-7"><a href="web-scraping.html#cb93-7" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: Wikipedia 2025&quot;</span>,</span>
+<span id="cb93-8"><a href="web-scraping.html#cb93-8" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb93-9"><a href="web-scraping.html#cb93-9" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb93-10"><a href="web-scraping.html#cb93-10" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb93-11"><a href="web-scraping.html#cb93-11" tabindex="-1"></a>  </span>
+<span id="cb93-12"><a href="web-scraping.html#cb93-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb93-13"><a href="web-scraping.html#cb93-13" tabindex="-1"></a>  </span>
+<span id="cb93-14"><a href="web-scraping.html#cb93-14" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">limits =</span> <span class="fu">c</span>(<span class="fl">9.5</span>, <span class="dv">11</span>), <span class="at">breaks =</span> <span class="fu">c</span>(<span class="fl">9.5</span>, <span class="dv">10</span>, <span class="fl">10.5</span>, <span class="dv">11</span>)) <span class="sc">+</span></span>
+<span id="cb93-15"><a href="web-scraping.html#cb93-15" tabindex="-1"></a>  </span>
+<span id="cb93-16"><a href="web-scraping.html#cb93-16" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb93-17"><a href="web-scraping.html#cb93-17" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">20</span>)),</span>
+<span id="cb93-18"><a href="web-scraping.html#cb93-18" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">0</span>),<span class="at">size=</span><span class="dv">11</span>),</span>
+<span id="cb93-19"><a href="web-scraping.html#cb93-19" tabindex="-1"></a>    <span class="at">legend.title =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb93-20"><a href="web-scraping.html#cb93-20" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb93-21"><a href="web-scraping.html#cb93-21" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb93-22"><a href="web-scraping.html#cb93-22" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb93-23"><a href="web-scraping.html#cb93-23" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb93-24"><a href="web-scraping.html#cb93-24" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb93-25"><a href="web-scraping.html#cb93-25" tabindex="-1"></a>    <span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb93-26"><a href="web-scraping.html#cb93-26" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>)</span>
+<span id="cb93-27"><a href="web-scraping.html#cb93-27" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-72-1.png" width="672" /></p>
 
+</div>
 </div>
             </section>
 

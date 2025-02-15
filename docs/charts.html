@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-02-14" />
+<meta name="date" content="2025-02-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -157,7 +157,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="3" data-path="charts.html"><a href="charts.html"><i class="fa fa-check"></i><b>3</b> Charts</a>
 <ul>
-<li class="chapter" data-level="3.1" data-path="charts.html"><a href="charts.html#getting-started-1"><i class="fa fa-check"></i><b>3.1</b> Getting started</a></li>
+<li class="chapter" data-level="3.1" data-path="charts.html"><a href="charts.html#packages-matter"><i class="fa fa-check"></i><b>3.1</b> Packages matter</a></li>
 <li class="chapter" data-level="3.2" data-path="charts.html"><a href="charts.html#make-the-data-tidy"><i class="fa fa-check"></i><b>3.2</b> Make the data tidy</a></li>
 <li class="chapter" data-level="3.3" data-path="charts.html"><a href="charts.html#line-plot"><i class="fa fa-check"></i><b>3.3</b> Line plot</a></li>
 <li class="chapter" data-level="3.4" data-path="charts.html"><a href="charts.html#scatter-and-trend-plot"><i class="fa fa-check"></i><b>3.4</b> Scatter and trend plot</a></li>
@@ -195,10 +195,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>6</b> Forecasting</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="forecasting.html"><a href="forecasting.html#whats-in-a-forecast"><i class="fa fa-check"></i><b>6.1</b> What’s in a forecast?</a></li>
-<li class="chapter" data-level="6.2" data-path="forecasting.html"><a href="forecasting.html#arima-models"><i class="fa fa-check"></i><b>6.2</b> ARIMA models</a></li>
+<li class="chapter" data-level="6.1" data-path="forecasting.html"><a href="forecasting.html#arima-models"><i class="fa fa-check"></i><b>6.1</b> ARIMA models</a></li>
 </ul></li>
-<li class="chapter" data-level="7" data-path="web-scraping.html"><a href="web-scraping.html"><i class="fa fa-check"></i><b>7</b> Web scraping</a></li>
+<li class="chapter" data-level="7" data-path="web-scraping.html"><a href="web-scraping.html"><i class="fa fa-check"></i><b>7</b> Web scraping</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="web-scraping.html"><a href="web-scraping.html#why-it-matters"><i class="fa fa-check"></i><b>7.1</b> Why it matters</a></li>
+<li class="chapter" data-level="7.2" data-path="web-scraping.html"><a href="web-scraping.html#anatomy-of-a-webpage"><i class="fa fa-check"></i><b>7.2</b> Anatomy of a webpage</a></li>
+<li class="chapter" data-level="7.3" data-path="web-scraping.html"><a href="web-scraping.html#scraping-a-table"><i class="fa fa-check"></i><b>7.3</b> Scraping a table</a></li>
+</ul></li>
 <li class="chapter" data-level="8" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>8</b> Text mining</a>
 <ul>
 <li class="chapter" data-level="8.1" data-path="text-mining.html"><a href="text-mining.html#frequency-analysis"><i class="fa fa-check"></i><b>8.1</b> Frequency analysis</a></li>
@@ -232,26 +236,26 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="charts" class="section level1 hasAnchor" number="3">
 <h1><span class="header-section-number">Chapter 3</span> Charts<a href="charts.html#charts" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="getting-started-1" class="section level2 hasAnchor" number="3.1">
-<h2><span class="header-section-number">3.1</span> Getting started<a href="charts.html#getting-started-1" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>There’s exceptional resources online for using the <code>ggplot2</code> package to create production ready charts.</p>
+<div id="packages-matter" class="section level2 hasAnchor" number="3.1">
+<h2><span class="header-section-number">3.1</span> Packages matter<a href="charts.html#packages-matter" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>There’s exceptional resources online for using the <code>ggplot2</code> package and the broader <code>tidyverse</code> suite to create production ready charts.</p>
 <p>The <a href="https://www.r-graph-gallery.com/index.html">R Graph Gallery is a great place to start</a>, as is the visual storytelling blogs of <a href="https://www.economist.com/graphic-detail">The Economist</a> and the <a href="https://bbc.github.io/rcookbook/#how_to_create_bbc_style_graphics">BBC</a>.</p>
 <p>This chapter contains the code for some of my most used charts and visualization techniques.</p>
-<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="charts.html#cb7-1" tabindex="-1"></a><span class="co"># Load in packages</span></span>
-<span id="cb7-2"><a href="charts.html#cb7-2" tabindex="-1"></a><span class="fu">library</span>(ggridges)</span>
-<span id="cb7-3"><a href="charts.html#cb7-3" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb7-4"><a href="charts.html#cb7-4" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
-<span id="cb7-5"><a href="charts.html#cb7-5" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
-<span id="cb7-6"><a href="charts.html#cb7-6" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb7-7"><a href="charts.html#cb7-7" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb7-8"><a href="charts.html#cb7-8" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb7-9"><a href="charts.html#cb7-9" tabindex="-1"></a><span class="fu">library</span>(reshape)</span>
-<span id="cb7-10"><a href="charts.html#cb7-10" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb7-11"><a href="charts.html#cb7-11" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb7-12"><a href="charts.html#cb7-12" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span>
-<span id="cb7-13"><a href="charts.html#cb7-13" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
-<span id="cb7-14"><a href="charts.html#cb7-14" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
-<span id="cb7-15"><a href="charts.html#cb7-15" tabindex="-1"></a><span class="fu">library</span>(purrr)</span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="charts.html#cb7-1" tabindex="-1"></a><span class="co"># Load core packages</span></span>
+<span id="cb7-2"><a href="charts.html#cb7-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)  <span class="co"># Includes ggplot2, dplyr, tidyr, purrr, and readr</span></span>
+<span id="cb7-3"><a href="charts.html#cb7-3" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb7-4"><a href="charts.html#cb7-4" tabindex="-1"></a><span class="fu">library</span>(readxl)</span>
+<span id="cb7-5"><a href="charts.html#cb7-5" tabindex="-1"></a><span class="fu">library</span>(scales)</span>
+<span id="cb7-6"><a href="charts.html#cb7-6" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="charts.html#cb7-7" tabindex="-1"></a><span class="co"># Load additional visualization libraries</span></span>
+<span id="cb7-8"><a href="charts.html#cb7-8" tabindex="-1"></a><span class="fu">library</span>(ggridges)</span>
+<span id="cb7-9"><a href="charts.html#cb7-9" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
+<span id="cb7-10"><a href="charts.html#cb7-10" tabindex="-1"></a><span class="fu">library</span>(viridis)</span>
+<span id="cb7-11"><a href="charts.html#cb7-11" tabindex="-1"></a><span class="fu">library</span>(patchwork)</span>
+<span id="cb7-12"><a href="charts.html#cb7-12" tabindex="-1"></a></span>
+<span id="cb7-13"><a href="charts.html#cb7-13" tabindex="-1"></a><span class="co"># Load additional data manipulation libraries</span></span>
+<span id="cb7-14"><a href="charts.html#cb7-14" tabindex="-1"></a><span class="fu">library</span>(reshape2)  </span>
+<span id="cb7-15"><a href="charts.html#cb7-15" tabindex="-1"></a><span class="fu">library</span>(gapminder)</span></code></pre></div>
 </div>
 <div id="make-the-data-tidy" class="section level2 hasAnchor" number="3.2">
 <h2><span class="header-section-number">3.2</span> Make the data tidy<a href="charts.html#make-the-data-tidy" class="anchor-section" aria-label="Anchor link to header"></a></h2>

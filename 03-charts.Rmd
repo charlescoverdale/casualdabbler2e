@@ -1,29 +1,31 @@
 # Charts
 
-## Getting started
+## Packages matter
 
-There's exceptional resources online for using the `ggplot2` package to create production ready charts.
+There's exceptional resources online for using the `ggplot2` package and the broader `tidyverse` suite to create production ready charts.
 
 The [R Graph Gallery is a great place to start](https://www.r-graph-gallery.com/index.html), as is the visual storytelling blogs of [The Economist](https://www.economist.com/graphic-detail) and the [BBC](https://bbc.github.io/rcookbook/#how_to_create_bbc_style_graphics).
 
 This chapter contains the code for some of my most used charts and visualization techniques.
 
 ```{r,results='hide', warning=FALSE,message=FALSE}
-# Load in packages
+
+# Load core packages
+library(tidyverse)  # Includes ggplot2, dplyr, tidyr, purrr, and readr
+library(lubridate)
+library(readxl)
+library(scales)
+
+# Load additional visualization libraries
 library(ggridges)
-library(ggplot2)
 library(ggrepel)
 library(viridis)
-library(readxl)
-library(dplyr)
-library(stringr)
-library(reshape)
-library(tidyr)
-library(lubridate)
-library(gapminder)
 library(patchwork)
-library(scales)
-library(purrr)
+
+# Load additional data manipulation libraries
+library(reshape2)  
+library(gapminder)
+
 ```
 
 ## Make the data tidy

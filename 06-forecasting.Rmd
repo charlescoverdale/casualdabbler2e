@@ -1,7 +1,5 @@
 # Forecasting
 
-## What's in a forecast?
-
 So, we've got a time series dataset... but what is a reasonable forecast for how it might behave in the future?
 
 Sure we can build a confidence interval (as we learned in the previous chapter) and figure out a reasonable value - but what about forecasting for multiple periods into the future?
