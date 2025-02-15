@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+<head>
+
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title>Chapter 12 Australian economic data | R cookbook for the casual dabbler (2nd edition)</title>
+  <meta name="description" content="A practical user guide for R in analysis and visualisation." />
+  <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
+
+  <meta property="og:title" content="Chapter 12 Australian economic data | R cookbook for the casual dabbler (2nd edition)" />
+  <meta property="og:type" content="book" />
+  
+  <meta property="og:description" content="A practical user guide for R in analysis and visualisation." />
+  <meta name="github-repo" content="openscapes/series" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Chapter 12 Australian economic data | R cookbook for the casual dabbler (2nd edition)" />
+  
+  <meta name="twitter:description" content="A practical user guide for R in analysis and visualisation." />
+  
+
+<meta name="author" content="Charles Coverdale" />
+
+
+<meta name="date" content="2025-02-15" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  
+  
+<link rel="prev" href="raster-data.html"/>
+<link rel="next" href="australian-election-data.html"/>
+<script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-table.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-clipboard.css" rel="stylesheet" />
+
+
+
+
+
+
+
+
+<link href="libs/anchor-sections-1.1.0/anchor-sections.css" rel="stylesheet" />
+<link href="libs/anchor-sections-1.1.0/anchor-sections-hash.css" rel="stylesheet" />
+<script src="libs/anchor-sections-1.1.0/anchor-sections.js"></script>
+
+
+<style type="text/css">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+<style type="text/css">
+  
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">R Cookbook for the Casual Dabbler</a></li> 
+
+<li class="divider"></li>
+<li class="chapter" data-level="1" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i><b>1</b> Introduction</a>
+<ul>
+<li class="chapter" data-level="1.1" data-path="index.html"><a href="index.html#usage"><i class="fa fa-check"></i><b>1.1</b> Usage</a></li>
+<li class="chapter" data-level="1.2" data-path="index.html"><a href="index.html#additional-resources"><i class="fa fa-check"></i><b>1.2</b> Additional resources</a></li>
+<li class="chapter" data-level="1.3" data-path="index.html"><a href="index.html#limitations"><i class="fa fa-check"></i><b>1.3</b> Limitations</a></li>
+<li class="chapter" data-level="1.4" data-path="index.html"><a href="index.html#about-the-author"><i class="fa fa-check"></i><b>1.4</b> About the author</a></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="making-maps-beautiful.html"><a href="making-maps-beautiful.html"><i class="fa fa-check"></i><b>2</b> Making maps beautiful</a>
+<ul>
+<li class="chapter" data-level="2.1" data-path="making-maps-beautiful.html"><a href="making-maps-beautiful.html#why-use-a-map"><i class="fa fa-check"></i><b>2.1</b> Why use a map</a></li>
+<li class="chapter" data-level="2.2" data-path="making-maps-beautiful.html"><a href="making-maps-beautiful.html#getting-started"><i class="fa fa-check"></i><b>2.2</b> Getting started</a></li>
+<li class="chapter" data-level="2.3" data-path="making-maps-beautiful.html"><a href="making-maps-beautiful.html#from-okay-to-good"><i class="fa fa-check"></i><b>2.3</b> From okay to good</a></li>
+<li class="chapter" data-level="2.4" data-path="making-maps-beautiful.html"><a href="making-maps-beautiful.html#from-good-to-great"><i class="fa fa-check"></i><b>2.4</b> From good to great</a></li>
+<li class="chapter" data-level="2.5" data-path="making-maps-beautiful.html"><a href="making-maps-beautiful.html#from-great-to-fantastic"><i class="fa fa-check"></i><b>2.5</b> From great to fantastic</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="charts.html"><a href="charts.html"><i class="fa fa-check"></i><b>3</b> Charts</a>
+<ul>
+<li class="chapter" data-level="3.1" data-path="charts.html"><a href="charts.html#packages-matter"><i class="fa fa-check"></i><b>3.1</b> Packages matter</a></li>
+<li class="chapter" data-level="3.2" data-path="charts.html"><a href="charts.html#make-the-data-tidy"><i class="fa fa-check"></i><b>3.2</b> Make the data tidy</a></li>
+<li class="chapter" data-level="3.3" data-path="charts.html"><a href="charts.html#line-plot"><i class="fa fa-check"></i><b>3.3</b> Line plot</a></li>
+<li class="chapter" data-level="3.4" data-path="charts.html"><a href="charts.html#scatter-and-trend-plot"><i class="fa fa-check"></i><b>3.4</b> Scatter and trend plot</a></li>
+<li class="chapter" data-level="3.5" data-path="charts.html"><a href="charts.html#shading-areas-on-plots"><i class="fa fa-check"></i><b>3.5</b> Shading areas on plots</a></li>
+<li class="chapter" data-level="3.6" data-path="charts.html"><a href="charts.html#bar-chart"><i class="fa fa-check"></i><b>3.6</b> Bar chart</a></li>
+<li class="chapter" data-level="3.7" data-path="charts.html"><a href="charts.html#stacked-bar-chart"><i class="fa fa-check"></i><b>3.7</b> Stacked bar chart</a></li>
+<li class="chapter" data-level="3.8" data-path="charts.html"><a href="charts.html#histogram"><i class="fa fa-check"></i><b>3.8</b> Histogram</a></li>
+<li class="chapter" data-level="3.9" data-path="charts.html"><a href="charts.html#ridge-chart"><i class="fa fa-check"></i><b>3.9</b> Ridge chart</a></li>
+<li class="chapter" data-level="3.10" data-path="charts.html"><a href="charts.html#bbc-style-bar-charts-categorical"><i class="fa fa-check"></i><b>3.10</b> BBC style: Bar charts (categorical)</a></li>
+<li class="chapter" data-level="3.11" data-path="charts.html"><a href="charts.html#bbc-style-dumbbell-charts"><i class="fa fa-check"></i><b>3.11</b> BBC style: Dumbbell charts</a></li>
+<li class="chapter" data-level="3.12" data-path="charts.html"><a href="charts.html#facet-wraps"><i class="fa fa-check"></i><b>3.12</b> Facet wraps</a></li>
+<li class="chapter" data-level="3.13" data-path="charts.html"><a href="charts.html#pie-chart"><i class="fa fa-check"></i><b>3.13</b> Pie chart</a></li>
+<li class="chapter" data-level="3.14" data-path="charts.html"><a href="charts.html#patchwork"><i class="fa fa-check"></i><b>3.14</b> Patchwork</a></li>
+<li class="chapter" data-level="3.15" data-path="charts.html"><a href="charts.html#saving-to-powerpoint"><i class="fa fa-check"></i><b>3.15</b> Saving to powerpoint</a></li>
+<li class="chapter" data-level="3.16" data-path="charts.html"><a href="charts.html#automating-chart-creation"><i class="fa fa-check"></i><b>3.16</b> Automating chart creation</a></li>
+</ul></li>
+<li class="chapter" data-level="4" data-path="basic-modelling.html"><a href="basic-modelling.html"><i class="fa fa-check"></i><b>4</b> Basic modelling</a>
+<ul>
+<li class="chapter" data-level="4.1" data-path="basic-modelling.html"><a href="basic-modelling.html#source-format-and-plot-data"><i class="fa fa-check"></i><b>4.1</b> Source, format, and plot data</a></li>
+<li class="chapter" data-level="4.2" data-path="basic-modelling.html"><a href="basic-modelling.html#build-a-linear-model"><i class="fa fa-check"></i><b>4.2</b> Build a linear model</a></li>
+<li class="chapter" data-level="4.3" data-path="basic-modelling.html"><a href="basic-modelling.html#analyse-the-model-fit"><i class="fa fa-check"></i><b>4.3</b> Analyse the model fit</a></li>
+<li class="chapter" data-level="4.4" data-path="basic-modelling.html"><a href="basic-modelling.html#compare-the-predicted-values-with-the-actual-values"><i class="fa fa-check"></i><b>4.4</b> Compare the predicted values with the actual values</a></li>
+<li class="chapter" data-level="4.5" data-path="basic-modelling.html"><a href="basic-modelling.html#analyse-the-residuals"><i class="fa fa-check"></i><b>4.5</b> Analyse the residuals</a></li>
+<li class="chapter" data-level="4.6" data-path="basic-modelling.html"><a href="basic-modelling.html#linear-regression-with-more-than-one-variable"><i class="fa fa-check"></i><b>4.6</b> Linear regression with more than one variable</a></li>
+<li class="chapter" data-level="4.7" data-path="basic-modelling.html"><a href="basic-modelling.html#fitting-a-polynomial-regression"><i class="fa fa-check"></i><b>4.7</b> Fitting a polynomial regression</a></li>
+</ul></li>
+<li class="chapter" data-level="5" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html"><i class="fa fa-check"></i><b>5</b> Hypothesis testing</a>
+<ul>
+<li class="chapter" data-level="5.1" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#a-quick-refresher"><i class="fa fa-check"></i><b>5.1</b> A quick refresher</a></li>
+<li class="chapter" data-level="5.2" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#t-testing-our-first-hypothesis"><i class="fa fa-check"></i><b>5.2</b> T-testing our first hypothesis</a></li>
+<li class="chapter" data-level="5.3" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#understanding-tailed-tests"><i class="fa fa-check"></i><b>5.3</b> Understanding tailed tests</a></li>
+<li class="chapter" data-level="5.4" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#correlation"><i class="fa fa-check"></i><b>5.4</b> Correlation</a></li>
+<li class="chapter" data-level="5.5" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#confidence-intervals-for-the-mean"><i class="fa fa-check"></i><b>5.5</b> Confidence intervals for the mean</a></li>
+<li class="chapter" data-level="5.6" data-path="hypothesis-testing.html"><a href="hypothesis-testing.html#confidence-intervals-for-a-model"><i class="fa fa-check"></i><b>5.6</b> Confidence intervals for a model</a></li>
+</ul></li>
+<li class="chapter" data-level="6" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>6</b> Forecasting</a>
+<ul>
+<li class="chapter" data-level="6.1" data-path="forecasting.html"><a href="forecasting.html#arima-models"><i class="fa fa-check"></i><b>6.1</b> ARIMA models</a></li>
+</ul></li>
+<li class="chapter" data-level="7" data-path="web-scraping.html"><a href="web-scraping.html"><i class="fa fa-check"></i><b>7</b> Web scraping</a>
+<ul>
+<li class="chapter" data-level="7.1" data-path="web-scraping.html"><a href="web-scraping.html#why-it-matters"><i class="fa fa-check"></i><b>7.1</b> Why it matters</a></li>
+<li class="chapter" data-level="7.2" data-path="web-scraping.html"><a href="web-scraping.html#anatomy-of-a-webpage"><i class="fa fa-check"></i><b>7.2</b> Anatomy of a webpage</a></li>
+<li class="chapter" data-level="7.3" data-path="web-scraping.html"><a href="web-scraping.html#scraping-a-table"><i class="fa fa-check"></i><b>7.3</b> Scraping a table</a></li>
+</ul></li>
+<li class="chapter" data-level="8" data-path="text-mining.html"><a href="text-mining.html"><i class="fa fa-check"></i><b>8</b> Text mining</a>
+<ul>
+<li class="chapter" data-level="8.1" data-path="text-mining.html"><a href="text-mining.html#frequency-analysis"><i class="fa fa-check"></i><b>8.1</b> Frequency analysis</a></li>
+<li class="chapter" data-level="8.2" data-path="text-mining.html"><a href="text-mining.html#sentiment-analysis"><i class="fa fa-check"></i><b>8.2</b> Sentiment analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="9" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>9</b> Geocoding</a></li>
+<li class="chapter" data-level="10" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html"><i class="fa fa-check"></i><b>10</b> Drivetime analysis</a></li>
+<li class="chapter" data-level="11" data-path="raster-data.html"><a href="raster-data.html"><i class="fa fa-check"></i><b>11</b> Raster data</a>
+<ul>
+<li class="chapter" data-level="11.1" data-path="raster-data.html"><a href="raster-data.html#import-raster"><i class="fa fa-check"></i><b>11.1</b> Import raster</a></li>
+<li class="chapter" data-level="11.2" data-path="raster-data.html"><a href="raster-data.html#choosing-geographies"><i class="fa fa-check"></i><b>11.2</b> Choosing geographies</a></li>
+<li class="chapter" data-level="11.3" data-path="raster-data.html"><a href="raster-data.html#analysis-with-raster-data"><i class="fa fa-check"></i><b>11.3</b> Analysis with raster data</a></li>
+<li class="chapter" data-level="11.4" data-path="raster-data.html"><a href="raster-data.html#making-an-interactive-map"><i class="fa fa-check"></i><b>11.4</b> Making an interactive map</a></li>
+</ul></li>
+<li class="chapter" data-level="12" data-path="australian-economic-data.html"><a href="australian-economic-data.html"><i class="fa fa-check"></i><b>12</b> Australian economic data</a>
+<ul>
+<li class="chapter" data-level="12.1" data-path="australian-economic-data.html"><a href="australian-economic-data.html#gdp"><i class="fa fa-check"></i><b>12.1</b> GDP</a></li>
+<li class="chapter" data-level="12.2" data-path="australian-economic-data.html"><a href="australian-economic-data.html#unemployment-rate"><i class="fa fa-check"></i><b>12.2</b> Unemployment rate</a></li>
+<li class="chapter" data-level="12.3" data-path="australian-economic-data.html"><a href="australian-economic-data.html#inflation-cpi"><i class="fa fa-check"></i><b>12.3</b> Inflation (CPI)</a></li>
+<li class="chapter" data-level="12.4" data-path="australian-economic-data.html"><a href="australian-economic-data.html#wage-price-index"><i class="fa fa-check"></i><b>12.4</b> Wage Price Index</a></li>
+<li class="chapter" data-level="12.5" data-path="australian-economic-data.html"><a href="australian-economic-data.html#aud-exchange-rate"><i class="fa fa-check"></i><b>12.5</b> AUD exchange rate</a></li>
+</ul></li>
+<li class="chapter" data-level="13" data-path="australian-election-data.html"><a href="australian-election-data.html"><i class="fa fa-check"></i><b>13</b> Australian election data</a></li>
+<li class="chapter" data-level="14" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html"><i class="fa fa-check"></i><b>14</b> Bayesian for the common man</a></li>
+<li class="divider"></li>
+<li><a href="https://www.linkedin.com/in/charlescoverdale/" target="blank">Connect with me on linkedin</a></li>
+<li><a href="https://github.com/charlescoverdale/casualdabbler2e" target="blank">Get the code on github</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">R cookbook for the casual dabbler (2nd edition)</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="australian-economic-data" class="section level1 hasAnchor" number="12">
+<h1><span class="header-section-number">Chapter 12</span> Australian economic data<a href="australian-economic-data.html#australian-economic-data" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<p>Australia has exceptional financial and economic institutions. Three of these institutions release periodic data useful for economic analysis:</p>
+<ul>
+<li><p><a href="https://www.abs.gov.au/">Australian Bureau of Statistics</a></p></li>
+<li><p><a href="https://www.rba.gov.au/">Reserve Bank of Australia</a></p></li>
+<li><p><a href="https://treasury.gov.au/">Treasury</a></p></li>
+</ul>
+<p>As usual, there are catches. Most of this data is in inconsistent formats (the reasons for which continue to baffle me). What’s more, it’s currently not possible to ping databases or API’s for access to this data… it is mainly accessed through spreadsheets.</p>
+<p>The scripts below run through some of the main ways to import, clean, and analyse Australian macroeconomic data in R.</p>
+<p>Some of the key packages we’ll use are <a href="https://github.com/MattCowgill/readabs">readabs</a> and <a href="https://github.com/MattCowgill/readrba">readrba</a>.</p>
+<p>To get started, let’s install and load packages.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="australian-economic-data.html#cb107-1" tabindex="-1"></a><span class="co"># Loads the required packages</span></span>
+<span id="cb107-2"><a href="australian-economic-data.html#cb107-2" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(</span>
+<span id="cb107-3"><a href="australian-economic-data.html#cb107-3" tabindex="-1"></a>  ggmap, tmaptools, RCurl, jsonlite, tidyverse, </span>
+<span id="cb107-4"><a href="australian-economic-data.html#cb107-4" tabindex="-1"></a>  leaflet, writexl, readr, readxl, readabs, readrba, lubridate, </span>
+<span id="cb107-5"><a href="australian-economic-data.html#cb107-5" tabindex="-1"></a>  zoo, scales</span>
+<span id="cb107-6"><a href="australian-economic-data.html#cb107-6" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## 
+##   There are binary versions available but the source versions are later:
+##           binary source needs_compilation
+## sf        1.0-15 1.0-19              TRUE
+## stars      0.5-5  0.6-8             FALSE
+## tmaptools  3.1-1    3.2             FALSE</code></pre>
+<div id="gdp" class="section level2 hasAnchor" number="12.1">
+<h2><span class="header-section-number">12.1</span> GDP<a href="australian-economic-data.html#gdp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>To get GDP data from the ABS, we’ll use the read_abs function from the <code>readrba</code> package.</p>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="australian-economic-data.html#cb109-1" tabindex="-1"></a><span class="co">#For simplicity, we keep the download function seperate to the analysis</span></span>
+<span id="cb109-2"><a href="australian-economic-data.html#cb109-2" tabindex="-1"></a>all_gdp <span class="ot">&lt;-</span> <span class="fu">read_abs</span>(<span class="st">&quot;5206.0&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="australian-economic-data.html#cb110-1" tabindex="-1"></a><span class="co">#Select the seasonally adjusted data and filter for data and value columns</span></span>
+<span id="cb110-2"><a href="australian-economic-data.html#cb110-2" tabindex="-1"></a>gdp_level <span class="ot">&lt;-</span> all_gdp <span class="sc">%&gt;%</span> </span>
+<span id="cb110-3"><a href="australian-economic-data.html#cb110-3" tabindex="-1"></a>              <span class="fu">filter</span>(series <span class="sc">==</span> <span class="st">&quot;Gross domestic product: Chain volume measures ;&quot;</span>, </span>
+<span id="cb110-4"><a href="australian-economic-data.html#cb110-4" tabindex="-1"></a>                     <span class="sc">!</span><span class="fu">is.na</span>(value)) <span class="sc">%&gt;%</span></span>
+<span id="cb110-5"><a href="australian-economic-data.html#cb110-5" tabindex="-1"></a>              <span class="fu">filter</span>(series_type <span class="sc">==</span><span class="st">&quot;Seasonally Adjusted&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb110-6"><a href="australian-economic-data.html#cb110-6" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">select</span>(date,value) <span class="sc">%&gt;%</span></span>
+<span id="cb110-7"><a href="australian-economic-data.html#cb110-7" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">rename</span>(<span class="at">quarterly_output=</span>value)</span>
+<span id="cb110-8"><a href="australian-economic-data.html#cb110-8" tabindex="-1"></a></span>
+<span id="cb110-9"><a href="australian-economic-data.html#cb110-9" tabindex="-1"></a>gdp_level <span class="ot">&lt;-</span> gdp_level <span class="sc">%&gt;%</span></span>
+<span id="cb110-10"><a href="australian-economic-data.html#cb110-10" tabindex="-1"></a>             <span class="fu">mutate</span>(<span class="at">quarterly_growth_rate =</span> </span>
+<span id="cb110-11"><a href="australian-economic-data.html#cb110-11" tabindex="-1"></a>                    ((quarterly_output <span class="sc">/</span> <span class="fu">lag</span>(quarterly_output,<span class="dv">1</span>)<span class="sc">-</span><span class="dv">1</span>))<span class="sc">*</span><span class="dv">100</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb110-12"><a href="australian-economic-data.html#cb110-12" tabindex="-1"></a>             <span class="fu">mutate</span>(<span class="at">annual_gdp =</span></span>
+<span id="cb110-13"><a href="australian-economic-data.html#cb110-13" tabindex="-1"></a>                    <span class="fu">rollapply</span>(quarterly_output, </span>
+<span id="cb110-14"><a href="australian-economic-data.html#cb110-14" tabindex="-1"></a>                              <span class="dv">4</span>, </span>
+<span id="cb110-15"><a href="australian-economic-data.html#cb110-15" tabindex="-1"></a>                              sum, </span>
+<span id="cb110-16"><a href="australian-economic-data.html#cb110-16" tabindex="-1"></a>                              <span class="at">na.rm=</span><span class="cn">TRUE</span>, </span>
+<span id="cb110-17"><a href="australian-economic-data.html#cb110-17" tabindex="-1"></a>                              <span class="at">fill =</span> <span class="cn">NA</span>, </span>
+<span id="cb110-18"><a href="australian-economic-data.html#cb110-18" tabindex="-1"></a>                              <span class="at">align =</span> <span class="st">&quot;right&quot;</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb110-19"><a href="australian-economic-data.html#cb110-19" tabindex="-1"></a>             <span class="fu">mutate</span>(<span class="at">annual_gdp_trillions=</span>annual_gdp<span class="sc">/</span><span class="dv">1000000</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb110-20"><a href="australian-economic-data.html#cb110-20" tabindex="-1"></a>             <span class="fu">mutate</span>(<span class="at">annual_growth_rate =</span> </span>
+<span id="cb110-21"><a href="australian-economic-data.html#cb110-21" tabindex="-1"></a>                   ((annual_gdp <span class="sc">/</span> <span class="fu">lag</span>(annual_gdp, <span class="dv">4</span>) <span class="sc">-</span> <span class="dv">1</span>))<span class="sc">*</span><span class="dv">100</span>)<span class="sc">%&gt;%</span></span>
+<span id="cb110-22"><a href="australian-economic-data.html#cb110-22" tabindex="-1"></a>             <span class="fu">mutate</span>(<span class="at">Quarter_of_year =</span></span>
+<span id="cb110-23"><a href="australian-economic-data.html#cb110-23" tabindex="-1"></a>                    lubridate<span class="sc">::</span><span class="fu">quarter</span>(date,</span>
+<span id="cb110-24"><a href="australian-economic-data.html#cb110-24" tabindex="-1"></a>                                       <span class="at">with_year =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb110-25"><a href="australian-economic-data.html#cb110-25" tabindex="-1"></a>                                       <span class="at">fiscal_start =</span> <span class="dv">1</span>))</span>
+<span id="cb110-26"><a href="australian-economic-data.html#cb110-26" tabindex="-1"></a></span>
+<span id="cb110-27"><a href="australian-economic-data.html#cb110-27" tabindex="-1"></a><span class="co">#Set a baseline value</span></span>
+<span id="cb110-28"><a href="australian-economic-data.html#cb110-28" tabindex="-1"></a>gdp_level<span class="sc">$</span>baseline_value <span class="ot">&lt;-</span> gdp_level<span class="sc">$</span>quarterly_output[</span>
+<span id="cb110-29"><a href="australian-economic-data.html#cb110-29" tabindex="-1"></a>                            <span class="fu">which</span>(gdp_level<span class="sc">$</span>date <span class="sc">==</span><span class="st">&quot;2022-03-01&quot;</span>)]</span>
+<span id="cb110-30"><a href="australian-economic-data.html#cb110-30" tabindex="-1"></a></span>
+<span id="cb110-31"><a href="australian-economic-data.html#cb110-31" tabindex="-1"></a></span>
+<span id="cb110-32"><a href="australian-economic-data.html#cb110-32" tabindex="-1"></a>gdp_level <span class="ot">&lt;-</span> gdp_level <span class="sc">%&gt;%</span></span>
+<span id="cb110-33"><a href="australian-economic-data.html#cb110-33" tabindex="-1"></a>             <span class="fu">mutate</span>(<span class="at">baseline_comparison =</span></span>
+<span id="cb110-34"><a href="australian-economic-data.html#cb110-34" tabindex="-1"></a>                   (quarterly_output<span class="sc">/</span>baseline_value)<span class="sc">*</span><span class="dv">100</span>)</span>
+<span id="cb110-35"><a href="australian-economic-data.html#cb110-35" tabindex="-1"></a></span>
+<span id="cb110-36"><a href="australian-economic-data.html#cb110-36" tabindex="-1"></a><span class="fu">tail</span>(gdp_level)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 9
+##   date       quarterly_output quarterly_growth_rate annual_gdp
+##   &lt;date&gt;                &lt;dbl&gt;                 &lt;dbl&gt;      &lt;dbl&gt;
+## 1 2023-06-01           646331                 0.334    2567511
+## 2 2023-09-01           649432                 0.480    2581019
+## 3 2023-12-01           650532                 0.169    2590477
+## 4 2024-03-01           651554                 0.157    2597849
+## 5 2024-06-01           652734                 0.181    2604252
+## 6 2024-09-01           654912                 0.334    2609732
+## # ℹ 5 more variables: annual_gdp_trillions &lt;dbl&gt;, annual_growth_rate &lt;dbl&gt;,
+## #   Quarter_of_year &lt;int&gt;, baseline_value &lt;dbl&gt;, baseline_comparison &lt;dbl&gt;</code></pre>
+<p>Now we can plot the GDP data for Australia.</p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="australian-economic-data.html#cb112-1" tabindex="-1"></a>plot_gdp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>gdp_level)<span class="sc">+</span></span>
+<span id="cb112-2"><a href="australian-economic-data.html#cb112-2" tabindex="-1"></a>            <span class="fu">geom_line</span>((<span class="fu">aes</span>(<span class="at">x=</span>date, <span class="at">y=</span>annual_gdp_trillions)), <span class="at">col=</span><span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb112-3"><a href="australian-economic-data.html#cb112-3" tabindex="-1"></a>  </span>
+<span id="cb112-4"><a href="australian-economic-data.html#cb112-4" tabindex="-1"></a>            <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Australian GDP ($AUD)&quot;</span>,</span>
+<span id="cb112-5"><a href="australian-economic-data.html#cb112-5" tabindex="-1"></a>                 <span class="at">subtitle =</span> <span class="st">&quot;Annualised figures&quot;</span>,</span>
+<span id="cb112-6"><a href="australian-economic-data.html#cb112-6" tabindex="-1"></a>                 <span class="at">caption =</span> <span class="st">&quot;Data: Australian Bureau of Statistics&quot;</span>,</span>
+<span id="cb112-7"><a href="australian-economic-data.html#cb112-7" tabindex="-1"></a>                 <span class="at">y =</span> <span class="st">&quot;&quot;</span>, </span>
+<span id="cb112-8"><a href="australian-economic-data.html#cb112-8" tabindex="-1"></a>                 <span class="at">x =</span> <span class="st">&quot; &quot;</span>)<span class="sc">+</span></span>
+<span id="cb112-9"><a href="australian-economic-data.html#cb112-9" tabindex="-1"></a>  </span>
+<span id="cb112-10"><a href="australian-economic-data.html#cb112-10" tabindex="-1"></a>            <span class="fu">scale_y_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="fl">0.5</span>,<span class="fl">1.0</span>,<span class="fl">1.5</span>,<span class="fl">2.0</span>,<span class="fl">2.5</span>),</span>
+<span id="cb112-11"><a href="australian-economic-data.html#cb112-11" tabindex="-1"></a>                               <span class="at">labels =</span> <span class="fu">label_number</span>(<span class="at">suffix =</span> <span class="st">&quot; trillion&quot;</span>))<span class="sc">+</span></span>
+<span id="cb112-12"><a href="australian-economic-data.html#cb112-12" tabindex="-1"></a>  </span>
+<span id="cb112-13"><a href="australian-economic-data.html#cb112-13" tabindex="-1"></a>            <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">&quot;10 years&quot;</span>, <span class="at">date_labels=</span><span class="st">&quot;%Y&quot;</span>)<span class="sc">+</span></span>
+<span id="cb112-14"><a href="australian-economic-data.html#cb112-14" tabindex="-1"></a>  </span>
+<span id="cb112-15"><a href="australian-economic-data.html#cb112-15" tabindex="-1"></a>            <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb112-16"><a href="australian-economic-data.html#cb112-16" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;bottom&quot;</span>)<span class="sc">+</span></span>
+<span id="cb112-17"><a href="australian-economic-data.html#cb112-17" tabindex="-1"></a>  </span>
+<span id="cb112-18"><a href="australian-economic-data.html#cb112-18" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>, <span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
+<span id="cb112-19"><a href="australian-economic-data.html#cb112-19" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
+<span id="cb112-20"><a href="australian-economic-data.html#cb112-20" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))<span class="sc">+</span></span>
+<span id="cb112-21"><a href="australian-economic-data.html#cb112-21" tabindex="-1"></a></span>
+<span id="cb112-22"><a href="australian-economic-data.html#cb112-22" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))<span class="sc">+</span></span>
+<span id="cb112-23"><a href="australian-economic-data.html#cb112-23" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb112-24"><a href="australian-economic-data.html#cb112-24" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb112-25"><a href="australian-economic-data.html#cb112-25" tabindex="-1"></a></span>
+<span id="cb112-26"><a href="australian-economic-data.html#cb112-26" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.title.y =</span> </span>
+<span id="cb112-27"><a href="australian-economic-data.html#cb112-27" tabindex="-1"></a>            <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">l =</span> <span class="dv">0</span>)))<span class="sc">+</span></span>
+<span id="cb112-28"><a href="australian-economic-data.html#cb112-28" tabindex="-1"></a>                         </span>
+<span id="cb112-29"><a href="australian-economic-data.html#cb112-29" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, </span>
+<span id="cb112-30"><a href="australian-economic-data.html#cb112-30" tabindex="-1"></a>                                             <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">45</span>)))<span class="sc">+</span></span>
+<span id="cb112-31"><a href="australian-economic-data.html#cb112-31" tabindex="-1"></a>  </span>
+<span id="cb112-32"><a href="australian-economic-data.html#cb112-32" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span><span class="st">&quot;black&quot;</span>, <span class="at">size=</span><span class="fl">0.4</span>))<span class="sc">+</span></span>
+<span id="cb112-33"><a href="australian-economic-data.html#cb112-33" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span><span class="st">&quot;black&quot;</span>, <span class="at">size=</span><span class="fl">0.4</span>))</span>
+<span id="cb112-34"><a href="australian-economic-data.html#cb112-34" tabindex="-1"></a></span>
+<span id="cb112-35"><a href="australian-economic-data.html#cb112-35" tabindex="-1"></a></span>
+<span id="cb112-36"><a href="australian-economic-data.html#cb112-36" tabindex="-1"></a>plot_gdp</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-87-1.png" width="672" /></p>
+</div>
+<div id="unemployment-rate" class="section level2 hasAnchor" number="12.2">
+<h2><span class="header-section-number">12.2</span> Unemployment rate<a href="australian-economic-data.html#unemployment-rate" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Download the data</p>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="australian-economic-data.html#cb113-1" tabindex="-1"></a><span class="co">#Download the time sreies</span></span>
+<span id="cb113-2"><a href="australian-economic-data.html#cb113-2" tabindex="-1"></a>all_unemployment <span class="ot">&lt;-</span> <span class="fu">read_abs</span>(<span class="st">&quot;6202.0&quot;</span>)</span></code></pre></div>
+<p>Clean and analyse the data</p>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="australian-economic-data.html#cb114-1" tabindex="-1"></a>unemployment_rate <span class="ot">&lt;-</span> all_unemployment <span class="sc">%&gt;%</span> </span>
+<span id="cb114-2"><a href="australian-economic-data.html#cb114-2" tabindex="-1"></a>              <span class="fu">filter</span>(series <span class="sc">==</span> <span class="st">&quot;Unemployment rate ;  Persons ;&quot;</span>,<span class="sc">!</span><span class="fu">is.na</span>(value)) <span class="sc">%&gt;%</span></span>
+<span id="cb114-3"><a href="australian-economic-data.html#cb114-3" tabindex="-1"></a>              <span class="fu">filter</span>(table_title<span class="sc">==</span><span class="st">&quot;Table 1. Labour force status by Sex, Australia - Trend, Seasonally adjusted and Original&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb114-4"><a href="australian-economic-data.html#cb114-4" tabindex="-1"></a>              <span class="fu">filter</span>(series_type <span class="sc">==</span><span class="st">&quot;Seasonally Adjusted&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb114-5"><a href="australian-economic-data.html#cb114-5" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">mean_unemployment_rate=</span><span class="fu">mean</span>(value)) <span class="sc">%&gt;%</span></span>
+<span id="cb114-6"><a href="australian-economic-data.html#cb114-6" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">percentile_25=</span><span class="fu">quantile</span>(value,<span class="fl">0.25</span>))<span class="sc">%&gt;%</span></span>
+<span id="cb114-7"><a href="australian-economic-data.html#cb114-7" tabindex="-1"></a>              <span class="fu">mutate</span>(<span class="at">percentile_75=</span><span class="fu">quantile</span>(value,<span class="fl">0.75</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb114-8"><a href="australian-economic-data.html#cb114-8" tabindex="-1"></a>              dplyr<span class="sc">::</span><span class="fu">select</span>(date,value,mean_unemployment_rate,percentile_25,percentile_75)</span>
+<span id="cb114-9"><a href="australian-economic-data.html#cb114-9" tabindex="-1"></a>              </span>
+<span id="cb114-10"><a href="australian-economic-data.html#cb114-10" tabindex="-1"></a></span>
+<span id="cb114-11"><a href="australian-economic-data.html#cb114-11" tabindex="-1"></a><span class="fu">tail</span>(unemployment_rate)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 5
+##   date       value mean_unemployment_rate percentile_25 percentile_75
+##   &lt;date&gt;     &lt;dbl&gt;                  &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;
+## 1 2024-07-01  4.22                   6.58          5.27          7.92
+## 2 2024-08-01  4.13                   6.58          5.27          7.92
+## 3 2024-09-01  4.07                   6.58          5.27          7.92
+## 4 2024-10-01  4.11                   6.58          5.27          7.92
+## 5 2024-11-01  3.93                   6.58          5.27          7.92
+## 6 2024-12-01  3.98                   6.58          5.27          7.92</code></pre>
+<p>Plot the data</p>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="australian-economic-data.html#cb116-1" tabindex="-1"></a>plot_unemployment_rate <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>unemployment_rate)<span class="sc">+</span></span>
+<span id="cb116-2"><a href="australian-economic-data.html#cb116-2" tabindex="-1"></a>                          <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> value), <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb116-3"><a href="australian-economic-data.html#cb116-3" tabindex="-1"></a></span>
+<span id="cb116-4"><a href="australian-economic-data.html#cb116-4" tabindex="-1"></a>            <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Unemployment rate&quot;</span>,</span>
+<span id="cb116-5"><a href="australian-economic-data.html#cb116-5" tabindex="-1"></a>                 <span class="at">subtitle =</span> <span class="st">&quot;Subtitle goes here&quot;</span>,</span>
+<span id="cb116-6"><a href="australian-economic-data.html#cb116-6" tabindex="-1"></a>                 <span class="at">caption =</span> <span class="st">&quot;Data: Australian Bureau of Statistics&quot;</span>,</span>
+<span id="cb116-7"><a href="australian-economic-data.html#cb116-7" tabindex="-1"></a>                 <span class="at">y =</span> <span class="st">&quot;Unemployment rate (%)&quot;</span>, </span>
+<span id="cb116-8"><a href="australian-economic-data.html#cb116-8" tabindex="-1"></a>                 <span class="at">x =</span> <span class="st">&quot; &quot;</span>)<span class="sc">+</span></span>
+<span id="cb116-9"><a href="australian-economic-data.html#cb116-9" tabindex="-1"></a>  </span>
+<span id="cb116-10"><a href="australian-economic-data.html#cb116-10" tabindex="-1"></a>            <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma)<span class="sc">+</span></span>
+<span id="cb116-11"><a href="australian-economic-data.html#cb116-11" tabindex="-1"></a>            <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">&quot;10 years&quot;</span>, <span class="at">date_labels=</span><span class="st">&quot;%Y&quot;</span>)<span class="sc">+</span></span>
+<span id="cb116-12"><a href="australian-economic-data.html#cb116-12" tabindex="-1"></a>  </span>
+<span id="cb116-13"><a href="australian-economic-data.html#cb116-13" tabindex="-1"></a>            <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb116-14"><a href="australian-economic-data.html#cb116-14" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;bottom&quot;</span>)<span class="sc">+</span></span>
+<span id="cb116-15"><a href="australian-economic-data.html#cb116-15" tabindex="-1"></a>  </span>
+<span id="cb116-16"><a href="australian-economic-data.html#cb116-16" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>, <span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
+<span id="cb116-17"><a href="australian-economic-data.html#cb116-17" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
+<span id="cb116-18"><a href="australian-economic-data.html#cb116-18" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))<span class="sc">+</span></span>
+<span id="cb116-19"><a href="australian-economic-data.html#cb116-19" tabindex="-1"></a></span>
+<span id="cb116-20"><a href="australian-economic-data.html#cb116-20" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))<span class="sc">+</span></span>
+<span id="cb116-21"><a href="australian-economic-data.html#cb116-21" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb116-22"><a href="australian-economic-data.html#cb116-22" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb116-23"><a href="australian-economic-data.html#cb116-23" tabindex="-1"></a></span>
+<span id="cb116-24"><a href="australian-economic-data.html#cb116-24" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.title.y =</span> </span>
+<span id="cb116-25"><a href="australian-economic-data.html#cb116-25" tabindex="-1"></a>            <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">l =</span> <span class="dv">0</span>)))<span class="sc">+</span></span>
+<span id="cb116-26"><a href="australian-economic-data.html#cb116-26" tabindex="-1"></a>                         </span>
+<span id="cb116-27"><a href="australian-economic-data.html#cb116-27" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, </span>
+<span id="cb116-28"><a href="australian-economic-data.html#cb116-28" tabindex="-1"></a>                                             <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">15</span>)))<span class="sc">+</span></span>
+<span id="cb116-29"><a href="australian-economic-data.html#cb116-29" tabindex="-1"></a>  </span>
+<span id="cb116-30"><a href="australian-economic-data.html#cb116-30" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span><span class="st">&quot;black&quot;</span>, <span class="at">size=</span><span class="fl">0.4</span>))<span class="sc">+</span></span>
+<span id="cb116-31"><a href="australian-economic-data.html#cb116-31" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span><span class="st">&quot;black&quot;</span>, <span class="at">size=</span><span class="fl">0.4</span>))</span>
+<span id="cb116-32"><a href="australian-economic-data.html#cb116-32" tabindex="-1"></a></span>
+<span id="cb116-33"><a href="australian-economic-data.html#cb116-33" tabindex="-1"></a>plot_unemployment_rate</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
+</div>
+<div id="inflation-cpi" class="section level2 hasAnchor" number="12.3">
+<h2><span class="header-section-number">12.3</span> Inflation (CPI)<a href="australian-economic-data.html#inflation-cpi" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Download the data</p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="australian-economic-data.html#cb117-1" tabindex="-1"></a>all_CPI <span class="ot">&lt;-</span> <span class="fu">read_abs</span>(<span class="st">&quot;6401.0&quot;</span>)</span></code></pre></div>
+<p>Clean and analyse the data</p>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="australian-economic-data.html#cb118-1" tabindex="-1"></a>Australia_CPI <span class="ot">&lt;-</span> all_CPI <span class="sc">%&gt;%</span> </span>
+<span id="cb118-2"><a href="australian-economic-data.html#cb118-2" tabindex="-1"></a>                 <span class="fu">filter</span>(series <span class="sc">==</span> <span class="st">&quot;Percentage Change from Corresponding Quarter of Previous Year ;  All groups CPI ;  Australia ;&quot;</span>,<span class="sc">!</span><span class="fu">is.na</span>(value)) <span class="sc">%&gt;%</span></span>
+<span id="cb118-3"><a href="australian-economic-data.html#cb118-3" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">mean_CPI=</span><span class="fu">mean</span>(value)) <span class="sc">%&gt;%</span></span>
+<span id="cb118-4"><a href="australian-economic-data.html#cb118-4" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">percentile_25=</span><span class="fu">quantile</span>(value,<span class="fl">0.25</span>))<span class="sc">%&gt;%</span></span>
+<span id="cb118-5"><a href="australian-economic-data.html#cb118-5" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">percentile_75=</span><span class="fu">quantile</span>(value,<span class="fl">0.75</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb118-6"><a href="australian-economic-data.html#cb118-6" tabindex="-1"></a>                 dplyr<span class="sc">::</span><span class="fu">select</span>(date, value,mean_CPI,percentile_25,percentile_75)</span>
+<span id="cb118-7"><a href="australian-economic-data.html#cb118-7" tabindex="-1"></a>              </span>
+<span id="cb118-8"><a href="australian-economic-data.html#cb118-8" tabindex="-1"></a><span class="fu">tail</span>(Australia_CPI)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 5
+##   date       value mean_CPI percentile_25 percentile_75
+##   &lt;date&gt;     &lt;dbl&gt;    &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;
+## 1 2023-09-01   5.4     4.95           1.9           7.3
+## 2 2023-12-01   4.1     4.95           1.9           7.3
+## 3 2024-03-01   3.6     4.95           1.9           7.3
+## 4 2024-06-01   3.8     4.95           1.9           7.3
+## 5 2024-09-01   2.8     4.95           1.9           7.3
+## 6 2024-12-01   2.4     4.95           1.9           7.3</code></pre>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="australian-economic-data.html#cb120-1" tabindex="-1"></a><span class="co">#Can add in the below line to filter</span></span>
+<span id="cb120-2"><a href="australian-economic-data.html#cb120-2" tabindex="-1"></a><span class="co">#filter(date&gt;&quot;2010-01-01&quot;) %&gt;%</span></span></code></pre></div>
+<p>Plot the data</p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="australian-economic-data.html#cb121-1" tabindex="-1"></a>plot_CPI <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> Australia_CPI <span class="sc">%&gt;%</span> </span>
+<span id="cb121-2"><a href="australian-economic-data.html#cb121-2" tabindex="-1"></a>                   <span class="fu">filter</span>(date <span class="sc">&gt;</span> <span class="fu">as.Date</span>(<span class="st">&quot;2000-01-01&quot;</span>))) <span class="sc">+</span></span>
+<span id="cb121-3"><a href="australian-economic-data.html#cb121-3" tabindex="-1"></a>  <span class="fu">geom_rect</span>(<span class="fu">aes</span>(<span class="at">xmin =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2000-01-01&quot;</span>), </span>
+<span id="cb121-4"><a href="australian-economic-data.html#cb121-4" tabindex="-1"></a>                <span class="at">xmax =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-03-01&quot;</span>), </span>
+<span id="cb121-5"><a href="australian-economic-data.html#cb121-5" tabindex="-1"></a>                <span class="at">ymin =</span> <span class="dv">2</span>, </span>
+<span id="cb121-6"><a href="australian-economic-data.html#cb121-6" tabindex="-1"></a>                <span class="at">ymax =</span> <span class="dv">3</span>), </span>
+<span id="cb121-7"><a href="australian-economic-data.html#cb121-7" tabindex="-1"></a>            <span class="at">alpha =</span> <span class="fl">0.1</span>,  <span class="co"># Adjusted alpha for better visibility</span></span>
+<span id="cb121-8"><a href="australian-economic-data.html#cb121-8" tabindex="-1"></a>            <span class="at">fill =</span> <span class="st">&quot;lightgrey&quot;</span>) <span class="sc">+</span></span>
+<span id="cb121-9"><a href="australian-economic-data.html#cb121-9" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> value), <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb121-10"><a href="australian-economic-data.html#cb121-10" tabindex="-1"></a>  </span>
+<span id="cb121-11"><a href="australian-economic-data.html#cb121-11" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">&quot;2 years&quot;</span>, <span class="at">date_labels =</span> <span class="st">&quot;%Y&quot;</span>) <span class="sc">+</span></span>
+<span id="cb121-12"><a href="australian-economic-data.html#cb121-12" tabindex="-1"></a>  </span>
+<span id="cb121-13"><a href="australian-economic-data.html#cb121-13" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Inflation (as measured by the CPI)&quot;</span>,</span>
+<span id="cb121-14"><a href="australian-economic-data.html#cb121-14" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Subtitle goes here&quot;</span>,</span>
+<span id="cb121-15"><a href="australian-economic-data.html#cb121-15" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&quot;Data: Australian Bureau of Statistics&quot;</span>,</span>
+<span id="cb121-16"><a href="australian-economic-data.html#cb121-16" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;(%)&quot;</span>, </span>
+<span id="cb121-17"><a href="australian-economic-data.html#cb121-17" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
+<span id="cb121-18"><a href="australian-economic-data.html#cb121-18" tabindex="-1"></a>  </span>
+<span id="cb121-19"><a href="australian-economic-data.html#cb121-19" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
+<span id="cb121-20"><a href="australian-economic-data.html#cb121-20" tabindex="-1"></a>  </span>
+<span id="cb121-21"><a href="australian-economic-data.html#cb121-21" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb121-22"><a href="australian-economic-data.html#cb121-22" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>) <span class="sc">+</span></span>
+<span id="cb121-23"><a href="australian-economic-data.html#cb121-23" tabindex="-1"></a>  </span>
+<span id="cb121-24"><a href="australian-economic-data.html#cb121-24" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>)) <span class="sc">+</span></span>
+<span id="cb121-25"><a href="australian-economic-data.html#cb121-25" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>)) <span class="sc">+</span></span>
+<span id="cb121-26"><a href="australian-economic-data.html#cb121-26" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>)) <span class="sc">+</span></span>
+<span id="cb121-27"><a href="australian-economic-data.html#cb121-27" tabindex="-1"></a>  </span>
+<span id="cb121-28"><a href="australian-economic-data.html#cb121-28" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>)) <span class="sc">+</span></span>
+<span id="cb121-29"><a href="australian-economic-data.html#cb121-29" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb121-30"><a href="australian-economic-data.html#cb121-30" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb121-31"><a href="australian-economic-data.html#cb121-31" tabindex="-1"></a>  </span>
+<span id="cb121-32"><a href="australian-economic-data.html#cb121-32" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">l =</span> <span class="dv">0</span>))) <span class="sc">+</span></span>
+<span id="cb121-33"><a href="australian-economic-data.html#cb121-33" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, </span>
+<span id="cb121-34"><a href="australian-economic-data.html#cb121-34" tabindex="-1"></a>                                   <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">15</span>))) <span class="sc">+</span></span>
+<span id="cb121-35"><a href="australian-economic-data.html#cb121-35" tabindex="-1"></a>  </span>
+<span id="cb121-36"><a href="australian-economic-data.html#cb121-36" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>)) <span class="sc">+</span></span>
+<span id="cb121-37"><a href="australian-economic-data.html#cb121-37" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>))</span>
+<span id="cb121-38"><a href="australian-economic-data.html#cb121-38" tabindex="-1"></a></span>
+<span id="cb121-39"><a href="australian-economic-data.html#cb121-39" tabindex="-1"></a>plot_CPI</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-93-1.png" width="672" /></p>
+<p>Plot a histogram of the data</p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="australian-economic-data.html#cb122-1" tabindex="-1"></a>plot_CPI_hist <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(Australia_CPI, <span class="fu">aes</span>(<span class="at">x =</span> value)) <span class="sc">+</span> </span>
+<span id="cb122-2"><a href="australian-economic-data.html#cb122-2" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> ..density..), </span>
+<span id="cb122-3"><a href="australian-economic-data.html#cb122-3" tabindex="-1"></a>                 <span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">fill =</span> <span class="st">&quot;lightblue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb122-4"><a href="australian-economic-data.html#cb122-4" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> .<span class="dv">5</span>, <span class="at">fill =</span> <span class="st">&quot;grey&quot;</span>, <span class="at">colour =</span> <span class="st">&quot;darkblue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb122-5"><a href="australian-economic-data.html#cb122-5" tabindex="-1"></a>  </span>
+<span id="cb122-6"><a href="australian-economic-data.html#cb122-6" tabindex="-1"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span>  <span class="co"># Remove extra space on the x-axis</span></span>
+<span id="cb122-7"><a href="australian-economic-data.html#cb122-7" tabindex="-1"></a>  </span>
+<span id="cb122-8"><a href="australian-economic-data.html#cb122-8" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Consumer Price Index: Histogram&quot;</span>,</span>
+<span id="cb122-9"><a href="australian-economic-data.html#cb122-9" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">&quot;Subtitle goes here&quot;</span>,</span>
+<span id="cb122-10"><a href="australian-economic-data.html#cb122-10" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">&quot;Data: Australian Bureau of Statistics&quot;</span>,</span>
+<span id="cb122-11"><a href="australian-economic-data.html#cb122-11" tabindex="-1"></a>       <span class="at">y =</span> <span class="st">&quot;(%)&quot;</span>, </span>
+<span id="cb122-12"><a href="australian-economic-data.html#cb122-12" tabindex="-1"></a>       <span class="at">x =</span> <span class="st">&quot;&quot;</span>) <span class="sc">+</span></span>
+<span id="cb122-13"><a href="australian-economic-data.html#cb122-13" tabindex="-1"></a>  </span>
+<span id="cb122-14"><a href="australian-economic-data.html#cb122-14" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>percent, <span class="at">expand =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>)) <span class="sc">+</span>  <span class="co"># Ensure no space on y-axis</span></span>
+<span id="cb122-15"><a href="australian-economic-data.html#cb122-15" tabindex="-1"></a>  </span>
+<span id="cb122-16"><a href="australian-economic-data.html#cb122-16" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb122-17"><a href="australian-economic-data.html#cb122-17" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb122-18"><a href="australian-economic-data.html#cb122-18" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb122-19"><a href="australian-economic-data.html#cb122-19" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb122-20"><a href="australian-economic-data.html#cb122-20" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">15</span>)),</span>
+<span id="cb122-21"><a href="australian-economic-data.html#cb122-21" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb122-22"><a href="australian-economic-data.html#cb122-22" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb122-23"><a href="australian-economic-data.html#cb122-23" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb122-24"><a href="australian-economic-data.html#cb122-24" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb122-25"><a href="australian-economic-data.html#cb122-25" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">20</span>, <span class="at">l =</span> <span class="dv">0</span>)),</span>
+<span id="cb122-26"><a href="australian-economic-data.html#cb122-26" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">2</span>)),</span>
+<span id="cb122-27"><a href="australian-economic-data.html#cb122-27" tabindex="-1"></a>    <span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb122-28"><a href="australian-economic-data.html#cb122-28" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>)</span>
+<span id="cb122-29"><a href="australian-economic-data.html#cb122-29" tabindex="-1"></a>  )</span>
+<span id="cb122-30"><a href="australian-economic-data.html#cb122-30" tabindex="-1"></a></span>
+<span id="cb122-31"><a href="australian-economic-data.html#cb122-31" tabindex="-1"></a>plot_CPI_hist</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-94-1.png" width="672" /></p>
+</div>
+<div id="wage-price-index" class="section level2 hasAnchor" number="12.4">
+<h2><span class="header-section-number">12.4</span> Wage Price Index<a href="australian-economic-data.html#wage-price-index" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Download the data</p>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="australian-economic-data.html#cb123-1" tabindex="-1"></a>all_wpi <span class="ot">&lt;-</span> <span class="fu">read_abs</span>(<span class="st">&quot;6345.0&quot;</span>)</span></code></pre></div>
+<p>Clean and analyse the data</p>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="australian-economic-data.html#cb124-1" tabindex="-1"></a>Australia_WPI <span class="ot">&lt;-</span> all_wpi <span class="sc">%&gt;%</span> </span>
+<span id="cb124-2"><a href="australian-economic-data.html#cb124-2" tabindex="-1"></a>                 <span class="fu">filter</span>(series <span class="sc">==</span> <span class="st">&quot;Percentage Change From Corresponding Quarter of Previous Year ;  Australia ;  Total hourly rates of pay excluding bonuses ;  Private and Public ;  All industries ;&quot;</span>,</span>
+<span id="cb124-3"><a href="australian-economic-data.html#cb124-3" tabindex="-1"></a>                                  <span class="sc">!</span><span class="fu">is.na</span>(value)) <span class="sc">%&gt;%</span></span>
+<span id="cb124-4"><a href="australian-economic-data.html#cb124-4" tabindex="-1"></a>                 <span class="fu">filter</span>(series_type<span class="sc">==</span><span class="st">&quot;Seasonally Adjusted&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb124-5"><a href="australian-economic-data.html#cb124-5" tabindex="-1"></a>                 <span class="fu">mutate</span>(<span class="at">mean_WPI=</span><span class="fu">mean</span>(value)) <span class="sc">%&gt;%</span></span>
+<span id="cb124-6"><a href="australian-economic-data.html#cb124-6" tabindex="-1"></a>                 dplyr<span class="sc">::</span><span class="fu">select</span>(date, value,mean_WPI)</span>
+<span id="cb124-7"><a href="australian-economic-data.html#cb124-7" tabindex="-1"></a></span>
+<span id="cb124-8"><a href="australian-economic-data.html#cb124-8" tabindex="-1"></a><span class="fu">tail</span>(Australia_WPI)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 3
+##   date       value mean_WPI
+##   &lt;date&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+## 1 2023-06-01   3.6     3.12
+## 2 2023-09-01   4       3.12
+## 3 2023-12-01   4.3     3.12
+## 4 2024-03-01   4.1     3.12
+## 5 2024-06-01   4.1     3.12
+## 6 2024-09-01   3.5     3.12</code></pre>
+<p>Plot the data</p>
+<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="australian-economic-data.html#cb126-1" tabindex="-1"></a>plot_WPI <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>Australia_WPI)<span class="sc">+</span></span>
+<span id="cb126-2"><a href="australian-economic-data.html#cb126-2" tabindex="-1"></a>                   <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> value), <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb126-3"><a href="australian-economic-data.html#cb126-3" tabindex="-1"></a></span>
+<span id="cb126-4"><a href="australian-economic-data.html#cb126-4" tabindex="-1"></a>            <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">&quot;Wage Price Index&quot;</span>,</span>
+<span id="cb126-5"><a href="australian-economic-data.html#cb126-5" tabindex="-1"></a>                           <span class="at">subtitle =</span> <span class="st">&quot;Subtitle goes here&quot;</span>,</span>
+<span id="cb126-6"><a href="australian-economic-data.html#cb126-6" tabindex="-1"></a>                           <span class="at">caption =</span> <span class="st">&quot;Data: Australian Bureau of Statistics&quot;</span>,</span>
+<span id="cb126-7"><a href="australian-economic-data.html#cb126-7" tabindex="-1"></a>                           <span class="at">y =</span> <span class="st">&quot;(%)&quot;</span>, </span>
+<span id="cb126-8"><a href="australian-economic-data.html#cb126-8" tabindex="-1"></a>                           <span class="at">x =</span> <span class="st">&quot; &quot;</span>)<span class="sc">+</span></span>
+<span id="cb126-9"><a href="australian-economic-data.html#cb126-9" tabindex="-1"></a>  </span>
+<span id="cb126-10"><a href="australian-economic-data.html#cb126-10" tabindex="-1"></a>            <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma)<span class="sc">+</span></span>
+<span id="cb126-11"><a href="australian-economic-data.html#cb126-11" tabindex="-1"></a>            <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">&quot;5 years&quot;</span>, <span class="at">date_labels=</span><span class="st">&quot;%Y&quot;</span>)<span class="sc">+</span></span>
+<span id="cb126-12"><a href="australian-economic-data.html#cb126-12" tabindex="-1"></a>  </span>
+<span id="cb126-13"><a href="australian-economic-data.html#cb126-13" tabindex="-1"></a>            <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb126-14"><a href="australian-economic-data.html#cb126-14" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;bottom&quot;</span>)<span class="sc">+</span></span>
+<span id="cb126-15"><a href="australian-economic-data.html#cb126-15" tabindex="-1"></a>  </span>
+<span id="cb126-16"><a href="australian-economic-data.html#cb126-16" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>, <span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
+<span id="cb126-17"><a href="australian-economic-data.html#cb126-17" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
+<span id="cb126-18"><a href="australian-economic-data.html#cb126-18" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))<span class="sc">+</span></span>
+<span id="cb126-19"><a href="australian-economic-data.html#cb126-19" tabindex="-1"></a></span>
+<span id="cb126-20"><a href="australian-economic-data.html#cb126-20" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.text=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))<span class="sc">+</span></span>
+<span id="cb126-21"><a href="australian-economic-data.html#cb126-21" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb126-22"><a href="australian-economic-data.html#cb126-22" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>()) <span class="sc">+</span></span>
+<span id="cb126-23"><a href="australian-economic-data.html#cb126-23" tabindex="-1"></a></span>
+<span id="cb126-24"><a href="australian-economic-data.html#cb126-24" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.title.y =</span> </span>
+<span id="cb126-25"><a href="australian-economic-data.html#cb126-25" tabindex="-1"></a>            <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">l =</span> <span class="dv">0</span>)))<span class="sc">+</span></span>
+<span id="cb126-26"><a href="australian-economic-data.html#cb126-26" tabindex="-1"></a>                         </span>
+<span id="cb126-27"><a href="australian-economic-data.html#cb126-27" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, </span>
+<span id="cb126-28"><a href="australian-economic-data.html#cb126-28" tabindex="-1"></a>                                             <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">15</span>)))<span class="sc">+</span></span>
+<span id="cb126-29"><a href="australian-economic-data.html#cb126-29" tabindex="-1"></a>  </span>
+<span id="cb126-30"><a href="australian-economic-data.html#cb126-30" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span><span class="st">&quot;black&quot;</span>, <span class="at">size=</span><span class="fl">0.4</span>))<span class="sc">+</span></span>
+<span id="cb126-31"><a href="australian-economic-data.html#cb126-31" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span><span class="st">&quot;black&quot;</span>, <span class="at">size=</span><span class="fl">0.4</span>))</span>
+<span id="cb126-32"><a href="australian-economic-data.html#cb126-32" tabindex="-1"></a>                          </span>
+<span id="cb126-33"><a href="australian-economic-data.html#cb126-33" tabindex="-1"></a></span>
+<span id="cb126-34"><a href="australian-economic-data.html#cb126-34" tabindex="-1"></a>plot_WPI</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-97-1.png" width="672" /></p>
+</div>
+<div id="aud-exchange-rate" class="section level2 hasAnchor" number="12.5">
+<h2><span class="header-section-number">12.5</span> AUD exchange rate<a href="australian-economic-data.html#aud-exchange-rate" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p><em>God knows why - but there are super quirky names for the official exchange rate tables</em></p>
+<p>Download the data</p>
+<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="australian-economic-data.html#cb127-1" tabindex="-1"></a>exchange_rate_all<span class="ot">&lt;-</span> readrba<span class="sc">::</span><span class="fu">read_rba</span>(<span class="at">table_no =</span> (<span class="fu">c</span>(<span class="st">&quot;ex_daily_8386&quot;</span>,</span>
+<span id="cb127-2"><a href="australian-economic-data.html#cb127-2" tabindex="-1"></a>                                                    <span class="st">&quot;ex_daily_8790&quot;</span>,</span>
+<span id="cb127-3"><a href="australian-economic-data.html#cb127-3" tabindex="-1"></a>                                                    <span class="st">&quot;ex_daily_9194&quot;</span>,</span>
+<span id="cb127-4"><a href="australian-economic-data.html#cb127-4" tabindex="-1"></a>                                                    <span class="st">&quot;ex_daily_9598&quot;</span>,</span>
+<span id="cb127-5"><a href="australian-economic-data.html#cb127-5" tabindex="-1"></a>                                                    <span class="st">&quot;ex_daily_9902&quot;</span>,</span>
+<span id="cb127-6"><a href="australian-economic-data.html#cb127-6" tabindex="-1"></a>                                                    <span class="st">&quot;ex_daily_0306&quot;</span>,</span>
+<span id="cb127-7"><a href="australian-economic-data.html#cb127-7" tabindex="-1"></a>                                                    <span class="st">&quot;ex_daily_0709&quot;</span>,</span>
+<span id="cb127-8"><a href="australian-economic-data.html#cb127-8" tabindex="-1"></a>                                                    <span class="st">&quot;ex_daily_1013&quot;</span>,</span>
+<span id="cb127-9"><a href="australian-economic-data.html#cb127-9" tabindex="-1"></a>                                                    <span class="st">&quot;ex_daily_1417&quot;</span>,</span>
+<span id="cb127-10"><a href="australian-economic-data.html#cb127-10" tabindex="-1"></a>                                                    <span class="st">&quot;ex_daily_18cur&quot;</span>)),</span>
+<span id="cb127-11"><a href="australian-economic-data.html#cb127-11" tabindex="-1"></a>                                      <span class="at">cur_hist =</span> <span class="st">&quot;historical&quot;</span>)</span></code></pre></div>
+<p>Clean and analyse the data</p>
+<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="australian-economic-data.html#cb128-1" tabindex="-1"></a>exchange_rate_AUD <span class="ot">&lt;-</span>   exchange_rate_all <span class="sc">%&gt;%</span></span>
+<span id="cb128-2"><a href="australian-economic-data.html#cb128-2" tabindex="-1"></a>                       <span class="fu">filter</span>(series<span class="sc">==</span><span class="st">&quot;A$1=USD&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb128-3"><a href="australian-economic-data.html#cb128-3" tabindex="-1"></a>                       dplyr<span class="sc">::</span><span class="fu">select</span>(date, value)</span>
+<span id="cb128-4"><a href="australian-economic-data.html#cb128-4" tabindex="-1"></a></span>
+<span id="cb128-5"><a href="australian-economic-data.html#cb128-5" tabindex="-1"></a></span>
+<span id="cb128-6"><a href="australian-economic-data.html#cb128-6" tabindex="-1"></a><span class="fu">tail</span>(exchange_rate_AUD)</span></code></pre></div>
+<pre><code>## # A tibble: 6 × 2
+##   date       value
+##   &lt;date&gt;     &lt;dbl&gt;
+## 1 2017-12-20 0.766
+## 2 2017-12-21 0.767
+## 3 2017-12-22 0.771
+## 4 2017-12-27 0.774
+## 5 2017-12-28 0.779
+## 6 2017-12-29 0.78</code></pre>
+<p>Plot the data</p>
+<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="australian-economic-data.html#cb130-1" tabindex="-1"></a>plot_exchange_rate_AUD <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data =</span> exchange_rate_AUD) <span class="sc">+</span></span>
+<span id="cb130-2"><a href="australian-economic-data.html#cb130-2" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> value), <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb130-3"><a href="australian-economic-data.html#cb130-3" tabindex="-1"></a>  </span>
+<span id="cb130-4"><a href="australian-economic-data.html#cb130-4" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb130-5"><a href="australian-economic-data.html#cb130-5" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;AUD Exchange Rate&quot;</span>,</span>
+<span id="cb130-6"><a href="australian-economic-data.html#cb130-6" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Subtitle goes here&quot;</span>,</span>
+<span id="cb130-7"><a href="australian-economic-data.html#cb130-7" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: Reserve Bank of Australia&quot;</span>,</span>
+<span id="cb130-8"><a href="australian-economic-data.html#cb130-8" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Exchange rate&quot;</span>,  <span class="co"># Adding a Y-axis label</span></span>
+<span id="cb130-9"><a href="australian-economic-data.html#cb130-9" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Date&quot;</span></span>
+<span id="cb130-10"><a href="australian-economic-data.html#cb130-10" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb130-11"><a href="australian-economic-data.html#cb130-11" tabindex="-1"></a>  </span>
+<span id="cb130-12"><a href="australian-economic-data.html#cb130-12" tabindex="-1"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span>comma) <span class="sc">+</span></span>
+<span id="cb130-13"><a href="australian-economic-data.html#cb130-13" tabindex="-1"></a>  <span class="fu">scale_x_date</span>(<span class="at">date_breaks =</span> <span class="st">&quot;3 years&quot;</span>, <span class="at">date_labels =</span> <span class="st">&quot;%Y&quot;</span>) <span class="sc">+</span></span>
+<span id="cb130-14"><a href="australian-economic-data.html#cb130-14" tabindex="-1"></a>  </span>
+<span id="cb130-15"><a href="australian-economic-data.html#cb130-15" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb130-16"><a href="australian-economic-data.html#cb130-16" tabindex="-1"></a>  </span>
+<span id="cb130-17"><a href="australian-economic-data.html#cb130-17" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb130-18"><a href="australian-economic-data.html#cb130-18" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb130-19"><a href="australian-economic-data.html#cb130-19" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb130-20"><a href="australian-economic-data.html#cb130-20" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb130-21"><a href="australian-economic-data.html#cb130-21" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb130-22"><a href="australian-economic-data.html#cb130-22" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">l =</span> <span class="dv">0</span>)),</span>
+<span id="cb130-23"><a href="australian-economic-data.html#cb130-23" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">15</span>)),</span>
+<span id="cb130-24"><a href="australian-economic-data.html#cb130-24" tabindex="-1"></a>    <span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb130-25"><a href="australian-economic-data.html#cb130-25" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb130-26"><a href="australian-economic-data.html#cb130-26" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb130-27"><a href="australian-economic-data.html#cb130-27" tabindex="-1"></a>    <span class="at">panel.grid.major.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb130-28"><a href="australian-economic-data.html#cb130-28" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span></span>
+<span id="cb130-29"><a href="australian-economic-data.html#cb130-29" tabindex="-1"></a>  )</span>
+<span id="cb130-30"><a href="australian-economic-data.html#cb130-30" tabindex="-1"></a></span>
+<span id="cb130-31"><a href="australian-economic-data.html#cb130-31" tabindex="-1"></a>plot_exchange_rate_AUD</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-100-1.png" width="672" /></p>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="raster-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="australian-election-data.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
+    </div>
+  </div>
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/clipboard.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-clipboard.js"></script>
+<script>
+gitbook.require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"github": false,
+"facebook": true,
+"twitter": true,
+"linkedin": false,
+"weibo": false,
+"instapaper": false,
+"vk": false,
+"whatsapp": false,
+"all": ["facebook", "twitter", "linkedin", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/charlescoverdale/casualdabbler2e/edit/master/12-ABS-economic-indicators.Rmd",
+"text": "Edit"
+},
+"history": {
+"link": null,
+"text": null
+},
+"view": {
+"link": null,
+"text": null
+},
+"download": ["_main.pdf"],
+"search": {
+"engine": "fuse",
+"options": null
+},
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+</body>
+
+</html>
