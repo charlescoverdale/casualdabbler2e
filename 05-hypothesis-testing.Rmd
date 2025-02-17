@@ -106,7 +106,7 @@ t.test(dataset1$variable1, mu = -0.03, alternative="greater")
 
 We see here the p-value is greater than 0.05, leading us to *fail to reject* the null hypothesis. In a sentence, we cannot say that the mean of dataset1\$variable1 is different to 0.01.
 
-## Correlation 
+## Correlation
 
 A correlation coefficient measures the direction and strength of the relationship between two variables. However, correlation calculations assume normal distributions.
 

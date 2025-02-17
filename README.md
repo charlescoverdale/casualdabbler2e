@@ -1,14 +1,12 @@
 # R Cookbook for the Casual Dabbler (2nd edition)
 
-*A practical guide for using R for visualisation and analysis*
-
 This repo contains the code use to produce [R Cookbook for the Casual Dabbler (2nd edition)](https://charlescoverdale.github.io/casualdabbler2e/).
 
-RCCD 1st edition was originally published in 2020 as a side project during the COVID-19 lockdowns in Melbourne. A lot has changed in the R community since, and as such RCCD2e includes significant revisions.
+RCCD1e edition was originally published in 2020 as a side project during the COVID-19 lockdowns in Melbourne. A lot has changed in the R community since, and as such RCCD2e includes significant revisions.
 
 The book is 100% written in R, and published using [Rmarkdown](https://rmarkdown.rstudio.com/) and [Bookdown](https://bookdown.org/).
 
-## **Current chapters**
+## \*\* Current chapters\*\*
 
 #### *S*ection 1: Visualization
 
@@ -39,10 +37,34 @@ The book is 100% written in R, and published using [Rmarkdown](https://rmarkdown
 13. Bayesian for the common man
 14. Causal inference
 
-## **Limitations**
+## \*\* Limitations\*\*
 
 All bugs and mistakes remain my own. Please open up an issue on github or email me (charlesfcoverdale\@gmail.com) with issues.
 
-## **How to cite this text**
+## \*\* How to cite this text\*\*
 
 *Coverdale, C 2025, 'R Cookbook for the Casual Dabbler (2nd edition)', Melbourne, Australia*
+
+## Other useful cookbooks
+
+-   <https://bookdown.org/yihui/rmarkdown-cookbook/>
+
+-   <https://bookdown.org/yihui/rmarkdown/>
+
+-   <https://rc2e.com/>
+
+-   <https://r4ds.hadley.nz/>
+
+-   <https://adv-r.hadley.nz/>
+
+-   <https://rstudio-education.github.io/hopr/>
+
+-   <https://r-pkgs.org/>
+
+-   <https://www.tidytextmining.com/>
+
+-   <https://smltar.com/>
+
+-   <https://bradleyboehmke.github.io/HOML/>
+
+-   <https://mastering-shiny.org/>
