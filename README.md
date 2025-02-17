@@ -6,7 +6,7 @@ RCCD1e edition was originally published in 2020 as a side project during the COV
 
 The book is 100% written in R, and published using [Rmarkdown](https://rmarkdown.rstudio.com/) and [Bookdown](https://bookdown.org/).
 
-## \*\* Current chapters\*\*
+## Current chapters
 
 #### *S*ection 1: Visualization
 
@@ -37,11 +37,11 @@ The book is 100% written in R, and published using [Rmarkdown](https://rmarkdown
 13. Bayesian for the common man
 14. Causal inference
 
-## \*\* Limitations\*\*
+## Limitations
 
 All bugs and mistakes remain my own. Please open up an issue on github or email me (charlesfcoverdale\@gmail.com) with issues.
 
-## \*\* How to cite this text\*\*
+## How to cite this text
 
 *Coverdale, C 2025, 'R Cookbook for the Casual Dabbler (2nd edition)', Melbourne, Australia*
 
