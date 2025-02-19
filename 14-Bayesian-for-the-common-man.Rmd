@@ -1,1 +1,11 @@
 # Bayesian for the common man
+
+## Probability refresher
+
+Bayes' Theorem is named after 18th-century British statistician and theologian, Thomas Bayes. The theorem describes how to update the probability of a hypothesis based on new evidence.
+
+In traditional frequentist statistics, probability is interpreted as the long-run frequency of events in repeated trials.
+
+Bayesian statistics, on the other hand, allows us to incorporate prior knowledge or beliefs into our analysis and update those beliefs as we gather more data.
+
+### 

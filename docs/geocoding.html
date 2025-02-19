@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-02-17" />
+<meta name="date" content="2025-02-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -208,8 +208,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.1" data-path="text-mining.html"><a href="text-mining.html#frequency-analysis"><i class="fa fa-check"></i><b>8.1</b> Frequency analysis</a></li>
 <li class="chapter" data-level="8.2" data-path="text-mining.html"><a href="text-mining.html#sentiment-analysis"><i class="fa fa-check"></i><b>8.2</b> Sentiment analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>9</b> Geocoding</a></li>
-<li class="chapter" data-level="10" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html"><i class="fa fa-check"></i><b>10</b> Drivetime analysis</a></li>
+<li class="chapter" data-level="9" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>9</b> Geocoding</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="geocoding.html"><a href="geocoding.html#lats-and-longs"><i class="fa fa-check"></i><b>9.1</b> Lats and longs</a></li>
+<li class="chapter" data-level="9.2" data-path="geocoding.html"><a href="geocoding.html#spatial-data"><i class="fa fa-check"></i><b>9.2</b> Spatial data</a></li>
+<li class="chapter" data-level="9.3" data-path="geocoding.html"><a href="geocoding.html#google-api"><i class="fa fa-check"></i><b>9.3</b> Google API</a></li>
+<li class="chapter" data-level="9.4" data-path="geocoding.html"><a href="geocoding.html#geocode-analysis"><i class="fa fa-check"></i><b>9.4</b> Geocode analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html"><i class="fa fa-check"></i><b>10</b> Drivetime analysis</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html#method-1-osrm-isochrones"><i class="fa fa-check"></i><b>10.1</b> Method 1: OSRM isochrones</a></li>
+</ul></li>
 <li class="chapter" data-level="11" data-path="raster-data.html"><a href="raster-data.html"><i class="fa fa-check"></i><b>11</b> Raster data</a>
 <ul>
 <li class="chapter" data-level="11.1" data-path="raster-data.html"><a href="raster-data.html#import-raster"><i class="fa fa-check"></i><b>11.1</b> Import raster</a></li>
@@ -233,7 +242,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="13.4" data-path="australian-election-data.html"><a href="australian-election-data.html#booth-data"><i class="fa fa-check"></i><b>13.4</b> Booth data</a></li>
 <li class="chapter" data-level="13.5" data-path="australian-election-data.html"><a href="australian-election-data.html#informal-votes"><i class="fa fa-check"></i><b>13.5</b> Informal votes</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html"><i class="fa fa-check"></i><b>14</b> Bayesian for the common man</a></li>
+<li class="chapter" data-level="14" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html"><i class="fa fa-check"></i><b>14</b> Bayesian for the common man</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html#probability-refresher"><i class="fa fa-check"></i><b>14.1</b> Probability refresher</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html#section"><i class="fa fa-check"></i><b>14.1.1</b> </a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://www.linkedin.com/in/charlescoverdale/" target="blank">Connect with me on linkedin</a></li>
 <li><a href="https://github.com/charlescoverdale/casualdabbler2e" target="blank">Get the code on github</a></li>
@@ -257,7 +272,245 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="geocoding" class="section level1 hasAnchor" number="9">
 <h1><span class="header-section-number">Chapter 9</span> Geocoding<a href="geocoding.html#geocoding" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div id="lats-and-longs" class="section level2 hasAnchor" number="9.1">
+<h2><span class="header-section-number">9.1</span> Lats and longs<a href="geocoding.html#lats-and-longs" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Geocoding converts addresses into coordinates (latitude and longitude) and vice versa. This helps turn basic address data into spatial points, making it useful for mapping and analyzing location-based patterns.</p>
+<p>For example, geocoding can help define catchment areas around an asset or visualize spatial data on a map. To do this, we need access to a large database of addresses and coordinates. Google Maps is a popular choice, offering an API with a freemium model for access.</p>
+<p>This <a href="https://towardsdatascience.com/breaking-down-geocoding-in-r-a-complete-guide-1d0f8acd0d4b">guide</a> by Oleksandr Titorchuk also provides a great overview of the geocoding process in R.</p>
+</div>
+<div id="spatial-data" class="section level2 hasAnchor" number="9.2">
+<h2><span class="header-section-number">9.2</span> Spatial data<a href="geocoding.html#spatial-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Let’s get started by loading up some packages.</p>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="geocoding.html#cb99-1" tabindex="-1"></a><span class="co">#Loads the required required packages</span></span>
+<span id="cb99-2"><a href="geocoding.html#cb99-2" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggmap, </span>
+<span id="cb99-3"><a href="geocoding.html#cb99-3" tabindex="-1"></a>               tmaptools, </span>
+<span id="cb99-4"><a href="geocoding.html#cb99-4" tabindex="-1"></a>               RCurl, </span>
+<span id="cb99-5"><a href="geocoding.html#cb99-5" tabindex="-1"></a>               jsonlite, </span>
+<span id="cb99-6"><a href="geocoding.html#cb99-6" tabindex="-1"></a>               tidyverse, </span>
+<span id="cb99-7"><a href="geocoding.html#cb99-7" tabindex="-1"></a>               leaflet, </span>
+<span id="cb99-8"><a href="geocoding.html#cb99-8" tabindex="-1"></a>               writexl, </span>
+<span id="cb99-9"><a href="geocoding.html#cb99-9" tabindex="-1"></a>               readr, </span>
+<span id="cb99-10"><a href="geocoding.html#cb99-10" tabindex="-1"></a>               readxl, </span>
+<span id="cb99-11"><a href="geocoding.html#cb99-11" tabindex="-1"></a>               sf, </span>
+<span id="cb99-12"><a href="geocoding.html#cb99-12" tabindex="-1"></a>               mapview, </span>
+<span id="cb99-13"><a href="geocoding.html#cb99-13" tabindex="-1"></a>               rgdal)</span></code></pre></div>
+<pre><code>## 
+##   There are binary versions available but the source versions are later:
+##           binary source needs_compilation
+## sf        1.0-15 1.0-19              TRUE
+## stars      0.5-5  0.6-8             FALSE
+## tmaptools  3.1-1    3.2             FALSE</code></pre>
+<p>Next, we’ll introduce some address data.</p>
+<p>Approved speed camera <a href="https://www.camerassavelives.vic.gov.au/camera-locations/approved-mobile-camera-locations">locations</a> in Victoria, Australia are publicly available through the government website. We can download the dataset as a spreadsheet and import it into R as a csv.</p>
+<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="geocoding.html#cb101-1" tabindex="-1"></a><span class="co">#Read in spreadsheet</span></span>
+<span id="cb101-2"><a href="geocoding.html#cb101-2" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&#39;https://raw.githubusercontent.com/charlescoverdale/bookdata/main/mobile-camera-locations-june-2022.csv&#39;</span></span>
+<span id="cb101-3"><a href="geocoding.html#cb101-3" tabindex="-1"></a></span>
+<span id="cb101-4"><a href="geocoding.html#cb101-4" tabindex="-1"></a><span class="co">#Note: We need to import as a csv rather than xlsx for url functionality</span></span>
+<span id="cb101-5"><a href="geocoding.html#cb101-5" tabindex="-1"></a>camera_address <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb101-6"><a href="geocoding.html#cb101-6" tabindex="-1"></a></span>
+<span id="cb101-7"><a href="geocoding.html#cb101-7" tabindex="-1"></a><span class="co">#Fix the column labels</span></span>
+<span id="cb101-8"><a href="geocoding.html#cb101-8" tabindex="-1"></a>camera_address <span class="ot">&lt;-</span> janitor<span class="sc">::</span><span class="fu">row_to_names</span>(camera_address,<span class="dv">1</span>)</span>
+<span id="cb101-9"><a href="geocoding.html#cb101-9" tabindex="-1"></a></span>
+<span id="cb101-10"><a href="geocoding.html#cb101-10" tabindex="-1"></a><span class="co">#Convert the suburb column to title case</span></span>
+<span id="cb101-11"><a href="geocoding.html#cb101-11" tabindex="-1"></a>camera_address<span class="sc">$</span>SUBURB <span class="ot">&lt;-</span> <span class="fu">str_to_title</span>(camera_address<span class="sc">$</span>SUBURB)</span>
+<span id="cb101-12"><a href="geocoding.html#cb101-12" tabindex="-1"></a></span>
+<span id="cb101-13"><a href="geocoding.html#cb101-13" tabindex="-1"></a><span class="co">#Concatenate the two fields into a single address field</span></span>
+<span id="cb101-14"><a href="geocoding.html#cb101-14" tabindex="-1"></a>camera_address<span class="sc">$</span>ADDRESS <span class="ot">&lt;-</span> <span class="fu">paste</span>(camera_address<span class="sc">$</span>LOCATION,</span>
+<span id="cb101-15"><a href="geocoding.html#cb101-15" tabindex="-1"></a>                                camera_address<span class="sc">$</span>SUBURB,</span>
+<span id="cb101-16"><a href="geocoding.html#cb101-16" tabindex="-1"></a>                                <span class="at">sep=</span><span class="st">&quot;, &quot;</span>)</span>
+<span id="cb101-17"><a href="geocoding.html#cb101-17" tabindex="-1"></a></span>
+<span id="cb101-18"><a href="geocoding.html#cb101-18" tabindex="-1"></a><span class="co">#Add in Australia to the address field just to idiot proof the df</span></span>
+<span id="cb101-19"><a href="geocoding.html#cb101-19" tabindex="-1"></a>camera_address<span class="sc">$</span>ADDRESS <span class="ot">&lt;-</span> <span class="fu">paste</span>(camera_address<span class="sc">$</span>ADDRESS, <span class="st">&quot;, Australia&quot;</span>, <span class="at">sep=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb101-20"><a href="geocoding.html#cb101-20" tabindex="-1"></a></span>
+<span id="cb101-21"><a href="geocoding.html#cb101-21" tabindex="-1"></a><span class="co">#Preview the data</span></span>
+<span id="cb101-22"><a href="geocoding.html#cb101-22" tabindex="-1"></a><span class="fu">head</span>(camera_address)</span></code></pre></div>
+<pre><code>##           LOCATION            SUBURB Reason Code Audit Date
+## 2        Abey Road        Cobblebank         BCD     May-22
+## 3      Adam Street     Golden Square         ACD     Apr-22
+## 4        Agar Road       Coronet Bay          BC          T
+## 5    Airport Drive Melbourne Airport        ABCD     Apr-22
+## 6 Aitken Boulevard     Roxburgh Park         ABC     Apr-22
+## 7 Aitken Boulevard       Craigieburn        ABCD     Apr-22
+##                                       ADDRESS
+## 2            Abey Road, Cobblebank, Australia
+## 3       Adam Street, Golden Square, Australia
+## 4           Agar Road, Coronet Bay, Australia
+## 5 Airport Drive, Melbourne Airport, Australia
+## 6  Aitken Boulevard, Roxburgh Park, Australia
+## 7    Aitken Boulevard, Craigieburn, Australia</code></pre>
+<p>This dataset does not have street numbers - only street names. This makes intuitive sense (as most speed cameras aren’t placed outside residential houses, but rather along main roads).</p>
+<p>We can see that the street and suburb names are in different columns. To run a geocode, we want a single field of address data. This makes it easier for the database we’re fuzzy matching against to select the best possible point. Let’s append the street name and the suburb name into a single field.</p>
+<p>We know all these addresses are in Australia, so we can add the word ‘Australia’ to the end of each entry in the newly created address field to help the geocoder find the location.</p>
+<p>It makes sense that all these addressed should have a postcode in the format 3XXX (as the data set is for the State of Victoria). However, let’s hold off on that assumption for now.</p>
+</div>
+<div id="google-api" class="section level2 hasAnchor" number="9.3">
+<h2><span class="header-section-number">9.3</span> Google API<a href="geocoding.html#google-api" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Now that we have a useful and highly descriptive address field, we’re ready to run the geocode.</p>
+<p>We can geocode the lats and lons using Google’s API through ther <code>ggmap</code> package.</p>
+<ul>
+<li><p>We must register a API key (by creating an account in the <a href="https://developers.google.com/maps/documentation/geocoding/overview">google developer suite</a>).</p></li>
+<li><p>You can ping the API 2,500 times a day. Lucky for us this dataset is only 1,800 rows long!</p></li>
+</ul>
+<p>Uncomment the chunk below (using Ctrl+Shift+C) and enter your unique key from google to run the code.</p>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="geocoding.html#cb103-1" tabindex="-1"></a><span class="co"># #Input the google API key</span></span>
+<span id="cb103-2"><a href="geocoding.html#cb103-2" tabindex="-1"></a><span class="co"># register_google(key = &quot;PASTE YOUR UNIQUE KEY HERE&quot;)</span></span>
+<span id="cb103-3"><a href="geocoding.html#cb103-3" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb103-4"><a href="geocoding.html#cb103-4" tabindex="-1"></a><span class="co"># #Run the geocode function from ggmap package</span></span>
+<span id="cb103-5"><a href="geocoding.html#cb103-5" tabindex="-1"></a><span class="co"># camera_ggmap &lt;- ggmap::geocode(location = camera_address$ADDRESS,</span></span>
+<span id="cb103-6"><a href="geocoding.html#cb103-6" tabindex="-1"></a><span class="co">#                          output = &quot;more&quot;,</span></span>
+<span id="cb103-7"><a href="geocoding.html#cb103-7" tabindex="-1"></a><span class="co">#                          source = &quot;google&quot;)</span></span>
+<span id="cb103-8"><a href="geocoding.html#cb103-8" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb103-9"><a href="geocoding.html#cb103-9" tabindex="-1"></a><span class="co"># #We&#39;ll bind the newly created address columns to the original df</span></span>
+<span id="cb103-10"><a href="geocoding.html#cb103-10" tabindex="-1"></a><span class="co"># camera_ggmap &lt;- cbind(camera_address, camera_ggmap)</span></span>
+<span id="cb103-11"><a href="geocoding.html#cb103-11" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb103-12"><a href="geocoding.html#cb103-12" tabindex="-1"></a><span class="co"># #Print the results</span></span>
+<span id="cb103-13"><a href="geocoding.html#cb103-13" tabindex="-1"></a><span class="co"># head(camera_ggmap)</span></span>
+<span id="cb103-14"><a href="geocoding.html#cb103-14" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb103-15"><a href="geocoding.html#cb103-15" tabindex="-1"></a><span class="co"># #Write the data to a df</span></span>
+<span id="cb103-16"><a href="geocoding.html#cb103-16" tabindex="-1"></a><span class="co"># readr::write_csv(camera_ggmap,&quot;C:/Data/camera_geocoded.csv&quot;)</span></span></code></pre></div>
+<p>We’ll load up the output this chunk generates and continue.</p>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="geocoding.html#cb104-1" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&#39;https://raw.githubusercontent.com/charlescoverdale/bookdata/main/camera_geocoded.csv&#39;</span></span>
+<span id="cb104-2"><a href="geocoding.html#cb104-2" tabindex="-1"></a></span>
+<span id="cb104-3"><a href="geocoding.html#cb104-3" tabindex="-1"></a><span class="co">#Note: We need to import as a csv rather than xlsx for url functionality</span></span>
+<span id="cb104-4"><a href="geocoding.html#cb104-4" tabindex="-1"></a>camera_ggmap <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url, <span class="at">header=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+</div>
+<div id="geocode-analysis" class="section level2 hasAnchor" number="9.4">
+<h2><span class="header-section-number">9.4</span> Geocode analysis<a href="geocoding.html#geocode-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>The raw dataset our geocode produced looks good! Although… it could probably use some cleaning.</p>
+<p>Let’s rename this dataset so we don’t loose the original df (and therefore have to run the google query again). This is simply a best practice step to build in some redundancy.</p>
+<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="geocoding.html#cb105-1" tabindex="-1"></a>camera_geocoded <span class="ot">&lt;-</span> camera_ggmap</span></code></pre></div>
+<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="geocoding.html#cb106-1" tabindex="-1"></a><span class="co">#Rename df</span></span>
+<span id="cb106-2"><a href="geocoding.html#cb106-2" tabindex="-1"></a>camera_geocoded_clean <span class="ot">&lt;-</span> camera_geocoded</span>
+<span id="cb106-3"><a href="geocoding.html#cb106-3" tabindex="-1"></a></span>
+<span id="cb106-4"><a href="geocoding.html#cb106-4" tabindex="-1"></a><span class="co">#Rename the API generated address field</span></span>
+<span id="cb106-5"><a href="geocoding.html#cb106-5" tabindex="-1"></a>camera_geocoded_clean <span class="ot">&lt;-</span> camera_geocoded_clean <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">address_long=</span>address)</span>
+<span id="cb106-6"><a href="geocoding.html#cb106-6" tabindex="-1"></a></span>
+<span id="cb106-7"><a href="geocoding.html#cb106-7" tabindex="-1"></a><span class="co">#Select only the columns we need</span></span>
+<span id="cb106-8"><a href="geocoding.html#cb106-8" tabindex="-1"></a>camera_geocoded_clean <span class="ot">&lt;-</span> camera_geocoded_clean <span class="sc">%&gt;%</span> </span>
+<span id="cb106-9"><a href="geocoding.html#cb106-9" tabindex="-1"></a>                          <span class="fu">select</span>(<span class="st">&quot;LOCATION&quot;</span>,</span>
+<span id="cb106-10"><a href="geocoding.html#cb106-10" tabindex="-1"></a>                                 <span class="st">&quot;SUBURB&quot;</span>,</span>
+<span id="cb106-11"><a href="geocoding.html#cb106-11" tabindex="-1"></a>                                 <span class="st">&quot;ADDRESS&quot;</span>,</span>
+<span id="cb106-12"><a href="geocoding.html#cb106-12" tabindex="-1"></a>                                 <span class="st">&quot;lon&quot;</span>, </span>
+<span id="cb106-13"><a href="geocoding.html#cb106-13" tabindex="-1"></a>                                 <span class="st">&quot;lat&quot;</span>, </span>
+<span id="cb106-14"><a href="geocoding.html#cb106-14" tabindex="-1"></a>                                 <span class="st">&quot;address_long&quot;</span></span>
+<span id="cb106-15"><a href="geocoding.html#cb106-15" tabindex="-1"></a>                                 )</span>
+<span id="cb106-16"><a href="geocoding.html#cb106-16" tabindex="-1"></a></span>
+<span id="cb106-17"><a href="geocoding.html#cb106-17" tabindex="-1"></a><span class="co">#Make all the column names the same format</span></span>
+<span id="cb106-18"><a href="geocoding.html#cb106-18" tabindex="-1"></a>camera_geocoded_clean <span class="ot">&lt;-</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>(camera_geocoded_clean)</span>
+<span id="cb106-19"><a href="geocoding.html#cb106-19" tabindex="-1"></a></span>
+<span id="cb106-20"><a href="geocoding.html#cb106-20" tabindex="-1"></a><span class="co">#We still need to convert address_long to title case</span></span>
+<span id="cb106-21"><a href="geocoding.html#cb106-21" tabindex="-1"></a>camera_geocoded_clean<span class="sc">$</span>address_long <span class="ot">&lt;-</span> <span class="fu">str_to_title</span>(camera_geocoded_clean<span class="sc">$</span>address_long)</span></code></pre></div>
+<p>If we want to go one step further, we can create spatial points from this list of coordinates. This is a good step for eyeballing the data. We see most of it is in Victoria (as expected!)… but it has picked up a couple of points in Sydney and WA.</p>
+<p>These are worth investigating separately for correction or exclusion.</p>
+<p>Uncomment the mapview function below to see these points on a leaflet map.</p>
+<div class="sourceCode" id="cb107"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb107-1"><a href="geocoding.html#cb107-1" tabindex="-1"></a><span class="co">#Convert data frame to sf object</span></span>
+<span id="cb107-2"><a href="geocoding.html#cb107-2" tabindex="-1"></a>camera_points <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_as_sf</span>(<span class="at">x =</span> camera_geocoded_clean, </span>
+<span id="cb107-3"><a href="geocoding.html#cb107-3" tabindex="-1"></a>                               <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;lon&quot;</span>, <span class="st">&quot;lat&quot;</span>),</span>
+<span id="cb107-4"><a href="geocoding.html#cb107-4" tabindex="-1"></a>                               <span class="at">crs =</span> <span class="st">&quot;+proj=longlat </span></span>
+<span id="cb107-5"><a href="geocoding.html#cb107-5" tabindex="-1"></a><span class="st">                                      +datum=WGS84 </span></span>
+<span id="cb107-6"><a href="geocoding.html#cb107-6" tabindex="-1"></a><span class="st">                                      +ellps=WGS84 </span></span>
+<span id="cb107-7"><a href="geocoding.html#cb107-7" tabindex="-1"></a><span class="st">                                      +towgs84=0,0,0&quot;</span>)</span>
+<span id="cb107-8"><a href="geocoding.html#cb107-8" tabindex="-1"></a></span>
+<span id="cb107-9"><a href="geocoding.html#cb107-9" tabindex="-1"></a><span class="co">#Plot an interactive map</span></span>
+<span id="cb107-10"><a href="geocoding.html#cb107-10" tabindex="-1"></a><span class="co"># mapview(camera_points)</span></span></code></pre></div>
+<p>We can export these points as a shapefile using the <code>rgdal</code> package.Let’s now have a look at our edge case datapoints.</p>
+<p>There’s a couple of ways to do this… but one of the simplest is to extract the postcode as a separate field. We can then simply sort by postcodes that do not start with the number 3.</p>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="geocoding.html#cb108-1" tabindex="-1"></a>camera_points<span class="sc">$</span>postcode <span class="ot">&lt;-</span> <span class="fu">str_sub</span>(camera_points<span class="sc">$</span>address_long, </span>
+<span id="cb108-2"><a href="geocoding.html#cb108-2" tabindex="-1"></a>                                   <span class="at">start=</span> <span class="sc">-</span><span class="dv">16</span>,  </span>
+<span id="cb108-3"><a href="geocoding.html#cb108-3" tabindex="-1"></a>                                   <span class="at">end=</span> <span class="sc">-</span><span class="dv">12</span>)</span>
+<span id="cb108-4"><a href="geocoding.html#cb108-4" tabindex="-1"></a></span>
+<span id="cb108-5"><a href="geocoding.html#cb108-5" tabindex="-1"></a>camera_points<span class="sc">$</span>postcode <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(camera_points<span class="sc">$</span>postcode)</span>
+<span id="cb108-6"><a href="geocoding.html#cb108-6" tabindex="-1"></a></span>
+<span id="cb108-7"><a href="geocoding.html#cb108-7" tabindex="-1"></a>outliers <span class="ot">&lt;-</span> camera_points <span class="sc">%&gt;%</span> <span class="fu">filter</span> (postcode <span class="sc">&lt;</span><span class="dv">3000</span> <span class="sc">|</span> postcode <span class="sc">&gt;=</span> <span class="dv">4000</span>)</span>
+<span id="cb108-8"><a href="geocoding.html#cb108-8" tabindex="-1"></a></span>
+<span id="cb108-9"><a href="geocoding.html#cb108-9" tabindex="-1"></a><span class="fu">print</span>(outliers)</span></code></pre></div>
+<pre><code>## Simple feature collection with 7 features and 5 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: 115.9555 ymin: -33.90941 xmax: 152.7034 ymax: -25.53849
+## Geodetic CRS:  +proj=longlat 
+##                                       +datum=WGS84 
+##                                       +ellps=WGS84 
+##                                       +towgs84=0,0,0
+##                    location     suburb
+## 1               Epping Road     Epping
+## 2               High Street     Epping
+## 3           Kensington Road Kensington
+## 4          Maryborough Road      Ascot
+## 5 Maryborough-Ballarat Road     Talbot
+## 6  Mooroopna-Murchison Road  Murchison
+## 7             Plumpton Road   Plumpton
+##                                          address
+## 1                 Epping Road, Epping, Australia
+## 2                 High Street, Epping, Australia
+## 3         Kensington Road, Kensington, Australia
+## 4             Maryborough Road, Ascot, Australia
+## 5   Maryborough-Ballarat Road, Talbot, Australia
+## 6 Mooroopna-Murchison Road, Murchison, Australia
+## 7             Plumpton Road, Plumpton, Australia
+##                                    address_long                   geometry
+## 1         Epping Rd, Epping Nsw 2121, Australia POINT (151.0906 -33.77076)
+## 2           High St, Epping Nsw 2121, Australia POINT (151.0836 -33.77611)
+## 3 Kensington Rd, Kensington Nsw 2033, Australia POINT (151.2211 -33.90941)
+## 4               Maryborough Qld 4650, Australia POINT (152.7034 -25.53849)
+## 5               Maryborough Qld 4650, Australia POINT (152.7034 -25.53849)
+## 6                  Murchison Wa 6630, Australia POINT (115.9555 -26.89259)
+## 7     Plumpton Rd, Plumpton Nsw 2761, Australia POINT (150.8439 -33.74823)
+##   postcode
+## 1     2121
+## 2     2121
+## 3     2033
+## 4     4650
+## 5     4650
+## 6     6630
+## 7     2761</code></pre>
+<p>Easy enough. We see there’s 7 rows that don’t have a postcode starting in a 3000 postcode.</p>
+<p>Four of these are in NSW, two in QLD, and one in WA. It looks like they are real (e.g. the streets and suburbs do exist in that state)… so for now let’s just exclude them from our dataset. We’ll do this by filtering by postcode.</p>
+<p>Uncomment the mapview function below to see these points on a leaflet map.</p>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="geocoding.html#cb110-1" tabindex="-1"></a>camera_points_vic <span class="ot">&lt;-</span> camera_points <span class="sc">%&gt;%</span> <span class="fu">filter</span> (postcode<span class="sc">&gt;</span><span class="st">&quot;3000&quot;</span> <span class="sc">&amp;</span> postcode<span class="sc">&lt;</span><span class="st">&quot;4000&quot;</span>)</span>
+<span id="cb110-2"><a href="geocoding.html#cb110-2" tabindex="-1"></a></span>
+<span id="cb110-3"><a href="geocoding.html#cb110-3" tabindex="-1"></a><span class="fu">head</span>(camera_points_vic)</span></code></pre></div>
+<pre><code>## Simple feature collection with 6 features and 5 fields
+## Geometry type: POINT
+## Dimension:     XY
+## Bounding box:  xmin: 144.2738 ymin: -38.43479 xmax: 145.4467 ymax: -36.77596
+## Geodetic CRS:  +proj=longlat 
+##                                       +datum=WGS84 
+##                                       +ellps=WGS84 
+##                                       +towgs84=0,0,0
+##           location            suburb
+## 1        Abey Road        Cobblebank
+## 2      Adam Street     Golden Square
+## 3        Agar Road       Coronet Bay
+## 4    Airport Drive Melbourne Airport
+## 5 Aitken Boulevard     Roxburgh Park
+## 6 Aitken Boulevard       Craigieburn
+##                                       address
+## 1            Abey Road, Cobblebank, Australia
+## 2       Adam Street, Golden Square, Australia
+## 3           Agar Road, Coronet Bay, Australia
+## 4 Airport Drive, Melbourne Airport, Australia
+## 5  Aitken Boulevard, Roxburgh Park, Australia
+## 6    Aitken Boulevard, Craigieburn, Australia
+##                                        address_long                   geometry
+## 1           Abey Rd, Cobblebank Vic 3338, Australia POINT (144.5879 -37.70471)
+## 2        Adam St, Golden Square Vic 3555, Australia POINT (144.2738 -36.77596)
+## 3          Agar Rd, Coronet Bay Vic 3984, Australia POINT (145.4467 -38.43479)
+## 4 Airport Dr, Melbourne Airport Vic 3045, Australia POINT (144.8661 -37.69291)
+## 5    Aitken Blvd, Roxburgh Park Vic 3064, Australia  POINT (144.915 -37.62426)
+## 6      Aitken Blvd, Craigieburn Vic 3064, Australia   POINT (144.91 -37.59446)
+##   postcode
+## 1     3338
+## 2     3555
+## 3     3984
+## 4     3045
+## 5     3064
+## 6     3064</code></pre>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="geocoding.html#cb112-1" tabindex="-1"></a><span class="co">#Plot an interactive map</span></span>
+<span id="cb112-2"><a href="geocoding.html#cb112-2" tabindex="-1"></a><span class="co"># mapview(camera_points_vic)</span></span></code></pre></div>
+<p>There we go! A clean, geocoded dataset of speed camera locations in Victoria.</p>
 
+</div>
 </div>
             </section>
 

@@ -1,6 +1,7 @@
 bookdown::gitbook:
   css: style.css
   #code_folding: hide
+  always_allow_html: true
   includes:
   config:
     toc:

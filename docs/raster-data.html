@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-02-17" />
+<meta name="date" content="2025-02-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -208,8 +208,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.1" data-path="text-mining.html"><a href="text-mining.html#frequency-analysis"><i class="fa fa-check"></i><b>8.1</b> Frequency analysis</a></li>
 <li class="chapter" data-level="8.2" data-path="text-mining.html"><a href="text-mining.html#sentiment-analysis"><i class="fa fa-check"></i><b>8.2</b> Sentiment analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>9</b> Geocoding</a></li>
-<li class="chapter" data-level="10" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html"><i class="fa fa-check"></i><b>10</b> Drivetime analysis</a></li>
+<li class="chapter" data-level="9" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>9</b> Geocoding</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="geocoding.html"><a href="geocoding.html#lats-and-longs"><i class="fa fa-check"></i><b>9.1</b> Lats and longs</a></li>
+<li class="chapter" data-level="9.2" data-path="geocoding.html"><a href="geocoding.html#spatial-data"><i class="fa fa-check"></i><b>9.2</b> Spatial data</a></li>
+<li class="chapter" data-level="9.3" data-path="geocoding.html"><a href="geocoding.html#google-api"><i class="fa fa-check"></i><b>9.3</b> Google API</a></li>
+<li class="chapter" data-level="9.4" data-path="geocoding.html"><a href="geocoding.html#geocode-analysis"><i class="fa fa-check"></i><b>9.4</b> Geocode analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html"><i class="fa fa-check"></i><b>10</b> Drivetime analysis</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html#method-1-osrm-isochrones"><i class="fa fa-check"></i><b>10.1</b> Method 1: OSRM isochrones</a></li>
+</ul></li>
 <li class="chapter" data-level="11" data-path="raster-data.html"><a href="raster-data.html"><i class="fa fa-check"></i><b>11</b> Raster data</a>
 <ul>
 <li class="chapter" data-level="11.1" data-path="raster-data.html"><a href="raster-data.html#import-raster"><i class="fa fa-check"></i><b>11.1</b> Import raster</a></li>
@@ -233,7 +242,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="13.4" data-path="australian-election-data.html"><a href="australian-election-data.html#booth-data"><i class="fa fa-check"></i><b>13.4</b> Booth data</a></li>
 <li class="chapter" data-level="13.5" data-path="australian-election-data.html"><a href="australian-election-data.html#informal-votes"><i class="fa fa-check"></i><b>13.5</b> Informal votes</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html"><i class="fa fa-check"></i><b>14</b> Bayesian for the common man</a></li>
+<li class="chapter" data-level="14" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html"><i class="fa fa-check"></i><b>14</b> Bayesian for the common man</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html#probability-refresher"><i class="fa fa-check"></i><b>14.1</b> Probability refresher</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html#section"><i class="fa fa-check"></i><b>14.1.1</b> </a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://www.linkedin.com/in/charlescoverdale/" target="blank">Connect with me on linkedin</a></li>
 <li><a href="https://github.com/charlescoverdale/casualdabbler2e" target="blank">Get the code on github</a></li>
@@ -260,136 +275,136 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Raster data (sometimes referred to as gridded data) is a type of spatial data that is stored in a grid rather than a polygon. Imagine a chessboard of individuals squares covering the Australian landmass compared to 8 different shapes covering each state and territory.</p>
 <p>The nice thing about gridded data is that all the cells in the grid are the same size - making calculations much easier. The tricky part is those squares are overlayed on a (very roughly) spherical earth. We’ll have to think about mapping projections along the way.</p>
 <p>Let’s get started. First up we need to load some spatial and data crunching packages.</p>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="raster-data.html#cb99-1" tabindex="-1"></a><span class="co"># Core tidyverse packages (includes ggplot2, dplyr, tidyr, broom, etc.)</span></span>
-<span id="cb99-2"><a href="raster-data.html#cb99-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb99-3"><a href="raster-data.html#cb99-3" tabindex="-1"></a></span>
-<span id="cb99-4"><a href="raster-data.html#cb99-4" tabindex="-1"></a><span class="co"># Spatial data handling</span></span>
-<span id="cb99-5"><a href="raster-data.html#cb99-5" tabindex="-1"></a><span class="fu">library</span>(sf)         <span class="co"># Modern replacement for sp + rgdal</span></span>
-<span id="cb99-6"><a href="raster-data.html#cb99-6" tabindex="-1"></a><span class="fu">library</span>(raster)     <span class="co"># Working with raster data</span></span>
-<span id="cb99-7"><a href="raster-data.html#cb99-7" tabindex="-1"></a><span class="fu">library</span>(ncdf4)      <span class="co"># NetCDF file handling</span></span>
-<span id="cb99-8"><a href="raster-data.html#cb99-8" tabindex="-1"></a><span class="fu">library</span>(leaflet)    <span class="co"># Interactive maps</span></span>
-<span id="cb99-9"><a href="raster-data.html#cb99-9" tabindex="-1"></a></span>
-<span id="cb99-10"><a href="raster-data.html#cb99-10" tabindex="-1"></a><span class="co"># Mapping &amp; Visualization</span></span>
-<span id="cb99-11"><a href="raster-data.html#cb99-11" tabindex="-1"></a><span class="fu">library</span>(ggspatial)  <span class="co"># Adds scale bars, north arrows, etc.</span></span>
-<span id="cb99-12"><a href="raster-data.html#cb99-12" tabindex="-1"></a><span class="co">#library(tmap)       # Thematic mapping</span></span>
-<span id="cb99-13"><a href="raster-data.html#cb99-13" tabindex="-1"></a><span class="fu">library</span>(ggmap)      <span class="co"># Google Maps integration</span></span>
-<span id="cb99-14"><a href="raster-data.html#cb99-14" tabindex="-1"></a><span class="fu">library</span>(rasterVis)  <span class="co"># Raster visualization</span></span>
-<span id="cb99-15"><a href="raster-data.html#cb99-15" tabindex="-1"></a><span class="fu">library</span>(viridis)    <span class="co"># Color scales for ggplot2 and rasterVis</span></span>
-<span id="cb99-16"><a href="raster-data.html#cb99-16" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer) <span class="co"># Color palettes</span></span>
-<span id="cb99-17"><a href="raster-data.html#cb99-17" tabindex="-1"></a></span>
-<span id="cb99-18"><a href="raster-data.html#cb99-18" tabindex="-1"></a><span class="co"># Other Utilities</span></span>
-<span id="cb99-19"><a href="raster-data.html#cb99-19" tabindex="-1"></a><span class="fu">library</span>(absmapsdata) <span class="co"># Australian Bureau of Statistics map data</span></span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="raster-data.html#cb116-1" tabindex="-1"></a><span class="co"># Core tidyverse packages (includes ggplot2, dplyr, tidyr, broom, etc.)</span></span>
+<span id="cb116-2"><a href="raster-data.html#cb116-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb116-3"><a href="raster-data.html#cb116-3" tabindex="-1"></a></span>
+<span id="cb116-4"><a href="raster-data.html#cb116-4" tabindex="-1"></a><span class="co"># Spatial data handling</span></span>
+<span id="cb116-5"><a href="raster-data.html#cb116-5" tabindex="-1"></a><span class="fu">library</span>(sf)         <span class="co"># Modern replacement for sp + rgdal</span></span>
+<span id="cb116-6"><a href="raster-data.html#cb116-6" tabindex="-1"></a><span class="fu">library</span>(raster)     <span class="co"># Working with raster data</span></span>
+<span id="cb116-7"><a href="raster-data.html#cb116-7" tabindex="-1"></a><span class="fu">library</span>(ncdf4)      <span class="co"># NetCDF file handling</span></span>
+<span id="cb116-8"><a href="raster-data.html#cb116-8" tabindex="-1"></a><span class="fu">library</span>(leaflet)    <span class="co"># Interactive maps</span></span>
+<span id="cb116-9"><a href="raster-data.html#cb116-9" tabindex="-1"></a></span>
+<span id="cb116-10"><a href="raster-data.html#cb116-10" tabindex="-1"></a><span class="co"># Mapping &amp; Visualization</span></span>
+<span id="cb116-11"><a href="raster-data.html#cb116-11" tabindex="-1"></a><span class="fu">library</span>(ggspatial)  <span class="co"># Adds scale bars, north arrows, etc.</span></span>
+<span id="cb116-12"><a href="raster-data.html#cb116-12" tabindex="-1"></a><span class="co">#library(tmap)       # Thematic mapping</span></span>
+<span id="cb116-13"><a href="raster-data.html#cb116-13" tabindex="-1"></a><span class="fu">library</span>(ggmap)      <span class="co"># Google Maps integration</span></span>
+<span id="cb116-14"><a href="raster-data.html#cb116-14" tabindex="-1"></a><span class="fu">library</span>(rasterVis)  <span class="co"># Raster visualization</span></span>
+<span id="cb116-15"><a href="raster-data.html#cb116-15" tabindex="-1"></a><span class="fu">library</span>(viridis)    <span class="co"># Color scales for ggplot2 and rasterVis</span></span>
+<span id="cb116-16"><a href="raster-data.html#cb116-16" tabindex="-1"></a><span class="fu">library</span>(RColorBrewer) <span class="co"># Color palettes</span></span>
+<span id="cb116-17"><a href="raster-data.html#cb116-17" tabindex="-1"></a></span>
+<span id="cb116-18"><a href="raster-data.html#cb116-18" tabindex="-1"></a><span class="co"># Other Utilities</span></span>
+<span id="cb116-19"><a href="raster-data.html#cb116-19" tabindex="-1"></a><span class="fu">library</span>(absmapsdata) <span class="co"># Australian Bureau of Statistics map data</span></span></code></pre></div>
 <div id="import-raster" class="section level2 hasAnchor" number="11.1">
 <h2><span class="header-section-number">11.1</span> Import raster<a href="raster-data.html#import-raster" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Next, we want to import annual rainfall data from github (original source available from the Bureau of Meterology)</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="raster-data.html#cb100-1" tabindex="-1"></a>rainfall <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="st">&quot;https://raw.github.com/charlescoverdale/ERF/master/rainan.txt&quot;</span>)</span>
-<span id="cb100-2"><a href="raster-data.html#cb100-2" tabindex="-1"></a></span>
-<span id="cb100-3"><a href="raster-data.html#cb100-3" tabindex="-1"></a><span class="fu">plot</span>(rainfall)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-77-1.png" width="672" /></p>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="raster-data.html#cb117-1" tabindex="-1"></a>rainfall <span class="ot">&lt;-</span> <span class="fu">raster</span>(<span class="st">&quot;https://raw.github.com/charlescoverdale/ERF/master/rainan.txt&quot;</span>)</span>
+<span id="cb117-2"><a href="raster-data.html#cb117-2" tabindex="-1"></a></span>
+<span id="cb117-3"><a href="raster-data.html#cb117-3" tabindex="-1"></a><span class="fu">plot</span>(rainfall)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-88-1.png" width="672" /></p>
 <p>Straight away we see this is for the whole of Australia (and then some). We’re only interested in what’s going on in QLD… so let’s crop the data down to scale. For this we’ll need to import a shapefile for QLD.</p>
 <p>The easiest way to do this is using the absmapsdata package - importing a shapefile of Australia then filtering for only Queensland.</p>
-<div class="sourceCode" id="cb101"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb101-1"><a href="raster-data.html#cb101-1" tabindex="-1"></a><span class="co"># Import a polygon for the state of Queensland</span></span>
-<span id="cb101-2"><a href="raster-data.html#cb101-2" tabindex="-1"></a>QLD_shape <span class="ot">&lt;-</span> absmapsdata<span class="sc">::</span>state2016 <span class="sc">%&gt;%</span></span>
-<span id="cb101-3"><a href="raster-data.html#cb101-3" tabindex="-1"></a>             <span class="fu">filter</span>(state_name_2016<span class="sc">==</span><span class="st">&quot;Queensland&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb118"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb118-1"><a href="raster-data.html#cb118-1" tabindex="-1"></a><span class="co"># Import a polygon for the state of Queensland</span></span>
+<span id="cb118-2"><a href="raster-data.html#cb118-2" tabindex="-1"></a>QLD_shape <span class="ot">&lt;-</span> absmapsdata<span class="sc">::</span>state2016 <span class="sc">%&gt;%</span></span>
+<span id="cb118-3"><a href="raster-data.html#cb118-3" tabindex="-1"></a>             <span class="fu">filter</span>(state_name_2016<span class="sc">==</span><span class="st">&quot;Queensland&quot;</span>)</span></code></pre></div>
 </div>
 <div id="choosing-geographies" class="section level2 hasAnchor" number="11.2">
 <h2><span class="header-section-number">11.2</span> Choosing geographies<a href="raster-data.html#choosing-geographies" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>We have raster data for the entirety of Australia (and then some as it’s pulled from one of the BOMs satellites). This is a bit messy to work with - so let’s crop the rainfall data from the entire Australian continent to just Queensland.</p>
-<div class="sourceCode" id="cb102"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb102-1"><a href="raster-data.html#cb102-1" tabindex="-1"></a><span class="co">#Crop data</span></span>
-<span id="cb102-2"><a href="raster-data.html#cb102-2" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> <span class="fu">crop</span>(rainfall,<span class="fu">extent</span>(QLD_shape))</span>
-<span id="cb102-3"><a href="raster-data.html#cb102-3" tabindex="-1"></a>r3 <span class="ot">&lt;-</span> <span class="fu">mask</span>(r2,QLD_shape)</span>
-<span id="cb102-4"><a href="raster-data.html#cb102-4" tabindex="-1"></a><span class="fu">plot</span>(r3)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-79-1.png" width="672" /></p>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="raster-data.html#cb119-1" tabindex="-1"></a><span class="co">#Crop data</span></span>
+<span id="cb119-2"><a href="raster-data.html#cb119-2" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> <span class="fu">crop</span>(rainfall,<span class="fu">extent</span>(QLD_shape))</span>
+<span id="cb119-3"><a href="raster-data.html#cb119-3" tabindex="-1"></a>r3 <span class="ot">&lt;-</span> <span class="fu">mask</span>(r2,QLD_shape)</span>
+<span id="cb119-4"><a href="raster-data.html#cb119-4" tabindex="-1"></a><span class="fu">plot</span>(r3)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-90-1.png" width="672" /></p>
 <p>]Next up, let’s transform the cropped raster into a data frame that we can use in the ggplot package.</p>
-<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="raster-data.html#cb103-1" tabindex="-1"></a>r3_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(r3,<span class="at">xy=</span><span class="cn">TRUE</span>)</span>
-<span id="cb103-2"><a href="raster-data.html#cb103-2" tabindex="-1"></a></span>
-<span id="cb103-3"><a href="raster-data.html#cb103-3" tabindex="-1"></a>r3_df <span class="ot">&lt;-</span> r3_df <span class="sc">%&gt;%</span></span>
-<span id="cb103-4"><a href="raster-data.html#cb103-4" tabindex="-1"></a>         <span class="fu">filter</span>(rainan<span class="sc">!=</span><span class="st">&quot;NA&quot;</span>)</span>
-<span id="cb103-5"><a href="raster-data.html#cb103-5" tabindex="-1"></a></span>
-<span id="cb103-6"><a href="raster-data.html#cb103-6" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span>  </span>
-<span id="cb103-7"><a href="raster-data.html#cb103-7" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">data=</span>r3_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">fill=</span>rainan)) <span class="sc">+</span> </span>
-<span id="cb103-8"><a href="raster-data.html#cb103-8" tabindex="-1"></a>  <span class="fu">scale_fill_viridis</span>() <span class="sc">+</span></span>
-<span id="cb103-9"><a href="raster-data.html#cb103-9" tabindex="-1"></a>  <span class="fu">coord_equal</span>() <span class="sc">+</span></span>
-<span id="cb103-10"><a href="raster-data.html#cb103-10" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;bottom&quot;</span>) <span class="sc">+</span></span>
-<span id="cb103-11"><a href="raster-data.html#cb103-11" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.key.width=</span><span class="fu">unit</span>(<span class="fl">1.2</span>, <span class="st">&quot;cm&quot;</span>))<span class="sc">+</span></span>
-<span id="cb103-12"><a href="raster-data.html#cb103-12" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Rainfall in QLD&quot;</span>,</span>
-<span id="cb103-13"><a href="raster-data.html#cb103-13" tabindex="-1"></a>               <span class="at">subtitle =</span> <span class="st">&quot;Analysis from the Bureau of Meterology&quot;</span>,</span>
-<span id="cb103-14"><a href="raster-data.html#cb103-14" tabindex="-1"></a>               <span class="at">caption =</span> <span class="st">&quot;Data: BOM 2021&quot;</span>,</span>
-<span id="cb103-15"><a href="raster-data.html#cb103-15" tabindex="-1"></a>               <span class="at">x=</span><span class="st">&quot;&quot;</span>,</span>
-<span id="cb103-16"><a href="raster-data.html#cb103-16" tabindex="-1"></a>               <span class="at">y=</span><span class="st">&quot;&quot;</span>,</span>
-<span id="cb103-17"><a href="raster-data.html#cb103-17" tabindex="-1"></a>               <span class="at">fill=</span><span class="st">&quot;(mm)&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb103-18"><a href="raster-data.html#cb103-18" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb103-19"><a href="raster-data.html#cb103-19" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb103-20"><a href="raster-data.html#cb103-20" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb103-21"><a href="raster-data.html#cb103-21" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(), <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb103-22"><a href="raster-data.html#cb103-22" tabindex="-1"></a>            <span class="co">#theme(legend.position = &quot;bottom&quot;)+</span></span>
-<span id="cb103-23"><a href="raster-data.html#cb103-23" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
-<span id="cb103-24"><a href="raster-data.html#cb103-24" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
-<span id="cb103-25"><a href="raster-data.html#cb103-25" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-80-1.png" width="672" /></p>
+<div class="sourceCode" id="cb120"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb120-1"><a href="raster-data.html#cb120-1" tabindex="-1"></a>r3_df <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(r3,<span class="at">xy=</span><span class="cn">TRUE</span>)</span>
+<span id="cb120-2"><a href="raster-data.html#cb120-2" tabindex="-1"></a></span>
+<span id="cb120-3"><a href="raster-data.html#cb120-3" tabindex="-1"></a>r3_df <span class="ot">&lt;-</span> r3_df <span class="sc">%&gt;%</span></span>
+<span id="cb120-4"><a href="raster-data.html#cb120-4" tabindex="-1"></a>         <span class="fu">filter</span>(rainan<span class="sc">!=</span><span class="st">&quot;NA&quot;</span>)</span>
+<span id="cb120-5"><a href="raster-data.html#cb120-5" tabindex="-1"></a></span>
+<span id="cb120-6"><a href="raster-data.html#cb120-6" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span>  </span>
+<span id="cb120-7"><a href="raster-data.html#cb120-7" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">data=</span>r3_df, <span class="fu">aes</span>(<span class="at">x=</span>x, <span class="at">y=</span>y, <span class="at">fill=</span>rainan)) <span class="sc">+</span> </span>
+<span id="cb120-8"><a href="raster-data.html#cb120-8" tabindex="-1"></a>  <span class="fu">scale_fill_viridis</span>() <span class="sc">+</span></span>
+<span id="cb120-9"><a href="raster-data.html#cb120-9" tabindex="-1"></a>  <span class="fu">coord_equal</span>() <span class="sc">+</span></span>
+<span id="cb120-10"><a href="raster-data.html#cb120-10" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position=</span><span class="st">&quot;bottom&quot;</span>) <span class="sc">+</span></span>
+<span id="cb120-11"><a href="raster-data.html#cb120-11" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.key.width=</span><span class="fu">unit</span>(<span class="fl">1.2</span>, <span class="st">&quot;cm&quot;</span>))<span class="sc">+</span></span>
+<span id="cb120-12"><a href="raster-data.html#cb120-12" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Rainfall in QLD&quot;</span>,</span>
+<span id="cb120-13"><a href="raster-data.html#cb120-13" tabindex="-1"></a>               <span class="at">subtitle =</span> <span class="st">&quot;Analysis from the Bureau of Meterology&quot;</span>,</span>
+<span id="cb120-14"><a href="raster-data.html#cb120-14" tabindex="-1"></a>               <span class="at">caption =</span> <span class="st">&quot;Data: BOM 2021&quot;</span>,</span>
+<span id="cb120-15"><a href="raster-data.html#cb120-15" tabindex="-1"></a>               <span class="at">x=</span><span class="st">&quot;&quot;</span>,</span>
+<span id="cb120-16"><a href="raster-data.html#cb120-16" tabindex="-1"></a>               <span class="at">y=</span><span class="st">&quot;&quot;</span>,</span>
+<span id="cb120-17"><a href="raster-data.html#cb120-17" tabindex="-1"></a>               <span class="at">fill=</span><span class="st">&quot;(mm)&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb120-18"><a href="raster-data.html#cb120-18" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb120-19"><a href="raster-data.html#cb120-19" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb120-20"><a href="raster-data.html#cb120-20" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb120-21"><a href="raster-data.html#cb120-21" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(), <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb120-22"><a href="raster-data.html#cb120-22" tabindex="-1"></a>            <span class="co">#theme(legend.position = &quot;bottom&quot;)+</span></span>
+<span id="cb120-23"><a href="raster-data.html#cb120-23" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
+<span id="cb120-24"><a href="raster-data.html#cb120-24" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
+<span id="cb120-25"><a href="raster-data.html#cb120-25" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-91-1.png" width="672" /></p>
 <p><br />
 Excellent, we’ve got a working map of rainfall in Queensland using the ggplot package. We’ll tidy up the map also and add a title and some better colours.</p>
 </div>
 <div id="analysis-with-raster-data" class="section level2 hasAnchor" number="11.3">
 <h2><span class="header-section-number">11.3</span> Analysis with raster data<a href="raster-data.html#analysis-with-raster-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>For our first piece of data analysis, we’re going to look at areas with less than 600mm of annual rainfall. How many of our data points will have less than 600mm of rain? Let’s take a look at the data distribution and find out.</p>
-<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="raster-data.html#cb104-1" tabindex="-1"></a><span class="fu">ggplot</span>(r3_df) <span class="sc">+</span></span>
-<span id="cb104-2"><a href="raster-data.html#cb104-2" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(rainan),<span class="at">binwidth=</span><span class="dv">1</span>,<span class="at">col=</span><span class="st">&quot;darkblue&quot;</span>)<span class="sc">+</span></span>
-<span id="cb104-3"><a href="raster-data.html#cb104-3" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Distribution of annual rainfall in QLD&quot;</span>,</span>
-<span id="cb104-4"><a href="raster-data.html#cb104-4" tabindex="-1"></a>               <span class="at">subtitle =</span> <span class="st">&quot;Data using a 5x5km grid&quot;</span>,</span>
-<span id="cb104-5"><a href="raster-data.html#cb104-5" tabindex="-1"></a>               <span class="at">caption =</span> <span class="st">&quot;Data: Bureau of Meterology 2021&quot;</span>,</span>
-<span id="cb104-6"><a href="raster-data.html#cb104-6" tabindex="-1"></a>               <span class="at">x=</span><span class="st">&quot;Rainfall (mm)&quot;</span>,</span>
-<span id="cb104-7"><a href="raster-data.html#cb104-7" tabindex="-1"></a>               <span class="at">y=</span><span class="st">&quot;&quot;</span>,</span>
-<span id="cb104-8"><a href="raster-data.html#cb104-8" tabindex="-1"></a>               <span class="at">fill=</span><span class="st">&quot;(mm)&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb104-9"><a href="raster-data.html#cb104-9" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb104-10"><a href="raster-data.html#cb104-10" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(), <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb104-11"><a href="raster-data.html#cb104-11" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
-<span id="cb104-12"><a href="raster-data.html#cb104-12" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
-<span id="cb104-13"><a href="raster-data.html#cb104-13" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
-<span id="cb104-14"><a href="raster-data.html#cb104-14" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-81-1.png" width="672" /></p>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="raster-data.html#cb121-1" tabindex="-1"></a><span class="fu">ggplot</span>(r3_df) <span class="sc">+</span></span>
+<span id="cb121-2"><a href="raster-data.html#cb121-2" tabindex="-1"></a>    <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(rainan),<span class="at">binwidth=</span><span class="dv">1</span>,<span class="at">col=</span><span class="st">&quot;darkblue&quot;</span>)<span class="sc">+</span></span>
+<span id="cb121-3"><a href="raster-data.html#cb121-3" tabindex="-1"></a>    <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Distribution of annual rainfall in QLD&quot;</span>,</span>
+<span id="cb121-4"><a href="raster-data.html#cb121-4" tabindex="-1"></a>               <span class="at">subtitle =</span> <span class="st">&quot;Data using a 5x5km grid&quot;</span>,</span>
+<span id="cb121-5"><a href="raster-data.html#cb121-5" tabindex="-1"></a>               <span class="at">caption =</span> <span class="st">&quot;Data: Bureau of Meterology 2021&quot;</span>,</span>
+<span id="cb121-6"><a href="raster-data.html#cb121-6" tabindex="-1"></a>               <span class="at">x=</span><span class="st">&quot;Rainfall (mm)&quot;</span>,</span>
+<span id="cb121-7"><a href="raster-data.html#cb121-7" tabindex="-1"></a>               <span class="at">y=</span><span class="st">&quot;&quot;</span>,</span>
+<span id="cb121-8"><a href="raster-data.html#cb121-8" tabindex="-1"></a>               <span class="at">fill=</span><span class="st">&quot;(mm)&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb121-9"><a href="raster-data.html#cb121-9" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb121-10"><a href="raster-data.html#cb121-10" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(), <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb121-11"><a href="raster-data.html#cb121-11" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>)<span class="sc">+</span></span>
+<span id="cb121-12"><a href="raster-data.html#cb121-12" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
+<span id="cb121-13"><a href="raster-data.html#cb121-13" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
+<span id="cb121-14"><a href="raster-data.html#cb121-14" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-92-1.png" width="672" /></p>
 <p>Interesting. The data is heavily right tailed skewed (the mean will be much higher than the median)… and most of the data looks to be between 0-1000mm (this makes sense).</p>
 <p>Let’s create a ‘flag’ column of 0’s and 1’s that shows when a data point is less than 600mm.</p>
-<div class="sourceCode" id="cb105"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb105-1"><a href="raster-data.html#cb105-1" tabindex="-1"></a><span class="co"># Define flag column and colors</span></span>
-<span id="cb105-2"><a href="raster-data.html#cb105-2" tabindex="-1"></a>r3_df <span class="ot">&lt;-</span> r3_df <span class="sc">%&gt;%</span></span>
-<span id="cb105-3"><a href="raster-data.html#cb105-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">flag_600mm =</span> <span class="fu">as.factor</span>(<span class="fu">ifelse</span>(rainan <span class="sc">&lt;=</span> <span class="dv">600</span>, <span class="dv">1</span>, <span class="dv">0</span>)))</span>
-<span id="cb105-4"><a href="raster-data.html#cb105-4" tabindex="-1"></a></span>
-<span id="cb105-5"><a href="raster-data.html#cb105-5" tabindex="-1"></a>flag_colours <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;grey&quot;</span>, <span class="st">&quot;#2FB300&quot;</span>)</span>
-<span id="cb105-6"><a href="raster-data.html#cb105-6" tabindex="-1"></a></span>
-<span id="cb105-7"><a href="raster-data.html#cb105-7" tabindex="-1"></a><span class="co"># Plot</span></span>
-<span id="cb105-8"><a href="raster-data.html#cb105-8" tabindex="-1"></a><span class="fu">ggplot</span>(r3_df, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">fill =</span> flag_600mm)) <span class="sc">+</span>  </span>
-<span id="cb105-9"><a href="raster-data.html#cb105-9" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span> </span>
-<span id="cb105-10"><a href="raster-data.html#cb105-10" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> flag_colours) <span class="sc">+</span></span>
-<span id="cb105-11"><a href="raster-data.html#cb105-11" tabindex="-1"></a>  <span class="fu">coord_equal</span>() <span class="sc">+</span></span>
-<span id="cb105-12"><a href="raster-data.html#cb105-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb105-13"><a href="raster-data.html#cb105-13" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb105-14"><a href="raster-data.html#cb105-14" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Areas with Less than 600mm of Annual Rainfall in QLD&quot;</span>,</span>
-<span id="cb105-15"><a href="raster-data.html#cb105-15" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Identifying Suitable Land Parcels for ERF Plantings&quot;</span>,</span>
-<span id="cb105-16"><a href="raster-data.html#cb105-16" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: Bureau of Meteorology 2021&quot;</span>,</span>
-<span id="cb105-17"><a href="raster-data.html#cb105-17" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
-<span id="cb105-18"><a href="raster-data.html#cb105-18" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;&quot;</span>,</span>
-<span id="cb105-19"><a href="raster-data.html#cb105-19" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;(mm)&quot;</span></span>
-<span id="cb105-20"><a href="raster-data.html#cb105-20" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb105-21"><a href="raster-data.html#cb105-21" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb105-22"><a href="raster-data.html#cb105-22" tabindex="-1"></a>    <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb105-23"><a href="raster-data.html#cb105-23" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb105-24"><a href="raster-data.html#cb105-24" tabindex="-1"></a>    <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb105-25"><a href="raster-data.html#cb105-25" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>,</span>
-<span id="cb105-26"><a href="raster-data.html#cb105-26" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
-<span id="cb105-27"><a href="raster-data.html#cb105-27" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
-<span id="cb105-28"><a href="raster-data.html#cb105-28" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>)</span>
-<span id="cb105-29"><a href="raster-data.html#cb105-29" tabindex="-1"></a>  )</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-82-1.png" width="672" /></p>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="raster-data.html#cb122-1" tabindex="-1"></a><span class="co"># Define flag column and colors</span></span>
+<span id="cb122-2"><a href="raster-data.html#cb122-2" tabindex="-1"></a>r3_df <span class="ot">&lt;-</span> r3_df <span class="sc">%&gt;%</span></span>
+<span id="cb122-3"><a href="raster-data.html#cb122-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">flag_600mm =</span> <span class="fu">as.factor</span>(<span class="fu">ifelse</span>(rainan <span class="sc">&lt;=</span> <span class="dv">600</span>, <span class="dv">1</span>, <span class="dv">0</span>)))</span>
+<span id="cb122-4"><a href="raster-data.html#cb122-4" tabindex="-1"></a></span>
+<span id="cb122-5"><a href="raster-data.html#cb122-5" tabindex="-1"></a>flag_colours <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;grey&quot;</span>, <span class="st">&quot;#2FB300&quot;</span>)</span>
+<span id="cb122-6"><a href="raster-data.html#cb122-6" tabindex="-1"></a></span>
+<span id="cb122-7"><a href="raster-data.html#cb122-7" tabindex="-1"></a><span class="co"># Plot</span></span>
+<span id="cb122-8"><a href="raster-data.html#cb122-8" tabindex="-1"></a><span class="fu">ggplot</span>(r3_df, <span class="fu">aes</span>(<span class="at">x =</span> x, <span class="at">y =</span> y, <span class="at">fill =</span> flag_600mm)) <span class="sc">+</span>  </span>
+<span id="cb122-9"><a href="raster-data.html#cb122-9" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span> </span>
+<span id="cb122-10"><a href="raster-data.html#cb122-10" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(<span class="at">values =</span> flag_colours) <span class="sc">+</span></span>
+<span id="cb122-11"><a href="raster-data.html#cb122-11" tabindex="-1"></a>  <span class="fu">coord_equal</span>() <span class="sc">+</span></span>
+<span id="cb122-12"><a href="raster-data.html#cb122-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb122-13"><a href="raster-data.html#cb122-13" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb122-14"><a href="raster-data.html#cb122-14" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Areas with Less than 600mm of Annual Rainfall in QLD&quot;</span>,</span>
+<span id="cb122-15"><a href="raster-data.html#cb122-15" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Identifying Suitable Land Parcels for ERF Plantings&quot;</span>,</span>
+<span id="cb122-16"><a href="raster-data.html#cb122-16" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: Bureau of Meteorology 2021&quot;</span>,</span>
+<span id="cb122-17"><a href="raster-data.html#cb122-17" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb122-18"><a href="raster-data.html#cb122-18" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb122-19"><a href="raster-data.html#cb122-19" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">&quot;(mm)&quot;</span></span>
+<span id="cb122-20"><a href="raster-data.html#cb122-20" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb122-21"><a href="raster-data.html#cb122-21" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb122-22"><a href="raster-data.html#cb122-22" tabindex="-1"></a>    <span class="at">axis.ticks =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb122-23"><a href="raster-data.html#cb122-23" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb122-24"><a href="raster-data.html#cb122-24" tabindex="-1"></a>    <span class="at">panel.grid =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb122-25"><a href="raster-data.html#cb122-25" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;none&quot;</span>,</span>
+<span id="cb122-26"><a href="raster-data.html#cb122-26" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb122-27"><a href="raster-data.html#cb122-27" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb122-28"><a href="raster-data.html#cb122-28" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>)</span>
+<span id="cb122-29"><a href="raster-data.html#cb122-29" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-93-1.png" width="672" /></p>
 </div>
 <div id="making-an-interactive-map" class="section level2 hasAnchor" number="11.4">
 <h2><span class="header-section-number">11.4</span> Making an interactive map<a href="raster-data.html#making-an-interactive-map" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The static map above is good… but an interactive visual (ideally with place names below) is better. The <code>leaflet</code> package is exceptional here.</p>
-<div class="sourceCode" id="cb106"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb106-1"><a href="raster-data.html#cb106-1" tabindex="-1"></a><span class="co"># This code creates an interactive leaflet map. It is commented out to allow the html version of RCCD2e to render online.</span></span>
-<span id="cb106-2"><a href="raster-data.html#cb106-2" tabindex="-1"></a></span>
-<span id="cb106-3"><a href="raster-data.html#cb106-3" tabindex="-1"></a><span class="co"># leaflet() %&gt;%</span></span>
-<span id="cb106-4"><a href="raster-data.html#cb106-4" tabindex="-1"></a><span class="co">#   addTiles() %&gt;%</span></span>
-<span id="cb106-5"><a href="raster-data.html#cb106-5" tabindex="-1"></a><span class="co">#   addRasterImage(r5, opacity = 0.5) %&gt;%</span></span>
-<span id="cb106-6"><a href="raster-data.html#cb106-6" tabindex="-1"></a><span class="co">#   addLegend(pal = colorNumeric(&quot;viridis&quot;, values(r5)), values = values(r5))</span></span></code></pre></div>
+<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="raster-data.html#cb123-1" tabindex="-1"></a><span class="co"># This code creates an interactive leaflet map. It is commented out to allow the html version of RCCD2e to render online.</span></span>
+<span id="cb123-2"><a href="raster-data.html#cb123-2" tabindex="-1"></a></span>
+<span id="cb123-3"><a href="raster-data.html#cb123-3" tabindex="-1"></a><span class="co"># leaflet() %&gt;%</span></span>
+<span id="cb123-4"><a href="raster-data.html#cb123-4" tabindex="-1"></a><span class="co">#   addTiles() %&gt;%</span></span>
+<span id="cb123-5"><a href="raster-data.html#cb123-5" tabindex="-1"></a><span class="co">#   addRasterImage(r5, opacity = 0.5) %&gt;%</span></span>
+<span id="cb123-6"><a href="raster-data.html#cb123-6" tabindex="-1"></a><span class="co">#   addLegend(pal = colorNumeric(&quot;viridis&quot;, values(r5)), values = values(r5))</span></span></code></pre></div>
 
 </div>
 </div>

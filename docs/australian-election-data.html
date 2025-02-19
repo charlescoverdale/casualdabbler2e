@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-02-17" />
+<meta name="date" content="2025-02-19" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -208,8 +208,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="8.1" data-path="text-mining.html"><a href="text-mining.html#frequency-analysis"><i class="fa fa-check"></i><b>8.1</b> Frequency analysis</a></li>
 <li class="chapter" data-level="8.2" data-path="text-mining.html"><a href="text-mining.html#sentiment-analysis"><i class="fa fa-check"></i><b>8.2</b> Sentiment analysis</a></li>
 </ul></li>
-<li class="chapter" data-level="9" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>9</b> Geocoding</a></li>
-<li class="chapter" data-level="10" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html"><i class="fa fa-check"></i><b>10</b> Drivetime analysis</a></li>
+<li class="chapter" data-level="9" data-path="geocoding.html"><a href="geocoding.html"><i class="fa fa-check"></i><b>9</b> Geocoding</a>
+<ul>
+<li class="chapter" data-level="9.1" data-path="geocoding.html"><a href="geocoding.html#lats-and-longs"><i class="fa fa-check"></i><b>9.1</b> Lats and longs</a></li>
+<li class="chapter" data-level="9.2" data-path="geocoding.html"><a href="geocoding.html#spatial-data"><i class="fa fa-check"></i><b>9.2</b> Spatial data</a></li>
+<li class="chapter" data-level="9.3" data-path="geocoding.html"><a href="geocoding.html#google-api"><i class="fa fa-check"></i><b>9.3</b> Google API</a></li>
+<li class="chapter" data-level="9.4" data-path="geocoding.html"><a href="geocoding.html#geocode-analysis"><i class="fa fa-check"></i><b>9.4</b> Geocode analysis</a></li>
+</ul></li>
+<li class="chapter" data-level="10" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html"><i class="fa fa-check"></i><b>10</b> Drivetime analysis</a>
+<ul>
+<li class="chapter" data-level="10.1" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html#method-1-osrm-isochrones"><i class="fa fa-check"></i><b>10.1</b> Method 1: OSRM isochrones</a></li>
+</ul></li>
 <li class="chapter" data-level="11" data-path="raster-data.html"><a href="raster-data.html"><i class="fa fa-check"></i><b>11</b> Raster data</a>
 <ul>
 <li class="chapter" data-level="11.1" data-path="raster-data.html"><a href="raster-data.html#import-raster"><i class="fa fa-check"></i><b>11.1</b> Import raster</a></li>
@@ -233,7 +242,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="13.4" data-path="australian-election-data.html"><a href="australian-election-data.html#booth-data"><i class="fa fa-check"></i><b>13.4</b> Booth data</a></li>
 <li class="chapter" data-level="13.5" data-path="australian-election-data.html"><a href="australian-election-data.html#informal-votes"><i class="fa fa-check"></i><b>13.5</b> Informal votes</a></li>
 </ul></li>
-<li class="chapter" data-level="14" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html"><i class="fa fa-check"></i><b>14</b> Bayesian for the common man</a></li>
+<li class="chapter" data-level="14" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html"><i class="fa fa-check"></i><b>14</b> Bayesian for the common man</a>
+<ul>
+<li class="chapter" data-level="14.1" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html#probability-refresher"><i class="fa fa-check"></i><b>14.1</b> Probability refresher</a>
+<ul>
+<li class="chapter" data-level="14.1.1" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html#section"><i class="fa fa-check"></i><b>14.1.1</b> </a></li>
+</ul></li>
+</ul></li>
 <li class="divider"></li>
 <li><a href="https://www.linkedin.com/in/charlescoverdale/" target="blank">Connect with me on linkedin</a></li>
 <li><a href="https://github.com/charlescoverdale/casualdabbler2e" target="blank">Get the code on github</a></li>
@@ -262,14 +277,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>The following code explores different R packages, election data sets, and statistical processes aimed at exploring and modelling federal elections in Australia.</p>
 <p>One word of warning: I use the term electorates, divisions, and seats interchangeably throughout this chapter.</p>
 <p>Let’s start by loading up some packages</p>
-<div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="australian-election-data.html#cb131-1" tabindex="-1"></a><span class="fu">library</span>(ggparliament)  <span class="co"># If working with parliamentary data</span></span>
-<span id="cb131-2"><a href="australian-election-data.html#cb131-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)      <span class="co"># Includes dplyr, ggplot2, tidyr, purrr, and more</span></span>
-<span id="cb131-3"><a href="australian-election-data.html#cb131-3" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
-<span id="cb131-4"><a href="australian-election-data.html#cb131-4" tabindex="-1"></a><span class="fu">library</span>(readxl)         <span class="co"># Reading Excel files</span></span>
-<span id="cb131-5"><a href="australian-election-data.html#cb131-5" tabindex="-1"></a><span class="fu">library</span>(sf)             <span class="co"># Spatial data handling</span></span>
-<span id="cb131-6"><a href="australian-election-data.html#cb131-6" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
-<span id="cb131-7"><a href="australian-election-data.html#cb131-7" tabindex="-1"></a><span class="fu">library</span>(eechidna)</span>
-<span id="cb131-8"><a href="australian-election-data.html#cb131-8" tabindex="-1"></a><span class="fu">library</span>(absmapsdata)</span></code></pre></div>
+<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="australian-election-data.html#cb148-1" tabindex="-1"></a><span class="fu">library</span>(ggparliament)  <span class="co"># If working with parliamentary data</span></span>
+<span id="cb148-2"><a href="australian-election-data.html#cb148-2" tabindex="-1"></a><span class="fu">library</span>(tidyverse)      <span class="co"># Includes dplyr, ggplot2, tidyr, purrr, and more</span></span>
+<span id="cb148-3"><a href="australian-election-data.html#cb148-3" tabindex="-1"></a><span class="fu">library</span>(ggthemes)</span>
+<span id="cb148-4"><a href="australian-election-data.html#cb148-4" tabindex="-1"></a><span class="fu">library</span>(readxl)         <span class="co"># Reading Excel files</span></span>
+<span id="cb148-5"><a href="australian-election-data.html#cb148-5" tabindex="-1"></a><span class="fu">library</span>(sf)             <span class="co"># Spatial data handling</span></span>
+<span id="cb148-6"><a href="australian-election-data.html#cb148-6" tabindex="-1"></a><span class="fu">library</span>(DT)</span>
+<span id="cb148-7"><a href="australian-election-data.html#cb148-7" tabindex="-1"></a><span class="fu">library</span>(eechidna)</span>
+<span id="cb148-8"><a href="australian-election-data.html#cb148-8" tabindex="-1"></a><span class="fu">library</span>(absmapsdata)</span></code></pre></div>
 <p>Some phenomenal Australian economists and statisticians have put together a handy election package called <a href="https://github.com/jforbes14/eechidna/">eechidna</a>. It includes three main data sets for the most recent Australia federal election (2022).</p>
 <ul>
 <li><p><strong>fp22:</strong> first preference votes for candidates at each electorate</p></li>
@@ -277,13 +292,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p><strong>tcp22:</strong> two candidate preferred votes for candidates at each electorate</p></li>
 </ul>
 <p>They’ve also gone to the trouble of aggregating some census data to the electorate level. This can be found with the <strong>abs2022</strong> function.</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="australian-election-data.html#cb132-1" tabindex="-1"></a><span class="fu">data</span>(fp22)</span>
-<span id="cb132-2"><a href="australian-election-data.html#cb132-2" tabindex="-1"></a><span class="fu">data</span>(tpp22)</span>
-<span id="cb132-3"><a href="australian-election-data.html#cb132-3" tabindex="-1"></a><span class="fu">data</span>(tcp22)</span>
-<span id="cb132-4"><a href="australian-election-data.html#cb132-4" tabindex="-1"></a><span class="fu">data</span>(abs2022)</span>
-<span id="cb132-5"><a href="australian-election-data.html#cb132-5" tabindex="-1"></a></span>
-<span id="cb132-6"><a href="australian-election-data.html#cb132-6" tabindex="-1"></a><span class="co"># Show the first few rows</span></span>
-<span id="cb132-7"><a href="australian-election-data.html#cb132-7" tabindex="-1"></a><span class="fu">head</span>(tpp22)</span></code></pre></div>
+<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="australian-election-data.html#cb149-1" tabindex="-1"></a><span class="fu">data</span>(fp22)</span>
+<span id="cb149-2"><a href="australian-election-data.html#cb149-2" tabindex="-1"></a><span class="fu">data</span>(tpp22)</span>
+<span id="cb149-3"><a href="australian-election-data.html#cb149-3" tabindex="-1"></a><span class="fu">data</span>(tcp22)</span>
+<span id="cb149-4"><a href="australian-election-data.html#cb149-4" tabindex="-1"></a><span class="fu">data</span>(abs2022)</span>
+<span id="cb149-5"><a href="australian-election-data.html#cb149-5" tabindex="-1"></a></span>
+<span id="cb149-6"><a href="australian-election-data.html#cb149-6" tabindex="-1"></a><span class="co"># Show the first few rows</span></span>
+<span id="cb149-7"><a href="australian-election-data.html#cb149-7" tabindex="-1"></a><span class="fu">head</span>(tpp22)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 9
 ##   DivisionNm DivisionID StateAb LNP_Votes LNP_Percent ALP_Votes ALP_Percent
 ##   &lt;chr&gt;           &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;       &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt;
@@ -294,7 +309,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 5 BENNELONG         105 NSW         48847        49.0     50801        51.0
 ## 6 BEROWRA           106 NSW         55771        59.8     37535        40.2
 ## # ℹ 2 more variables: TotalVotes &lt;dbl&gt;, Swing &lt;dbl&gt;</code></pre>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="australian-election-data.html#cb134-1" tabindex="-1"></a><span class="fu">head</span>(tcp22)</span></code></pre></div>
+<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="australian-election-data.html#cb151-1" tabindex="-1"></a><span class="fu">head</span>(tcp22)</span></code></pre></div>
 <pre><code>## # A tibble: 6 × 13
 ##   StateAb DivisionID DivisionNm BallotPosition CandidateID Surname GivenNm
 ##   &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;               &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;   &lt;chr&gt;  
@@ -366,77 +381,77 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>How variant are these 151 electorates in size? Massive.</p>
 <p>Durack in Western Australia (1.63 million square kilometres) is by far the largest and the smallest is Grayndler in New South Wales (32 square kilometres).</p>
 <p>Let’s make a map to make things easier.</p>
-<div class="sourceCode" id="cb136"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb136-1"><a href="australian-election-data.html#cb136-1" tabindex="-1"></a>CED_map <span class="ot">&lt;-</span> absmapsdata<span class="sc">::</span>ced2021 <span class="sc">%&gt;%</span></span>
-<span id="cb136-2"><a href="australian-election-data.html#cb136-2" tabindex="-1"></a>           <span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb136-3"><a href="australian-election-data.html#cb136-3" tabindex="-1"></a>           <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
-<span id="cb136-4"><a href="australian-election-data.html#cb136-4" tabindex="-1"></a>           <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Electoral divisions in Australia&quot;</span>,</span>
-<span id="cb136-5"><a href="australian-election-data.html#cb136-5" tabindex="-1"></a>               <span class="at">subtitle =</span> <span class="st">&quot;It turns out we divide the country in very non-standard blocks&quot;</span>,</span>
-<span id="cb136-6"><a href="australian-election-data.html#cb136-6" tabindex="-1"></a>               <span class="at">caption =</span> <span class="st">&quot;Data: Australian Bureau of Statistics 2016&quot;</span>,</span>
-<span id="cb136-7"><a href="australian-election-data.html#cb136-7" tabindex="-1"></a>               <span class="at">x=</span><span class="st">&quot;&quot;</span>,</span>
-<span id="cb136-8"><a href="australian-election-data.html#cb136-8" tabindex="-1"></a>               <span class="at">y=</span><span class="st">&quot;&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb136-9"><a href="australian-election-data.html#cb136-9" tabindex="-1"></a>           <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb136-10"><a href="australian-election-data.html#cb136-10" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb136-11"><a href="australian-election-data.html#cb136-11" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb136-12"><a href="australian-election-data.html#cb136-12" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(), <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb136-13"><a href="australian-election-data.html#cb136-13" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>)<span class="sc">+</span></span>
-<span id="cb136-14"><a href="australian-election-data.html#cb136-14" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
-<span id="cb136-15"><a href="australian-election-data.html#cb136-15" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
-<span id="cb136-16"><a href="australian-election-data.html#cb136-16" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))</span>
-<span id="cb136-17"><a href="australian-election-data.html#cb136-17" tabindex="-1"></a></span>
-<span id="cb136-18"><a href="australian-election-data.html#cb136-18" tabindex="-1"></a></span>
-<span id="cb136-19"><a href="australian-election-data.html#cb136-19" tabindex="-1"></a>CED_map_remove_6 <span class="ot">&lt;-</span> ced2021 <span class="sc">%&gt;%</span></span>
-<span id="cb136-20"><a href="australian-election-data.html#cb136-20" tabindex="-1"></a>                    dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span>ced_code_2021 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">506</span>,<span class="dv">701</span>,<span class="dv">404</span>,<span class="dv">511</span>,<span class="dv">321</span>,<span class="dv">317</span>)) <span class="sc">%&gt;%</span>   </span>
-<span id="cb136-21"><a href="australian-election-data.html#cb136-21" tabindex="-1"></a>                    <span class="fu">ggplot</span>()<span class="sc">+</span></span>
-<span id="cb136-22"><a href="australian-election-data.html#cb136-22" tabindex="-1"></a>           <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
-<span id="cb136-23"><a href="australian-election-data.html#cb136-23" tabindex="-1"></a>           <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;194 electoral divisions in Australia&quot;</span>,</span>
-<span id="cb136-24"><a href="australian-election-data.html#cb136-24" tabindex="-1"></a>               <span class="at">subtitle =</span> <span class="st">&quot;Turns out removing the largest 6 electorates makes a difference&quot;</span>,</span>
-<span id="cb136-25"><a href="australian-election-data.html#cb136-25" tabindex="-1"></a>               <span class="at">caption =</span> <span class="st">&quot;Data: Australian Bureau of Statistics 2016&quot;</span>,</span>
-<span id="cb136-26"><a href="australian-election-data.html#cb136-26" tabindex="-1"></a>               <span class="at">x=</span><span class="st">&quot;&quot;</span>,</span>
-<span id="cb136-27"><a href="australian-election-data.html#cb136-27" tabindex="-1"></a>               <span class="at">y=</span><span class="st">&quot;&quot;</span>) <span class="sc">+</span> </span>
-<span id="cb136-28"><a href="australian-election-data.html#cb136-28" tabindex="-1"></a>           <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb136-29"><a href="australian-election-data.html#cb136-29" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb136-30"><a href="australian-election-data.html#cb136-30" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb136-31"><a href="australian-election-data.html#cb136-31" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(), <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
-<span id="cb136-32"><a href="australian-election-data.html#cb136-32" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>)<span class="sc">+</span></span>
-<span id="cb136-33"><a href="australian-election-data.html#cb136-33" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
-<span id="cb136-34"><a href="australian-election-data.html#cb136-34" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
-<span id="cb136-35"><a href="australian-election-data.html#cb136-35" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))</span>
-<span id="cb136-36"><a href="australian-election-data.html#cb136-36" tabindex="-1"></a></span>
-<span id="cb136-37"><a href="australian-election-data.html#cb136-37" tabindex="-1"></a>CED_map</span>
-<span id="cb136-38"><a href="australian-election-data.html#cb136-38" tabindex="-1"></a>CED_map_remove_6</span></code></pre></div>
+<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="australian-election-data.html#cb153-1" tabindex="-1"></a>CED_map <span class="ot">&lt;-</span> absmapsdata<span class="sc">::</span>ced2021 <span class="sc">%&gt;%</span></span>
+<span id="cb153-2"><a href="australian-election-data.html#cb153-2" tabindex="-1"></a>           <span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb153-3"><a href="australian-election-data.html#cb153-3" tabindex="-1"></a>           <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb153-4"><a href="australian-election-data.html#cb153-4" tabindex="-1"></a>           <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;Electoral divisions in Australia&quot;</span>,</span>
+<span id="cb153-5"><a href="australian-election-data.html#cb153-5" tabindex="-1"></a>               <span class="at">subtitle =</span> <span class="st">&quot;It turns out we divide the country in very non-standard blocks&quot;</span>,</span>
+<span id="cb153-6"><a href="australian-election-data.html#cb153-6" tabindex="-1"></a>               <span class="at">caption =</span> <span class="st">&quot;Data: Australian Bureau of Statistics 2016&quot;</span>,</span>
+<span id="cb153-7"><a href="australian-election-data.html#cb153-7" tabindex="-1"></a>               <span class="at">x=</span><span class="st">&quot;&quot;</span>,</span>
+<span id="cb153-8"><a href="australian-election-data.html#cb153-8" tabindex="-1"></a>               <span class="at">y=</span><span class="st">&quot;&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb153-9"><a href="australian-election-data.html#cb153-9" tabindex="-1"></a>           <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb153-10"><a href="australian-election-data.html#cb153-10" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb153-11"><a href="australian-election-data.html#cb153-11" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb153-12"><a href="australian-election-data.html#cb153-12" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(), <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb153-13"><a href="australian-election-data.html#cb153-13" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>)<span class="sc">+</span></span>
+<span id="cb153-14"><a href="australian-election-data.html#cb153-14" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
+<span id="cb153-15"><a href="australian-election-data.html#cb153-15" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
+<span id="cb153-16"><a href="australian-election-data.html#cb153-16" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))</span>
+<span id="cb153-17"><a href="australian-election-data.html#cb153-17" tabindex="-1"></a></span>
+<span id="cb153-18"><a href="australian-election-data.html#cb153-18" tabindex="-1"></a></span>
+<span id="cb153-19"><a href="australian-election-data.html#cb153-19" tabindex="-1"></a>CED_map_remove_6 <span class="ot">&lt;-</span> ced2021 <span class="sc">%&gt;%</span></span>
+<span id="cb153-20"><a href="australian-election-data.html#cb153-20" tabindex="-1"></a>                    dplyr<span class="sc">::</span><span class="fu">filter</span>(<span class="sc">!</span>ced_code_2021 <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">506</span>,<span class="dv">701</span>,<span class="dv">404</span>,<span class="dv">511</span>,<span class="dv">321</span>,<span class="dv">317</span>)) <span class="sc">%&gt;%</span>   </span>
+<span id="cb153-21"><a href="australian-election-data.html#cb153-21" tabindex="-1"></a>                    <span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb153-22"><a href="australian-election-data.html#cb153-22" tabindex="-1"></a>           <span class="fu">geom_sf</span>()<span class="sc">+</span></span>
+<span id="cb153-23"><a href="australian-election-data.html#cb153-23" tabindex="-1"></a>           <span class="fu">labs</span>(<span class="at">title=</span><span class="st">&quot;194 electoral divisions in Australia&quot;</span>,</span>
+<span id="cb153-24"><a href="australian-election-data.html#cb153-24" tabindex="-1"></a>               <span class="at">subtitle =</span> <span class="st">&quot;Turns out removing the largest 6 electorates makes a difference&quot;</span>,</span>
+<span id="cb153-25"><a href="australian-election-data.html#cb153-25" tabindex="-1"></a>               <span class="at">caption =</span> <span class="st">&quot;Data: Australian Bureau of Statistics 2016&quot;</span>,</span>
+<span id="cb153-26"><a href="australian-election-data.html#cb153-26" tabindex="-1"></a>               <span class="at">x=</span><span class="st">&quot;&quot;</span>,</span>
+<span id="cb153-27"><a href="australian-election-data.html#cb153-27" tabindex="-1"></a>               <span class="at">y=</span><span class="st">&quot;&quot;</span>) <span class="sc">+</span> </span>
+<span id="cb153-28"><a href="australian-election-data.html#cb153-28" tabindex="-1"></a>           <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb153-29"><a href="australian-election-data.html#cb153-29" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),<span class="at">axis.text.x =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb153-30"><a href="australian-election-data.html#cb153-30" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),<span class="at">axis.text.y =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb153-31"><a href="australian-election-data.html#cb153-31" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(), <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>())<span class="sc">+</span></span>
+<span id="cb153-32"><a href="australian-election-data.html#cb153-32" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>)<span class="sc">+</span></span>
+<span id="cb153-33"><a href="australian-election-data.html#cb153-33" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.title=</span><span class="fu">element_text</span>(<span class="at">face=</span><span class="st">&quot;bold&quot;</span>,<span class="at">size=</span><span class="dv">12</span>))<span class="sc">+</span></span>
+<span id="cb153-34"><a href="australian-election-data.html#cb153-34" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.subtitle=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">11</span>))<span class="sc">+</span></span>
+<span id="cb153-35"><a href="australian-election-data.html#cb153-35" tabindex="-1"></a>            <span class="fu">theme</span>(<span class="at">plot.caption=</span><span class="fu">element_text</span>(<span class="at">size=</span><span class="dv">8</span>))</span>
+<span id="cb153-36"><a href="australian-election-data.html#cb153-36" tabindex="-1"></a></span>
+<span id="cb153-37"><a href="australian-election-data.html#cb153-37" tabindex="-1"></a>CED_map</span>
+<span id="cb153-38"><a href="australian-election-data.html#cb153-38" tabindex="-1"></a>CED_map_remove_6</span></code></pre></div>
 <p><img src="_main_files/figure-html/figures-side1-1.png" width="50%" /><img src="_main_files/figure-html/figures-side1-2.png" width="50%" /></p>
 <p>Next let’s look at what party/candidate is currently the sitting member for each electorate. To do this on a map we’re going to need to join our tcp22 data and the ced2021 spatial data.</p>
 <p>In the first data set, the electorate column in called ‘DivisionNm’ and in the second ‘ced_name_2021’.</p>
 <p>We see the data in our DivisionNm variable is in UPPERCASE while our ced_name_2021 variable is in Titlecase. Let’s change the first variable to Titlecase to match.</p>
 <p>We can then then join the two dataframes using the left_join function.</p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="australian-election-data.html#cb137-1" tabindex="-1"></a><span class="co">#Pull in the electorate shapefiles from the absmapsdata package</span></span>
-<span id="cb137-2"><a href="australian-election-data.html#cb137-2" tabindex="-1"></a>electorates <span class="ot">&lt;-</span> ced2021</span>
-<span id="cb137-3"><a href="australian-election-data.html#cb137-3" tabindex="-1"></a></span>
-<span id="cb137-4"><a href="australian-election-data.html#cb137-4" tabindex="-1"></a><span class="co">#Make the DivisionNm Titlecase</span></span>
-<span id="cb137-5"><a href="australian-election-data.html#cb137-5" tabindex="-1"></a>tcp22<span class="sc">$</span>DivisionNm<span class="ot">=</span><span class="fu">str_to_title</span>(tcp22<span class="sc">$</span>DivisionNm)</span>
-<span id="cb137-6"><a href="australian-election-data.html#cb137-6" tabindex="-1"></a></span>
-<span id="cb137-7"><a href="australian-election-data.html#cb137-7" tabindex="-1"></a>tcp22_edit <span class="ot">&lt;-</span> tcp22 <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Elected <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>)</span>
-<span id="cb137-8"><a href="australian-election-data.html#cb137-8" tabindex="-1"></a></span>
-<span id="cb137-9"><a href="australian-election-data.html#cb137-9" tabindex="-1"></a><span class="co">#Make the column names the same</span></span>
-<span id="cb137-10"><a href="australian-election-data.html#cb137-10" tabindex="-1"></a>electorates <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(electorates, <span class="at">DivisionNm =</span> ced_name_2021)</span>
-<span id="cb137-11"><a href="australian-election-data.html#cb137-11" tabindex="-1"></a></span>
-<span id="cb137-12"><a href="australian-election-data.html#cb137-12" tabindex="-1"></a>ced_map_data <span class="ot">&lt;-</span> <span class="fu">left_join</span>(tcp22_edit, electorates, <span class="at">by =</span> <span class="st">&quot;DivisionNm&quot;</span>)</span>
-<span id="cb137-13"><a href="australian-election-data.html#cb137-13" tabindex="-1"></a></span>
-<span id="cb137-14"><a href="australian-election-data.html#cb137-14" tabindex="-1"></a>ced_map_data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(ced_map_data)</span>
-<span id="cb137-15"><a href="australian-election-data.html#cb137-15" tabindex="-1"></a></span>
-<span id="cb137-16"><a href="australian-election-data.html#cb137-16" tabindex="-1"></a><span class="fu">head</span>(ced_map_data, <span class="at">n=</span><span class="dv">151</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="australian-election-data.html#cb154-1" tabindex="-1"></a><span class="co">#Pull in the electorate shapefiles from the absmapsdata package</span></span>
+<span id="cb154-2"><a href="australian-election-data.html#cb154-2" tabindex="-1"></a>electorates <span class="ot">&lt;-</span> ced2021</span>
+<span id="cb154-3"><a href="australian-election-data.html#cb154-3" tabindex="-1"></a></span>
+<span id="cb154-4"><a href="australian-election-data.html#cb154-4" tabindex="-1"></a><span class="co">#Make the DivisionNm Titlecase</span></span>
+<span id="cb154-5"><a href="australian-election-data.html#cb154-5" tabindex="-1"></a>tcp22<span class="sc">$</span>DivisionNm<span class="ot">=</span><span class="fu">str_to_title</span>(tcp22<span class="sc">$</span>DivisionNm)</span>
+<span id="cb154-6"><a href="australian-election-data.html#cb154-6" tabindex="-1"></a></span>
+<span id="cb154-7"><a href="australian-election-data.html#cb154-7" tabindex="-1"></a>tcp22_edit <span class="ot">&lt;-</span> tcp22 <span class="sc">%&gt;%</span> <span class="fu">distinct</span>() <span class="sc">%&gt;%</span> <span class="fu">filter</span>(Elected <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>)</span>
+<span id="cb154-8"><a href="australian-election-data.html#cb154-8" tabindex="-1"></a></span>
+<span id="cb154-9"><a href="australian-election-data.html#cb154-9" tabindex="-1"></a><span class="co">#Make the column names the same</span></span>
+<span id="cb154-10"><a href="australian-election-data.html#cb154-10" tabindex="-1"></a>electorates <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">rename</span>(electorates, <span class="at">DivisionNm =</span> ced_name_2021)</span>
+<span id="cb154-11"><a href="australian-election-data.html#cb154-11" tabindex="-1"></a></span>
+<span id="cb154-12"><a href="australian-election-data.html#cb154-12" tabindex="-1"></a>ced_map_data <span class="ot">&lt;-</span> <span class="fu">left_join</span>(tcp22_edit, electorates, <span class="at">by =</span> <span class="st">&quot;DivisionNm&quot;</span>)</span>
+<span id="cb154-13"><a href="australian-election-data.html#cb154-13" tabindex="-1"></a></span>
+<span id="cb154-14"><a href="australian-election-data.html#cb154-14" tabindex="-1"></a>ced_map_data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(ced_map_data)</span>
+<span id="cb154-15"><a href="australian-election-data.html#cb154-15" tabindex="-1"></a></span>
+<span id="cb154-16"><a href="australian-election-data.html#cb154-16" tabindex="-1"></a><span class="fu">head</span>(ced_map_data, <span class="at">n=</span><span class="dv">151</span>)</span></code></pre></div>
 </div>
 <div id="analysis" class="section level2 hasAnchor" number="13.2">
 <h2><span class="header-section-number">13.2</span> Analysis<a href="australian-election-data.html#analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Let’s start by answering a simple question: who won the election? For this we’ll need to use the two-candidate preferred data set (to make sure we capture all the minor parties that won seats).</p>
 <p>Note in the table above, the PartyNm variable is a mess. Some candidates noted their party by it’s abbreviation rather than full name, others put in a state specific prefix For this analysis, the PartyAb variable is cleaner to use.</p>
-<div class="sourceCode" id="cb138"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb138-1"><a href="australian-election-data.html#cb138-1" tabindex="-1"></a>who_won <span class="ot">&lt;-</span> tcp22 <span class="sc">%&gt;%</span> </span>
-<span id="cb138-2"><a href="australian-election-data.html#cb138-2" tabindex="-1"></a>  <span class="fu">filter</span>(Elected <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb138-3"><a href="australian-election-data.html#cb138-3" tabindex="-1"></a>  <span class="fu">group_by</span>(PartyAb) <span class="sc">%&gt;%</span> </span>
-<span id="cb138-4"><a href="australian-election-data.html#cb138-4" tabindex="-1"></a>  <span class="fu">tally</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb138-5"><a href="australian-election-data.html#cb138-5" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) </span>
-<span id="cb138-6"><a href="australian-election-data.html#cb138-6" tabindex="-1"></a></span>
-<span id="cb138-7"><a href="australian-election-data.html#cb138-7" tabindex="-1"></a><span class="fu">head</span>(who_won, <span class="at">n=</span><span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="australian-election-data.html#cb155-1" tabindex="-1"></a>who_won <span class="ot">&lt;-</span> tcp22 <span class="sc">%&gt;%</span> </span>
+<span id="cb155-2"><a href="australian-election-data.html#cb155-2" tabindex="-1"></a>  <span class="fu">filter</span>(Elected <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb155-3"><a href="australian-election-data.html#cb155-3" tabindex="-1"></a>  <span class="fu">group_by</span>(PartyAb) <span class="sc">%&gt;%</span> </span>
+<span id="cb155-4"><a href="australian-election-data.html#cb155-4" tabindex="-1"></a>  <span class="fu">tally</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb155-5"><a href="australian-election-data.html#cb155-5" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) </span>
+<span id="cb155-6"><a href="australian-election-data.html#cb155-6" tabindex="-1"></a></span>
+<span id="cb155-7"><a href="australian-election-data.html#cb155-7" tabindex="-1"></a><span class="fu">head</span>(who_won, <span class="at">n=</span><span class="dv">10</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 7 × 2
 ##   PartyAb     n
 ##   &lt;chr&gt;   &lt;int&gt;
@@ -448,13 +463,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 6 KAP         1
 ## 7 XEN         1</code></pre>
 <p>Next up let’s see which candidates won with the smallest percentage of first preference votes. Australia’s preferential voting system normally makes these numbers quite interesting.</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="australian-election-data.html#cb140-1" tabindex="-1"></a>who_won_least_votes_prop <span class="ot">&lt;-</span> fp22 <span class="sc">%&gt;%</span> </span>
-<span id="cb140-2"><a href="australian-election-data.html#cb140-2" tabindex="-1"></a>  <span class="fu">filter</span>(Elected <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb140-3"><a href="australian-election-data.html#cb140-3" tabindex="-1"></a>  <span class="fu">arrange</span>(Percent) <span class="sc">%&gt;%</span> </span>
-<span id="cb140-4"><a href="australian-election-data.html#cb140-4" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">candidate_full_name =</span> <span class="fu">paste0</span>(GivenNm, <span class="st">&quot; &quot;</span>, Surname, <span class="st">&quot; (&quot;</span>, CandidateID, <span class="st">&quot;)&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb140-5"><a href="australian-election-data.html#cb140-5" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(candidate_full_name, PartyNm, DivisionNm, Percent)</span>
-<span id="cb140-6"><a href="australian-election-data.html#cb140-6" tabindex="-1"></a></span>
-<span id="cb140-7"><a href="australian-election-data.html#cb140-7" tabindex="-1"></a><span class="fu">head</span>(who_won_least_votes_prop,<span class="at">n=</span><span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="australian-election-data.html#cb157-1" tabindex="-1"></a>who_won_least_votes_prop <span class="ot">&lt;-</span> fp22 <span class="sc">%&gt;%</span> </span>
+<span id="cb157-2"><a href="australian-election-data.html#cb157-2" tabindex="-1"></a>  <span class="fu">filter</span>(Elected <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb157-3"><a href="australian-election-data.html#cb157-3" tabindex="-1"></a>  <span class="fu">arrange</span>(Percent) <span class="sc">%&gt;%</span> </span>
+<span id="cb157-4"><a href="australian-election-data.html#cb157-4" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">candidate_full_name =</span> <span class="fu">paste0</span>(GivenNm, <span class="st">&quot; &quot;</span>, Surname, <span class="st">&quot; (&quot;</span>, CandidateID, <span class="st">&quot;)&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb157-5"><a href="australian-election-data.html#cb157-5" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(candidate_full_name, PartyNm, DivisionNm, Percent)</span>
+<span id="cb157-6"><a href="australian-election-data.html#cb157-6" tabindex="-1"></a></span>
+<span id="cb157-7"><a href="australian-election-data.html#cb157-7" tabindex="-1"></a><span class="fu">head</span>(who_won_least_votes_prop,<span class="at">n=</span><span class="dv">10</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 10 × 4
 ##    candidate_full_name            PartyNm                DivisionNm   Percent
 ##    &lt;chr&gt;                          &lt;chr&gt;                  &lt;chr&gt;          &lt;dbl&gt;
@@ -471,13 +486,13 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>This is really something.</p>
 <p>The relationship we’re seeing here seems to be these are <em>many</em> the seats that are won with barely 30% of the first preference vote.</p>
 <p>The electorate I grew up in is listed here (Richmond) - let’s look at how the votes were allocated.</p>
-<div class="sourceCode" id="cb142"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb142-1"><a href="australian-election-data.html#cb142-1" tabindex="-1"></a>Richmond_fp <span class="ot">&lt;-</span> fp22 <span class="sc">%&gt;%</span> </span>
-<span id="cb142-2"><a href="australian-election-data.html#cb142-2" tabindex="-1"></a>  <span class="fu">filter</span>(DivisionNm <span class="sc">==</span> <span class="st">&quot;RICHMOND&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb142-3"><a href="australian-election-data.html#cb142-3" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>Percent) <span class="sc">%&gt;%</span> </span>
-<span id="cb142-4"><a href="australian-election-data.html#cb142-4" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">candidate_full_name =</span> <span class="fu">paste0</span>(GivenNm, <span class="st">&quot; &quot;</span>, Surname, <span class="st">&quot; (&quot;</span>, CandidateID, <span class="st">&quot;)&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb142-5"><a href="australian-election-data.html#cb142-5" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(candidate_full_name, PartyNm, DivisionNm, Percent, OrdinaryVotes)</span>
-<span id="cb142-6"><a href="australian-election-data.html#cb142-6" tabindex="-1"></a></span>
-<span id="cb142-7"><a href="australian-election-data.html#cb142-7" tabindex="-1"></a><span class="fu">head</span>(Richmond_fp,<span class="at">n=</span><span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb159"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb159-1"><a href="australian-election-data.html#cb159-1" tabindex="-1"></a>Richmond_fp <span class="ot">&lt;-</span> fp22 <span class="sc">%&gt;%</span> </span>
+<span id="cb159-2"><a href="australian-election-data.html#cb159-2" tabindex="-1"></a>  <span class="fu">filter</span>(DivisionNm <span class="sc">==</span> <span class="st">&quot;RICHMOND&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb159-3"><a href="australian-election-data.html#cb159-3" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="sc">-</span>Percent) <span class="sc">%&gt;%</span> </span>
+<span id="cb159-4"><a href="australian-election-data.html#cb159-4" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">candidate_full_name =</span> <span class="fu">paste0</span>(GivenNm, <span class="st">&quot; &quot;</span>, Surname, <span class="st">&quot; (&quot;</span>, CandidateID, <span class="st">&quot;)&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb159-5"><a href="australian-election-data.html#cb159-5" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(candidate_full_name, PartyNm, DivisionNm, Percent, OrdinaryVotes)</span>
+<span id="cb159-6"><a href="australian-election-data.html#cb159-6" tabindex="-1"></a></span>
+<span id="cb159-7"><a href="australian-election-data.html#cb159-7" tabindex="-1"></a><span class="fu">head</span>(Richmond_fp,<span class="at">n=</span><span class="dv">10</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 10 × 5
 ##    candidate_full_name            PartyNm       DivisionNm Percent OrdinaryVotes
 ##    &lt;chr&gt;                          &lt;chr&gt;         &lt;chr&gt;        &lt;dbl&gt;         &lt;dbl&gt;
@@ -494,14 +509,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <p>Sure enough - the Greens certainly helped get the ALP across the line.</p>
 <p>The interpretation that these seats are the ‘most marginal’ is incorrect under a preferential voting system (e.g. imagine if ALP win 30% and the Greens win 30% - that is a pretty safe 10% margin assuming traditional preference flows).</p>
 <p>But - let’s investigate which seats are the most marginal.</p>
-<div class="sourceCode" id="cb144"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb144-1"><a href="australian-election-data.html#cb144-1" tabindex="-1"></a>who_won_smallest_margin <span class="ot">&lt;-</span> tcp22 <span class="sc">%&gt;%</span> </span>
-<span id="cb144-2"><a href="australian-election-data.html#cb144-2" tabindex="-1"></a>  <span class="fu">filter</span>(Elected <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb144-3"><a href="australian-election-data.html#cb144-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent_margin =</span> <span class="dv">2</span><span class="sc">*</span>(Percent <span class="sc">-</span> <span class="dv">50</span>), <span class="at">vote_margin =</span> <span class="fu">round</span>(percent_margin <span class="sc">*</span> OrdinaryVotes <span class="sc">/</span> Percent)) <span class="sc">%&gt;%</span> </span>
-<span id="cb144-4"><a href="australian-election-data.html#cb144-4" tabindex="-1"></a>  <span class="fu">arrange</span>(Percent) <span class="sc">%&gt;%</span> </span>
-<span id="cb144-5"><a href="australian-election-data.html#cb144-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">candidate_full_name =</span> <span class="fu">paste0</span>(GivenNm, <span class="st">&quot; &quot;</span>, Surname, <span class="st">&quot; (&quot;</span>, CandidateID, <span class="st">&quot;)&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb144-6"><a href="australian-election-data.html#cb144-6" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(candidate_full_name, PartyNm, DivisionNm, Percent, OrdinaryVotes, percent_margin, vote_margin)</span>
-<span id="cb144-7"><a href="australian-election-data.html#cb144-7" tabindex="-1"></a></span>
-<span id="cb144-8"><a href="australian-election-data.html#cb144-8" tabindex="-1"></a><span class="fu">head</span>(who_won_smallest_margin, <span class="at">n=</span><span class="dv">20</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb161"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb161-1"><a href="australian-election-data.html#cb161-1" tabindex="-1"></a>who_won_smallest_margin <span class="ot">&lt;-</span> tcp22 <span class="sc">%&gt;%</span> </span>
+<span id="cb161-2"><a href="australian-election-data.html#cb161-2" tabindex="-1"></a>  <span class="fu">filter</span>(Elected <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb161-3"><a href="australian-election-data.html#cb161-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent_margin =</span> <span class="dv">2</span><span class="sc">*</span>(Percent <span class="sc">-</span> <span class="dv">50</span>), <span class="at">vote_margin =</span> <span class="fu">round</span>(percent_margin <span class="sc">*</span> OrdinaryVotes <span class="sc">/</span> Percent)) <span class="sc">%&gt;%</span> </span>
+<span id="cb161-4"><a href="australian-election-data.html#cb161-4" tabindex="-1"></a>  <span class="fu">arrange</span>(Percent) <span class="sc">%&gt;%</span> </span>
+<span id="cb161-5"><a href="australian-election-data.html#cb161-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">candidate_full_name =</span> <span class="fu">paste0</span>(GivenNm, <span class="st">&quot; &quot;</span>, Surname, <span class="st">&quot; (&quot;</span>, CandidateID, <span class="st">&quot;)&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb161-6"><a href="australian-election-data.html#cb161-6" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(candidate_full_name, PartyNm, DivisionNm, Percent, OrdinaryVotes, percent_margin, vote_margin)</span>
+<span id="cb161-7"><a href="australian-election-data.html#cb161-7" tabindex="-1"></a></span>
+<span id="cb161-8"><a href="australian-election-data.html#cb161-8" tabindex="-1"></a><span class="fu">head</span>(who_won_smallest_margin, <span class="at">n=</span><span class="dv">20</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 20 × 7
 ##    candidate_full_name   PartyNm DivisionNm Percent OrdinaryVotes percent_margin
 ##    &lt;chr&gt;                 &lt;chr&gt;   &lt;chr&gt;        &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;
@@ -528,14 +543,14 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # ℹ 1 more variable: vote_margin &lt;dbl&gt;</code></pre>
 <p>Crikey. We see Fiona Phillips in Gilmore got in with a 0.17% margin (just 380 votes!)</p>
 <p>While we’re at it, we better do the opposite and see who romped it in by the largest margin.</p>
-<div class="sourceCode" id="cb146"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb146-1"><a href="australian-election-data.html#cb146-1" tabindex="-1"></a>who_won_largest_margin <span class="ot">&lt;-</span> tcp22 <span class="sc">%&gt;%</span> </span>
-<span id="cb146-2"><a href="australian-election-data.html#cb146-2" tabindex="-1"></a>  <span class="fu">filter</span>(Elected <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb146-3"><a href="australian-election-data.html#cb146-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent_margin =</span> <span class="dv">2</span><span class="sc">*</span>(Percent <span class="sc">-</span> <span class="dv">50</span>), <span class="at">vote_margin =</span> <span class="fu">round</span>(percent_margin <span class="sc">*</span> OrdinaryVotes <span class="sc">/</span> Percent)) <span class="sc">%&gt;%</span> </span>
-<span id="cb146-4"><a href="australian-election-data.html#cb146-4" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Percent)) <span class="sc">%&gt;%</span> </span>
-<span id="cb146-5"><a href="australian-election-data.html#cb146-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">candidate_full_name =</span> <span class="fu">paste0</span>(GivenNm, <span class="st">&quot; &quot;</span>, Surname, <span class="st">&quot; (&quot;</span>, CandidateID, <span class="st">&quot;)&quot;</span>)) <span class="sc">%&gt;%</span> </span>
-<span id="cb146-6"><a href="australian-election-data.html#cb146-6" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(candidate_full_name, PartyNm, DivisionNm, Percent, OrdinaryVotes, percent_margin, vote_margin)</span>
-<span id="cb146-7"><a href="australian-election-data.html#cb146-7" tabindex="-1"></a></span>
-<span id="cb146-8"><a href="australian-election-data.html#cb146-8" tabindex="-1"></a> <span class="fu">head</span>(who_won_largest_margin, <span class="at">n=</span><span class="dv">20</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb163"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb163-1"><a href="australian-election-data.html#cb163-1" tabindex="-1"></a>who_won_largest_margin <span class="ot">&lt;-</span> tcp22 <span class="sc">%&gt;%</span> </span>
+<span id="cb163-2"><a href="australian-election-data.html#cb163-2" tabindex="-1"></a>  <span class="fu">filter</span>(Elected <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb163-3"><a href="australian-election-data.html#cb163-3" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">percent_margin =</span> <span class="dv">2</span><span class="sc">*</span>(Percent <span class="sc">-</span> <span class="dv">50</span>), <span class="at">vote_margin =</span> <span class="fu">round</span>(percent_margin <span class="sc">*</span> OrdinaryVotes <span class="sc">/</span> Percent)) <span class="sc">%&gt;%</span> </span>
+<span id="cb163-4"><a href="australian-election-data.html#cb163-4" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(Percent)) <span class="sc">%&gt;%</span> </span>
+<span id="cb163-5"><a href="australian-election-data.html#cb163-5" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">candidate_full_name =</span> <span class="fu">paste0</span>(GivenNm, <span class="st">&quot; &quot;</span>, Surname, <span class="st">&quot; (&quot;</span>, CandidateID, <span class="st">&quot;)&quot;</span>)) <span class="sc">%&gt;%</span> </span>
+<span id="cb163-6"><a href="australian-election-data.html#cb163-6" tabindex="-1"></a>  dplyr<span class="sc">::</span><span class="fu">select</span>(candidate_full_name, PartyNm, DivisionNm, Percent, OrdinaryVotes, percent_margin, vote_margin)</span>
+<span id="cb163-7"><a href="australian-election-data.html#cb163-7" tabindex="-1"></a></span>
+<span id="cb163-8"><a href="australian-election-data.html#cb163-8" tabindex="-1"></a> <span class="fu">head</span>(who_won_largest_margin, <span class="at">n=</span><span class="dv">20</span>)</span></code></pre></div>
 <pre><code>## # A tibble: 20 × 7
 ##    candidate_full_name   PartyNm DivisionNm Percent OrdinaryVotes percent_margin
 ##    &lt;chr&gt;                 &lt;chr&gt;   &lt;chr&gt;        &lt;dbl&gt;         &lt;dbl&gt;          &lt;dbl&gt;
@@ -562,116 +577,116 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## # ℹ 1 more variable: vote_margin &lt;dbl&gt;</code></pre>
 <p>Wowza. That’s really something. Some candidates won seats with a 40-45 percent margin - scooping up 70% of the two candidate preferred vote in the process!</p>
 <p>We can also cut the seats by state for a look at where the ‘strongholds’ are across the country.</p>
-<div class="sourceCode" id="cb148"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb148-1"><a href="australian-election-data.html#cb148-1" tabindex="-1"></a>who_won <span class="ot">&lt;-</span> tcp22 <span class="sc">%&gt;%</span> </span>
-<span id="cb148-2"><a href="australian-election-data.html#cb148-2" tabindex="-1"></a>  <span class="fu">filter</span>(Elected <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb148-3"><a href="australian-election-data.html#cb148-3" tabindex="-1"></a>  <span class="fu">group_by</span>(PartyAb, StateAb) <span class="sc">%&gt;%</span> </span>
-<span id="cb148-4"><a href="australian-election-data.html#cb148-4" tabindex="-1"></a>  <span class="fu">tally</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb148-5"><a href="australian-election-data.html#cb148-5" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) </span>
-<span id="cb148-6"><a href="australian-election-data.html#cb148-6" tabindex="-1"></a></span>
-<span id="cb148-7"><a href="australian-election-data.html#cb148-7" tabindex="-1"></a>who_won_by_state <span class="ot">&lt;-</span> <span class="fu">spread</span>(who_won,StateAb, n) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(NSW))</span>
-<span id="cb148-8"><a href="australian-election-data.html#cb148-8" tabindex="-1"></a></span>
-<span id="cb148-9"><a href="australian-election-data.html#cb148-9" tabindex="-1"></a><span class="fu">head</span>(who_won_by_state, <span class="at">n=</span><span class="dv">10</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb165"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb165-1"><a href="australian-election-data.html#cb165-1" tabindex="-1"></a>who_won <span class="ot">&lt;-</span> tcp22 <span class="sc">%&gt;%</span> </span>
+<span id="cb165-2"><a href="australian-election-data.html#cb165-2" tabindex="-1"></a>  <span class="fu">filter</span>(Elected <span class="sc">==</span> <span class="st">&quot;Y&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb165-3"><a href="australian-election-data.html#cb165-3" tabindex="-1"></a>  <span class="fu">group_by</span>(PartyAb, StateAb) <span class="sc">%&gt;%</span> </span>
+<span id="cb165-4"><a href="australian-election-data.html#cb165-4" tabindex="-1"></a>  <span class="fu">tally</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb165-5"><a href="australian-election-data.html#cb165-5" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(n)) </span>
+<span id="cb165-6"><a href="australian-election-data.html#cb165-6" tabindex="-1"></a></span>
+<span id="cb165-7"><a href="australian-election-data.html#cb165-7" tabindex="-1"></a>who_won_by_state <span class="ot">&lt;-</span> <span class="fu">spread</span>(who_won,StateAb, n) <span class="sc">%&gt;%</span> <span class="fu">arrange</span>(<span class="fu">desc</span>(NSW))</span>
+<span id="cb165-8"><a href="australian-election-data.html#cb165-8" tabindex="-1"></a></span>
+<span id="cb165-9"><a href="australian-election-data.html#cb165-9" tabindex="-1"></a><span class="fu">head</span>(who_won_by_state, <span class="at">n=</span><span class="dv">10</span>)</span></code></pre></div>
 </div>
 <div id="trends" class="section level2 hasAnchor" number="13.3">
 <h2><span class="header-section-number">13.3</span> Trends<a href="australian-election-data.html#trends" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Now we’ve figured out how to work with election data - let’s link it up to some AUstralian demographic data. The eechidna package includes a cleaned set of census data from 2022 that has already been adjusted from ASGS boundaries to Commonwealth Electoral Divisions.</p>
-<div class="sourceCode" id="cb149"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb149-1"><a href="australian-election-data.html#cb149-1" tabindex="-1"></a><span class="co"># Import the census data from the eechidna package</span></span>
-<span id="cb149-2"><a href="australian-election-data.html#cb149-2" tabindex="-1"></a><span class="fu">data</span>(eechidna<span class="sc">::</span>abs2021)</span>
-<span id="cb149-3"><a href="australian-election-data.html#cb149-3" tabindex="-1"></a><span class="fu">head</span>(abs2021)</span>
-<span id="cb149-4"><a href="australian-election-data.html#cb149-4" tabindex="-1"></a></span>
-<span id="cb149-5"><a href="australian-election-data.html#cb149-5" tabindex="-1"></a><span class="co"># Join with two-party preferred voting data</span></span>
-<span id="cb149-6"><a href="australian-election-data.html#cb149-6" tabindex="-1"></a><span class="fu">data</span>(tpp10)</span>
-<span id="cb149-7"><a href="australian-election-data.html#cb149-7" tabindex="-1"></a>election2022 <span class="ot">&lt;-</span> <span class="fu">left_join</span>(abs2021, tpp10, <span class="at">by =</span> <span class="st">&quot;DivisionNm&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb166"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb166-1"><a href="australian-election-data.html#cb166-1" tabindex="-1"></a><span class="co"># Import the census data from the eechidna package</span></span>
+<span id="cb166-2"><a href="australian-election-data.html#cb166-2" tabindex="-1"></a><span class="fu">data</span>(eechidna<span class="sc">::</span>abs2021)</span>
+<span id="cb166-3"><a href="australian-election-data.html#cb166-3" tabindex="-1"></a><span class="fu">head</span>(abs2021)</span>
+<span id="cb166-4"><a href="australian-election-data.html#cb166-4" tabindex="-1"></a></span>
+<span id="cb166-5"><a href="australian-election-data.html#cb166-5" tabindex="-1"></a><span class="co"># Join with two-party preferred voting data</span></span>
+<span id="cb166-6"><a href="australian-election-data.html#cb166-6" tabindex="-1"></a><span class="fu">data</span>(tpp10)</span>
+<span id="cb166-7"><a href="australian-election-data.html#cb166-7" tabindex="-1"></a>election2022 <span class="ot">&lt;-</span> <span class="fu">left_join</span>(abs2021, tpp10, <span class="at">by =</span> <span class="st">&quot;DivisionNm&quot;</span>)</span></code></pre></div>
 <p>That’s what we want to see. 151 rows of data (one for each electorate) and over 80 columns of census variables.</p>
 <p>A starting exploratory exercise is too see which of these variables are correlated with voting for one party or another. There’s some old narrative around LNP voters being rich, old, white, and somehow ‘upper class’ compared to the population at large. Let’s pick a few variables that roughly match with this criteria (Income, Age, English language speakers, and Bachelor educated) and chart it compared to LNP percentage of the vote.</p>
-<div class="sourceCode" id="cb150"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb150-1"><a href="australian-election-data.html#cb150-1" tabindex="-1"></a><span class="co"># See relationship between personal income and Liberal/National support</span></span>
-<span id="cb150-2"><a href="australian-election-data.html#cb150-2" tabindex="-1"></a></span>
-<span id="cb150-3"><a href="australian-election-data.html#cb150-3" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> MedianPersonalIncome, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
-<span id="cb150-4"><a href="australian-election-data.html#cb150-4" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb150-5"><a href="australian-election-data.html#cb150-5" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
-<span id="cb150-6"><a href="australian-election-data.html#cb150-6" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb150-7"><a href="australian-election-data.html#cb150-7" tabindex="-1"></a></span>
-<span id="cb150-8"><a href="australian-election-data.html#cb150-8" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> MedianAge, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
-<span id="cb150-9"><a href="australian-election-data.html#cb150-9" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
-<span id="cb150-10"><a href="australian-election-data.html#cb150-10" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
-<span id="cb150-11"><a href="australian-election-data.html#cb150-11" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb150-12"><a href="australian-election-data.html#cb150-12" tabindex="-1"></a></span>
-<span id="cb150-13"><a href="australian-election-data.html#cb150-13" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> EnglishOnly, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
-<span id="cb150-14"><a href="australian-election-data.html#cb150-14" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
-<span id="cb150-15"><a href="australian-election-data.html#cb150-15" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
-<span id="cb150-16"><a href="australian-election-data.html#cb150-16" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb150-17"><a href="australian-election-data.html#cb150-17" tabindex="-1"></a></span>
-<span id="cb150-18"><a href="australian-election-data.html#cb150-18" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> BachelorAbv, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
-<span id="cb150-19"><a href="australian-election-data.html#cb150-19" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
-<span id="cb150-20"><a href="australian-election-data.html#cb150-20" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
-<span id="cb150-21"><a href="australian-election-data.html#cb150-21" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb167"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb167-1"><a href="australian-election-data.html#cb167-1" tabindex="-1"></a><span class="co"># See relationship between personal income and Liberal/National support</span></span>
+<span id="cb167-2"><a href="australian-election-data.html#cb167-2" tabindex="-1"></a></span>
+<span id="cb167-3"><a href="australian-election-data.html#cb167-3" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> MedianPersonalIncome, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
+<span id="cb167-4"><a href="australian-election-data.html#cb167-4" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb167-5"><a href="australian-election-data.html#cb167-5" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb167-6"><a href="australian-election-data.html#cb167-6" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb167-7"><a href="australian-election-data.html#cb167-7" tabindex="-1"></a></span>
+<span id="cb167-8"><a href="australian-election-data.html#cb167-8" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> MedianAge, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
+<span id="cb167-9"><a href="australian-election-data.html#cb167-9" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
+<span id="cb167-10"><a href="australian-election-data.html#cb167-10" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb167-11"><a href="australian-election-data.html#cb167-11" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb167-12"><a href="australian-election-data.html#cb167-12" tabindex="-1"></a></span>
+<span id="cb167-13"><a href="australian-election-data.html#cb167-13" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> EnglishOnly, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
+<span id="cb167-14"><a href="australian-election-data.html#cb167-14" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
+<span id="cb167-15"><a href="australian-election-data.html#cb167-15" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb167-16"><a href="australian-election-data.html#cb167-16" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb167-17"><a href="australian-election-data.html#cb167-17" tabindex="-1"></a></span>
+<span id="cb167-18"><a href="australian-election-data.html#cb167-18" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> BachelorAbv, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
+<span id="cb167-19"><a href="australian-election-data.html#cb167-19" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
+<span id="cb167-20"><a href="australian-election-data.html#cb167-20" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb167-21"><a href="australian-election-data.html#cb167-21" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <p><img src="_main_files/figure-html/figures-side2-1.png" width="50%" /><img src="_main_files/figure-html/figures-side2-2.png" width="50%" /><img src="_main_files/figure-html/figures-side2-3.png" width="50%" /><img src="_main_files/figure-html/figures-side2-4.png" width="50%" /></p>
 <p>First impressions: Geez this data looks messy.</p>
 <p>Second impression: Maybe there’s a bit of a trend with age and income?</p>
 <p>Let’s build a regression model to run all the 80 odd census variables in the abs2022 data set against the LNP_percent variable.</p>
-<div class="sourceCode" id="cb151"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb151-1"><a href="australian-election-data.html#cb151-1" tabindex="-1"></a><span class="co"># We can use colnames(election2022) to get a big list of all the variables available</span></span>
-<span id="cb151-2"><a href="australian-election-data.html#cb151-2" tabindex="-1"></a></span>
-<span id="cb151-3"><a href="australian-election-data.html#cb151-3" tabindex="-1"></a><span class="co"># Now we build the model</span></span>
-<span id="cb151-4"><a href="australian-election-data.html#cb151-4" tabindex="-1"></a>election_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(LNP_Percent<span class="sc">~</span></span>
-<span id="cb151-5"><a href="australian-election-data.html#cb151-5" tabindex="-1"></a>                    Population<span class="sc">+</span></span>
-<span id="cb151-6"><a href="australian-election-data.html#cb151-6" tabindex="-1"></a>                    Area<span class="sc">+</span></span>
-<span id="cb151-7"><a href="australian-election-data.html#cb151-7" tabindex="-1"></a>                    Age00_04<span class="sc">+</span></span>
-<span id="cb151-8"><a href="australian-election-data.html#cb151-8" tabindex="-1"></a>                    Age05_14<span class="sc">+</span></span>
-<span id="cb151-9"><a href="australian-election-data.html#cb151-9" tabindex="-1"></a>                    Age15_19<span class="sc">+</span></span>
-<span id="cb151-10"><a href="australian-election-data.html#cb151-10" tabindex="-1"></a>                    Age20_24<span class="sc">+</span></span>
-<span id="cb151-11"><a href="australian-election-data.html#cb151-11" tabindex="-1"></a>                    Age25_34<span class="sc">+</span></span>
-<span id="cb151-12"><a href="australian-election-data.html#cb151-12" tabindex="-1"></a>                    Age35_44<span class="sc">+</span></span>
-<span id="cb151-13"><a href="australian-election-data.html#cb151-13" tabindex="-1"></a>                    Age45_54<span class="sc">+</span></span>
-<span id="cb151-14"><a href="australian-election-data.html#cb151-14" tabindex="-1"></a>                    Age55_64<span class="sc">+</span></span>
-<span id="cb151-15"><a href="australian-election-data.html#cb151-15" tabindex="-1"></a>                    Age65_74<span class="sc">+</span></span>
-<span id="cb151-16"><a href="australian-election-data.html#cb151-16" tabindex="-1"></a>                    Age75_84<span class="sc">+</span></span>
-<span id="cb151-17"><a href="australian-election-data.html#cb151-17" tabindex="-1"></a>                    Age85plus<span class="sc">+</span></span>
-<span id="cb151-18"><a href="australian-election-data.html#cb151-18" tabindex="-1"></a>                    Anglican<span class="sc">+</span></span>
-<span id="cb151-19"><a href="australian-election-data.html#cb151-19" tabindex="-1"></a>                    AusCitizen<span class="sc">+</span></span>
-<span id="cb151-20"><a href="australian-election-data.html#cb151-20" tabindex="-1"></a>                    AverageHouseholdSize<span class="sc">+</span></span>
-<span id="cb151-21"><a href="australian-election-data.html#cb151-21" tabindex="-1"></a>                    BachelorAbv<span class="sc">+</span>Born_Asia<span class="sc">+</span></span>
-<span id="cb151-22"><a href="australian-election-data.html#cb151-22" tabindex="-1"></a>                    Born_MidEast<span class="sc">+</span>Born_SE_Europe<span class="sc">+</span></span>
-<span id="cb151-23"><a href="australian-election-data.html#cb151-23" tabindex="-1"></a>                    Born_UK<span class="sc">+</span></span>
-<span id="cb151-24"><a href="australian-election-data.html#cb151-24" tabindex="-1"></a>                    BornElsewhere<span class="sc">+</span></span>
-<span id="cb151-25"><a href="australian-election-data.html#cb151-25" tabindex="-1"></a>                    Buddhism<span class="sc">+</span></span>
-<span id="cb151-26"><a href="australian-election-data.html#cb151-26" tabindex="-1"></a>                    Catholic<span class="sc">+</span></span>
-<span id="cb151-27"><a href="australian-election-data.html#cb151-27" tabindex="-1"></a>                    Christianity<span class="sc">+</span></span>
-<span id="cb151-28"><a href="australian-election-data.html#cb151-28" tabindex="-1"></a>                    Couple_NoChild_House<span class="sc">+</span>Couple_WChild_House<span class="sc">+</span></span>
-<span id="cb151-29"><a href="australian-election-data.html#cb151-29" tabindex="-1"></a>                    CurrentlyStudying<span class="sc">+</span>DeFacto<span class="sc">+</span></span>
-<span id="cb151-30"><a href="australian-election-data.html#cb151-30" tabindex="-1"></a>                    DiffAddress<span class="sc">+</span></span>
-<span id="cb151-31"><a href="australian-election-data.html#cb151-31" tabindex="-1"></a>                    DipCert<span class="sc">+</span></span>
-<span id="cb151-32"><a href="australian-election-data.html#cb151-32" tabindex="-1"></a>                    EnglishOnly<span class="sc">+</span></span>
-<span id="cb151-33"><a href="australian-election-data.html#cb151-33" tabindex="-1"></a>                    FamilyRatio<span class="sc">+</span></span>
-<span id="cb151-34"><a href="australian-election-data.html#cb151-34" tabindex="-1"></a>                    Finance<span class="sc">+</span></span>
-<span id="cb151-35"><a href="australian-election-data.html#cb151-35" tabindex="-1"></a>                    HighSchool<span class="sc">+</span></span>
-<span id="cb151-36"><a href="australian-election-data.html#cb151-36" tabindex="-1"></a>                    Indigenous<span class="sc">+</span></span>
-<span id="cb151-37"><a href="australian-election-data.html#cb151-37" tabindex="-1"></a>                    InternetUse<span class="sc">+</span></span>
-<span id="cb151-38"><a href="australian-election-data.html#cb151-38" tabindex="-1"></a>                    Islam<span class="sc">+</span></span>
-<span id="cb151-39"><a href="australian-election-data.html#cb151-39" tabindex="-1"></a>                    Judaism<span class="sc">+</span></span>
-<span id="cb151-40"><a href="australian-election-data.html#cb151-40" tabindex="-1"></a>                    Laborer<span class="sc">+</span></span>
-<span id="cb151-41"><a href="australian-election-data.html#cb151-41" tabindex="-1"></a>                    LFParticipation<span class="sc">+</span></span>
-<span id="cb151-42"><a href="australian-election-data.html#cb151-42" tabindex="-1"></a>                    Married<span class="sc">+</span></span>
-<span id="cb151-43"><a href="australian-election-data.html#cb151-43" tabindex="-1"></a>                    MedianAge<span class="sc">+</span></span>
-<span id="cb151-44"><a href="australian-election-data.html#cb151-44" tabindex="-1"></a>                    MedianFamilyIncome<span class="sc">+</span></span>
-<span id="cb151-45"><a href="australian-election-data.html#cb151-45" tabindex="-1"></a>                    MedianHouseholdIncome<span class="sc">+</span></span>
-<span id="cb151-46"><a href="australian-election-data.html#cb151-46" tabindex="-1"></a>                    MedianLoanPay<span class="sc">+</span></span>
-<span id="cb151-47"><a href="australian-election-data.html#cb151-47" tabindex="-1"></a>                    MedianPersonalIncome<span class="sc">+</span></span>
-<span id="cb151-48"><a href="australian-election-data.html#cb151-48" tabindex="-1"></a>                    MedianRent<span class="sc">+</span></span>
-<span id="cb151-49"><a href="australian-election-data.html#cb151-49" tabindex="-1"></a>                    Mortgage<span class="sc">+</span></span>
-<span id="cb151-50"><a href="australian-election-data.html#cb151-50" tabindex="-1"></a>                    NoReligion<span class="sc">+</span></span>
-<span id="cb151-51"><a href="australian-election-data.html#cb151-51" tabindex="-1"></a>                    OneParent_House<span class="sc">+</span></span>
-<span id="cb151-52"><a href="australian-election-data.html#cb151-52" tabindex="-1"></a>                    Owned<span class="sc">+</span></span>
-<span id="cb151-53"><a href="australian-election-data.html#cb151-53" tabindex="-1"></a>                    Professional<span class="sc">+</span></span>
-<span id="cb151-54"><a href="australian-election-data.html#cb151-54" tabindex="-1"></a>                    PublicHousing<span class="sc">+</span></span>
-<span id="cb151-55"><a href="australian-election-data.html#cb151-55" tabindex="-1"></a>                    Renting<span class="sc">+</span></span>
-<span id="cb151-56"><a href="australian-election-data.html#cb151-56" tabindex="-1"></a>                    SocialServ<span class="sc">+</span></span>
-<span id="cb151-57"><a href="australian-election-data.html#cb151-57" tabindex="-1"></a>                    SP_House<span class="sc">+</span></span>
-<span id="cb151-58"><a href="australian-election-data.html#cb151-58" tabindex="-1"></a>                    Tradesperson<span class="sc">+</span></span>
-<span id="cb151-59"><a href="australian-election-data.html#cb151-59" tabindex="-1"></a>                    Unemployed<span class="sc">+</span></span>
-<span id="cb151-60"><a href="australian-election-data.html#cb151-60" tabindex="-1"></a>                    Volunteer,</span>
-<span id="cb151-61"><a href="australian-election-data.html#cb151-61" tabindex="-1"></a>                    <span class="at">data=</span>election2022)</span>
-<span id="cb151-62"><a href="australian-election-data.html#cb151-62" tabindex="-1"></a></span>
-<span id="cb151-63"><a href="australian-election-data.html#cb151-63" tabindex="-1"></a><span class="fu">summary</span>(election_model)</span></code></pre></div>
+<div class="sourceCode" id="cb168"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb168-1"><a href="australian-election-data.html#cb168-1" tabindex="-1"></a><span class="co"># We can use colnames(election2022) to get a big list of all the variables available</span></span>
+<span id="cb168-2"><a href="australian-election-data.html#cb168-2" tabindex="-1"></a></span>
+<span id="cb168-3"><a href="australian-election-data.html#cb168-3" tabindex="-1"></a><span class="co"># Now we build the model</span></span>
+<span id="cb168-4"><a href="australian-election-data.html#cb168-4" tabindex="-1"></a>election_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(LNP_Percent<span class="sc">~</span></span>
+<span id="cb168-5"><a href="australian-election-data.html#cb168-5" tabindex="-1"></a>                    Population<span class="sc">+</span></span>
+<span id="cb168-6"><a href="australian-election-data.html#cb168-6" tabindex="-1"></a>                    Area<span class="sc">+</span></span>
+<span id="cb168-7"><a href="australian-election-data.html#cb168-7" tabindex="-1"></a>                    Age00_04<span class="sc">+</span></span>
+<span id="cb168-8"><a href="australian-election-data.html#cb168-8" tabindex="-1"></a>                    Age05_14<span class="sc">+</span></span>
+<span id="cb168-9"><a href="australian-election-data.html#cb168-9" tabindex="-1"></a>                    Age15_19<span class="sc">+</span></span>
+<span id="cb168-10"><a href="australian-election-data.html#cb168-10" tabindex="-1"></a>                    Age20_24<span class="sc">+</span></span>
+<span id="cb168-11"><a href="australian-election-data.html#cb168-11" tabindex="-1"></a>                    Age25_34<span class="sc">+</span></span>
+<span id="cb168-12"><a href="australian-election-data.html#cb168-12" tabindex="-1"></a>                    Age35_44<span class="sc">+</span></span>
+<span id="cb168-13"><a href="australian-election-data.html#cb168-13" tabindex="-1"></a>                    Age45_54<span class="sc">+</span></span>
+<span id="cb168-14"><a href="australian-election-data.html#cb168-14" tabindex="-1"></a>                    Age55_64<span class="sc">+</span></span>
+<span id="cb168-15"><a href="australian-election-data.html#cb168-15" tabindex="-1"></a>                    Age65_74<span class="sc">+</span></span>
+<span id="cb168-16"><a href="australian-election-data.html#cb168-16" tabindex="-1"></a>                    Age75_84<span class="sc">+</span></span>
+<span id="cb168-17"><a href="australian-election-data.html#cb168-17" tabindex="-1"></a>                    Age85plus<span class="sc">+</span></span>
+<span id="cb168-18"><a href="australian-election-data.html#cb168-18" tabindex="-1"></a>                    Anglican<span class="sc">+</span></span>
+<span id="cb168-19"><a href="australian-election-data.html#cb168-19" tabindex="-1"></a>                    AusCitizen<span class="sc">+</span></span>
+<span id="cb168-20"><a href="australian-election-data.html#cb168-20" tabindex="-1"></a>                    AverageHouseholdSize<span class="sc">+</span></span>
+<span id="cb168-21"><a href="australian-election-data.html#cb168-21" tabindex="-1"></a>                    BachelorAbv<span class="sc">+</span>Born_Asia<span class="sc">+</span></span>
+<span id="cb168-22"><a href="australian-election-data.html#cb168-22" tabindex="-1"></a>                    Born_MidEast<span class="sc">+</span>Born_SE_Europe<span class="sc">+</span></span>
+<span id="cb168-23"><a href="australian-election-data.html#cb168-23" tabindex="-1"></a>                    Born_UK<span class="sc">+</span></span>
+<span id="cb168-24"><a href="australian-election-data.html#cb168-24" tabindex="-1"></a>                    BornElsewhere<span class="sc">+</span></span>
+<span id="cb168-25"><a href="australian-election-data.html#cb168-25" tabindex="-1"></a>                    Buddhism<span class="sc">+</span></span>
+<span id="cb168-26"><a href="australian-election-data.html#cb168-26" tabindex="-1"></a>                    Catholic<span class="sc">+</span></span>
+<span id="cb168-27"><a href="australian-election-data.html#cb168-27" tabindex="-1"></a>                    Christianity<span class="sc">+</span></span>
+<span id="cb168-28"><a href="australian-election-data.html#cb168-28" tabindex="-1"></a>                    Couple_NoChild_House<span class="sc">+</span>Couple_WChild_House<span class="sc">+</span></span>
+<span id="cb168-29"><a href="australian-election-data.html#cb168-29" tabindex="-1"></a>                    CurrentlyStudying<span class="sc">+</span>DeFacto<span class="sc">+</span></span>
+<span id="cb168-30"><a href="australian-election-data.html#cb168-30" tabindex="-1"></a>                    DiffAddress<span class="sc">+</span></span>
+<span id="cb168-31"><a href="australian-election-data.html#cb168-31" tabindex="-1"></a>                    DipCert<span class="sc">+</span></span>
+<span id="cb168-32"><a href="australian-election-data.html#cb168-32" tabindex="-1"></a>                    EnglishOnly<span class="sc">+</span></span>
+<span id="cb168-33"><a href="australian-election-data.html#cb168-33" tabindex="-1"></a>                    FamilyRatio<span class="sc">+</span></span>
+<span id="cb168-34"><a href="australian-election-data.html#cb168-34" tabindex="-1"></a>                    Finance<span class="sc">+</span></span>
+<span id="cb168-35"><a href="australian-election-data.html#cb168-35" tabindex="-1"></a>                    HighSchool<span class="sc">+</span></span>
+<span id="cb168-36"><a href="australian-election-data.html#cb168-36" tabindex="-1"></a>                    Indigenous<span class="sc">+</span></span>
+<span id="cb168-37"><a href="australian-election-data.html#cb168-37" tabindex="-1"></a>                    InternetUse<span class="sc">+</span></span>
+<span id="cb168-38"><a href="australian-election-data.html#cb168-38" tabindex="-1"></a>                    Islam<span class="sc">+</span></span>
+<span id="cb168-39"><a href="australian-election-data.html#cb168-39" tabindex="-1"></a>                    Judaism<span class="sc">+</span></span>
+<span id="cb168-40"><a href="australian-election-data.html#cb168-40" tabindex="-1"></a>                    Laborer<span class="sc">+</span></span>
+<span id="cb168-41"><a href="australian-election-data.html#cb168-41" tabindex="-1"></a>                    LFParticipation<span class="sc">+</span></span>
+<span id="cb168-42"><a href="australian-election-data.html#cb168-42" tabindex="-1"></a>                    Married<span class="sc">+</span></span>
+<span id="cb168-43"><a href="australian-election-data.html#cb168-43" tabindex="-1"></a>                    MedianAge<span class="sc">+</span></span>
+<span id="cb168-44"><a href="australian-election-data.html#cb168-44" tabindex="-1"></a>                    MedianFamilyIncome<span class="sc">+</span></span>
+<span id="cb168-45"><a href="australian-election-data.html#cb168-45" tabindex="-1"></a>                    MedianHouseholdIncome<span class="sc">+</span></span>
+<span id="cb168-46"><a href="australian-election-data.html#cb168-46" tabindex="-1"></a>                    MedianLoanPay<span class="sc">+</span></span>
+<span id="cb168-47"><a href="australian-election-data.html#cb168-47" tabindex="-1"></a>                    MedianPersonalIncome<span class="sc">+</span></span>
+<span id="cb168-48"><a href="australian-election-data.html#cb168-48" tabindex="-1"></a>                    MedianRent<span class="sc">+</span></span>
+<span id="cb168-49"><a href="australian-election-data.html#cb168-49" tabindex="-1"></a>                    Mortgage<span class="sc">+</span></span>
+<span id="cb168-50"><a href="australian-election-data.html#cb168-50" tabindex="-1"></a>                    NoReligion<span class="sc">+</span></span>
+<span id="cb168-51"><a href="australian-election-data.html#cb168-51" tabindex="-1"></a>                    OneParent_House<span class="sc">+</span></span>
+<span id="cb168-52"><a href="australian-election-data.html#cb168-52" tabindex="-1"></a>                    Owned<span class="sc">+</span></span>
+<span id="cb168-53"><a href="australian-election-data.html#cb168-53" tabindex="-1"></a>                    Professional<span class="sc">+</span></span>
+<span id="cb168-54"><a href="australian-election-data.html#cb168-54" tabindex="-1"></a>                    PublicHousing<span class="sc">+</span></span>
+<span id="cb168-55"><a href="australian-election-data.html#cb168-55" tabindex="-1"></a>                    Renting<span class="sc">+</span></span>
+<span id="cb168-56"><a href="australian-election-data.html#cb168-56" tabindex="-1"></a>                    SocialServ<span class="sc">+</span></span>
+<span id="cb168-57"><a href="australian-election-data.html#cb168-57" tabindex="-1"></a>                    SP_House<span class="sc">+</span></span>
+<span id="cb168-58"><a href="australian-election-data.html#cb168-58" tabindex="-1"></a>                    Tradesperson<span class="sc">+</span></span>
+<span id="cb168-59"><a href="australian-election-data.html#cb168-59" tabindex="-1"></a>                    Unemployed<span class="sc">+</span></span>
+<span id="cb168-60"><a href="australian-election-data.html#cb168-60" tabindex="-1"></a>                    Volunteer,</span>
+<span id="cb168-61"><a href="australian-election-data.html#cb168-61" tabindex="-1"></a>                    <span class="at">data=</span>election2022)</span>
+<span id="cb168-62"><a href="australian-election-data.html#cb168-62" tabindex="-1"></a></span>
+<span id="cb168-63"><a href="australian-election-data.html#cb168-63" tabindex="-1"></a><span class="fu">summary</span>(election_model)</span></code></pre></div>
 <pre><code>## 
 ## Call:
 ## lm(formula = LNP_Percent ~ Population + Area + Age00_04 + Age05_14 + 
@@ -765,73 +780,73 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## F-statistic: 11.88 on 59 and 80 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p>For the people that care about statistical fit and endogenous variables, you may have concerns (and rightly so) with the above approach.</p>
 <p>It’s pretty rough. Let’s run a basic check to see if the residuals are normally distributed.</p>
-<div class="sourceCode" id="cb153"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb153-1"><a href="australian-election-data.html#cb153-1" tabindex="-1"></a><span class="fu">hist</span>(election_model<span class="sc">$</span>residuals, <span class="at">col=</span><span class="st">&quot;bisque&quot;</span>, <span class="at">freq=</span><span class="cn">FALSE</span>, <span class="at">main=</span><span class="cn">NA</span>)</span>
-<span id="cb153-2"><a href="australian-election-data.html#cb153-2" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(election_model<span class="sc">$</span>residuals), <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-112-1.png" width="672" /></p>
+<div class="sourceCode" id="cb170"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb170-1"><a href="australian-election-data.html#cb170-1" tabindex="-1"></a><span class="fu">hist</span>(election_model<span class="sc">$</span>residuals, <span class="at">col=</span><span class="st">&quot;bisque&quot;</span>, <span class="at">freq=</span><span class="cn">FALSE</span>, <span class="at">main=</span><span class="cn">NA</span>)</span>
+<span id="cb170-2"><a href="australian-election-data.html#cb170-2" tabindex="-1"></a><span class="fu">lines</span>(<span class="fu">density</span>(election_model<span class="sc">$</span>residuals), <span class="at">col=</span><span class="st">&quot;red&quot;</span>)</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-123-1.png" width="672" /></p>
 <p>Hmm… that’s actually not too bad. Onwards.</p>
 <p>We see now that only a handful of these variables in the table above are statistically significant. Running an updated (and leaner) model gives:</p>
-<div class="sourceCode" id="cb154"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb154-1"><a href="australian-election-data.html#cb154-1" tabindex="-1"></a>election_model_lean <span class="ot">&lt;-</span> <span class="fu">lm</span>(LNP_Percent<span class="sc">~</span></span>
-<span id="cb154-2"><a href="australian-election-data.html#cb154-2" tabindex="-1"></a>                          BachelorAbv<span class="sc">+</span></span>
-<span id="cb154-3"><a href="australian-election-data.html#cb154-3" tabindex="-1"></a>                          CurrentlyStudying<span class="sc">+</span></span>
-<span id="cb154-4"><a href="australian-election-data.html#cb154-4" tabindex="-1"></a>                          DeFacto<span class="sc">+</span></span>
-<span id="cb154-5"><a href="australian-election-data.html#cb154-5" tabindex="-1"></a>                          DiffAddress<span class="sc">+</span></span>
-<span id="cb154-6"><a href="australian-election-data.html#cb154-6" tabindex="-1"></a>                          Finance<span class="sc">+</span>HighSchool<span class="sc">+</span></span>
-<span id="cb154-7"><a href="australian-election-data.html#cb154-7" tabindex="-1"></a>                          Indigenous<span class="sc">+</span></span>
-<span id="cb154-8"><a href="australian-election-data.html#cb154-8" tabindex="-1"></a>                          LFParticipation<span class="sc">+</span></span>
-<span id="cb154-9"><a href="australian-election-data.html#cb154-9" tabindex="-1"></a>                          Married<span class="sc">+</span></span>
-<span id="cb154-10"><a href="australian-election-data.html#cb154-10" tabindex="-1"></a>                          NoReligion,</span>
-<span id="cb154-11"><a href="australian-election-data.html#cb154-11" tabindex="-1"></a>                          <span class="at">data=</span>election2022)</span>
-<span id="cb154-12"><a href="australian-election-data.html#cb154-12" tabindex="-1"></a></span>
-<span id="cb154-13"><a href="australian-election-data.html#cb154-13" tabindex="-1"></a><span class="fu">summary</span>(election_model_lean)</span></code></pre></div>
-<div class="sourceCode" id="cb155"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb155-1"><a href="australian-election-data.html#cb155-1" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> BachelorAbv, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
-<span id="cb155-2"><a href="australian-election-data.html#cb155-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
-<span id="cb155-3"><a href="australian-election-data.html#cb155-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
-<span id="cb155-4"><a href="australian-election-data.html#cb155-4" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb155-5"><a href="australian-election-data.html#cb155-5" tabindex="-1"></a></span>
-<span id="cb155-6"><a href="australian-election-data.html#cb155-6" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> CurrentlyStudying, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
-<span id="cb155-7"><a href="australian-election-data.html#cb155-7" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
-<span id="cb155-8"><a href="australian-election-data.html#cb155-8" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
-<span id="cb155-9"><a href="australian-election-data.html#cb155-9" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb155-10"><a href="australian-election-data.html#cb155-10" tabindex="-1"></a></span>
-<span id="cb155-11"><a href="australian-election-data.html#cb155-11" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> DeFacto, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
-<span id="cb155-12"><a href="australian-election-data.html#cb155-12" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
-<span id="cb155-13"><a href="australian-election-data.html#cb155-13" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
-<span id="cb155-14"><a href="australian-election-data.html#cb155-14" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb155-15"><a href="australian-election-data.html#cb155-15" tabindex="-1"></a></span>
-<span id="cb155-16"><a href="australian-election-data.html#cb155-16" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> DiffAddress, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
-<span id="cb155-17"><a href="australian-election-data.html#cb155-17" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
-<span id="cb155-18"><a href="australian-election-data.html#cb155-18" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
-<span id="cb155-19"><a href="australian-election-data.html#cb155-19" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb155-20"><a href="australian-election-data.html#cb155-20" tabindex="-1"></a></span>
-<span id="cb155-21"><a href="australian-election-data.html#cb155-21" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> Finance, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
-<span id="cb155-22"><a href="australian-election-data.html#cb155-22" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
-<span id="cb155-23"><a href="australian-election-data.html#cb155-23" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
-<span id="cb155-24"><a href="australian-election-data.html#cb155-24" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb155-25"><a href="australian-election-data.html#cb155-25" tabindex="-1"></a></span>
-<span id="cb155-26"><a href="australian-election-data.html#cb155-26" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> HighSchool, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
-<span id="cb155-27"><a href="australian-election-data.html#cb155-27" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
-<span id="cb155-28"><a href="australian-election-data.html#cb155-28" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
-<span id="cb155-29"><a href="australian-election-data.html#cb155-29" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb155-30"><a href="australian-election-data.html#cb155-30" tabindex="-1"></a></span>
-<span id="cb155-31"><a href="australian-election-data.html#cb155-31" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> Indigenous, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
-<span id="cb155-32"><a href="australian-election-data.html#cb155-32" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
-<span id="cb155-33"><a href="australian-election-data.html#cb155-33" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
-<span id="cb155-34"><a href="australian-election-data.html#cb155-34" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb155-35"><a href="australian-election-data.html#cb155-35" tabindex="-1"></a></span>
-<span id="cb155-36"><a href="australian-election-data.html#cb155-36" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> LFParticipation, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
-<span id="cb155-37"><a href="australian-election-data.html#cb155-37" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
-<span id="cb155-38"><a href="australian-election-data.html#cb155-38" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
-<span id="cb155-39"><a href="australian-election-data.html#cb155-39" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb155-40"><a href="australian-election-data.html#cb155-40" tabindex="-1"></a></span>
-<span id="cb155-41"><a href="australian-election-data.html#cb155-41" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> Married, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
-<span id="cb155-42"><a href="australian-election-data.html#cb155-42" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
-<span id="cb155-43"><a href="australian-election-data.html#cb155-43" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
-<span id="cb155-44"><a href="australian-election-data.html#cb155-44" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
-<span id="cb155-45"><a href="australian-election-data.html#cb155-45" tabindex="-1"></a></span>
-<span id="cb155-46"><a href="australian-election-data.html#cb155-46" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> NoReligion, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
-<span id="cb155-47"><a href="australian-election-data.html#cb155-47" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
-<span id="cb155-48"><a href="australian-election-data.html#cb155-48" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
-<span id="cb155-49"><a href="australian-election-data.html#cb155-49" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
+<div class="sourceCode" id="cb171"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb171-1"><a href="australian-election-data.html#cb171-1" tabindex="-1"></a>election_model_lean <span class="ot">&lt;-</span> <span class="fu">lm</span>(LNP_Percent<span class="sc">~</span></span>
+<span id="cb171-2"><a href="australian-election-data.html#cb171-2" tabindex="-1"></a>                          BachelorAbv<span class="sc">+</span></span>
+<span id="cb171-3"><a href="australian-election-data.html#cb171-3" tabindex="-1"></a>                          CurrentlyStudying<span class="sc">+</span></span>
+<span id="cb171-4"><a href="australian-election-data.html#cb171-4" tabindex="-1"></a>                          DeFacto<span class="sc">+</span></span>
+<span id="cb171-5"><a href="australian-election-data.html#cb171-5" tabindex="-1"></a>                          DiffAddress<span class="sc">+</span></span>
+<span id="cb171-6"><a href="australian-election-data.html#cb171-6" tabindex="-1"></a>                          Finance<span class="sc">+</span>HighSchool<span class="sc">+</span></span>
+<span id="cb171-7"><a href="australian-election-data.html#cb171-7" tabindex="-1"></a>                          Indigenous<span class="sc">+</span></span>
+<span id="cb171-8"><a href="australian-election-data.html#cb171-8" tabindex="-1"></a>                          LFParticipation<span class="sc">+</span></span>
+<span id="cb171-9"><a href="australian-election-data.html#cb171-9" tabindex="-1"></a>                          Married<span class="sc">+</span></span>
+<span id="cb171-10"><a href="australian-election-data.html#cb171-10" tabindex="-1"></a>                          NoReligion,</span>
+<span id="cb171-11"><a href="australian-election-data.html#cb171-11" tabindex="-1"></a>                          <span class="at">data=</span>election2022)</span>
+<span id="cb171-12"><a href="australian-election-data.html#cb171-12" tabindex="-1"></a></span>
+<span id="cb171-13"><a href="australian-election-data.html#cb171-13" tabindex="-1"></a><span class="fu">summary</span>(election_model_lean)</span></code></pre></div>
+<div class="sourceCode" id="cb172"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb172-1"><a href="australian-election-data.html#cb172-1" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> BachelorAbv, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
+<span id="cb172-2"><a href="australian-election-data.html#cb172-2" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span> </span>
+<span id="cb172-3"><a href="australian-election-data.html#cb172-3" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb172-4"><a href="australian-election-data.html#cb172-4" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb172-5"><a href="australian-election-data.html#cb172-5" tabindex="-1"></a></span>
+<span id="cb172-6"><a href="australian-election-data.html#cb172-6" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> CurrentlyStudying, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
+<span id="cb172-7"><a href="australian-election-data.html#cb172-7" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
+<span id="cb172-8"><a href="australian-election-data.html#cb172-8" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb172-9"><a href="australian-election-data.html#cb172-9" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb172-10"><a href="australian-election-data.html#cb172-10" tabindex="-1"></a></span>
+<span id="cb172-11"><a href="australian-election-data.html#cb172-11" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> DeFacto, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
+<span id="cb172-12"><a href="australian-election-data.html#cb172-12" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
+<span id="cb172-13"><a href="australian-election-data.html#cb172-13" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb172-14"><a href="australian-election-data.html#cb172-14" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb172-15"><a href="australian-election-data.html#cb172-15" tabindex="-1"></a></span>
+<span id="cb172-16"><a href="australian-election-data.html#cb172-16" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> DiffAddress, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
+<span id="cb172-17"><a href="australian-election-data.html#cb172-17" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
+<span id="cb172-18"><a href="australian-election-data.html#cb172-18" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb172-19"><a href="australian-election-data.html#cb172-19" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb172-20"><a href="australian-election-data.html#cb172-20" tabindex="-1"></a></span>
+<span id="cb172-21"><a href="australian-election-data.html#cb172-21" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> Finance, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
+<span id="cb172-22"><a href="australian-election-data.html#cb172-22" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
+<span id="cb172-23"><a href="australian-election-data.html#cb172-23" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb172-24"><a href="australian-election-data.html#cb172-24" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb172-25"><a href="australian-election-data.html#cb172-25" tabindex="-1"></a></span>
+<span id="cb172-26"><a href="australian-election-data.html#cb172-26" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> HighSchool, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
+<span id="cb172-27"><a href="australian-election-data.html#cb172-27" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
+<span id="cb172-28"><a href="australian-election-data.html#cb172-28" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb172-29"><a href="australian-election-data.html#cb172-29" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb172-30"><a href="australian-election-data.html#cb172-30" tabindex="-1"></a></span>
+<span id="cb172-31"><a href="australian-election-data.html#cb172-31" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> Indigenous, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
+<span id="cb172-32"><a href="australian-election-data.html#cb172-32" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
+<span id="cb172-33"><a href="australian-election-data.html#cb172-33" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb172-34"><a href="australian-election-data.html#cb172-34" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb172-35"><a href="australian-election-data.html#cb172-35" tabindex="-1"></a></span>
+<span id="cb172-36"><a href="australian-election-data.html#cb172-36" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> LFParticipation, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
+<span id="cb172-37"><a href="australian-election-data.html#cb172-37" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
+<span id="cb172-38"><a href="australian-election-data.html#cb172-38" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb172-39"><a href="australian-election-data.html#cb172-39" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb172-40"><a href="australian-election-data.html#cb172-40" tabindex="-1"></a></span>
+<span id="cb172-41"><a href="australian-election-data.html#cb172-41" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> Married, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
+<span id="cb172-42"><a href="australian-election-data.html#cb172-42" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
+<span id="cb172-43"><a href="australian-election-data.html#cb172-43" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb172-44"><a href="australian-election-data.html#cb172-44" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span>
+<span id="cb172-45"><a href="australian-election-data.html#cb172-45" tabindex="-1"></a></span>
+<span id="cb172-46"><a href="australian-election-data.html#cb172-46" tabindex="-1"></a><span class="fu">ggplot</span>(election2022, <span class="fu">aes</span>(<span class="at">x =</span> NoReligion, <span class="at">y =</span> LNP_Percent)) <span class="sc">+</span> </span>
+<span id="cb172-47"><a href="australian-election-data.html#cb172-47" tabindex="-1"></a>  <span class="fu">geom_jitter</span>() <span class="sc">+</span> </span>
+<span id="cb172-48"><a href="australian-election-data.html#cb172-48" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span> </span>
+<span id="cb172-49"><a href="australian-election-data.html#cb172-49" tabindex="-1"></a>  <span class="fu">theme_minimal</span>()</span></code></pre></div>
 <p><img src="_main_files/figure-html/figures-side3-1.png" width="50%" /><img src="_main_files/figure-html/figures-side3-2.png" width="50%" /><img src="_main_files/figure-html/figures-side3-3.png" width="50%" /><img src="_main_files/figure-html/figures-side3-4.png" width="50%" /><img src="_main_files/figure-html/figures-side3-5.png" width="50%" /><img src="_main_files/figure-html/figures-side3-6.png" width="50%" /><img src="_main_files/figure-html/figures-side3-7.png" width="50%" /><img src="_main_files/figure-html/figures-side3-8.png" width="50%" /><img src="_main_files/figure-html/figures-side3-9.png" width="50%" /><img src="_main_files/figure-html/figures-side3-10.png" width="50%" /></p>
 <p>One of the more novel issues with the above analysis is that it’s done on the electorate level, however electorates vary dramatically in side (google the Modifiable Area Unit Problem if this piques your interest)</p>
 <p>Instead of using one data point for a whole electorate (regardless of how big it is), we can fetch data from all 7,000 voting booths, the match it up with the corresponding local demographic data.</p>
@@ -857,33 +872,33 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## #   PremisesStateAb &lt;chr&gt;, PremisesPostCode &lt;chr&gt;, Latitude &lt;dbl&gt;,
 ## #   Longitude &lt;dbl&gt;</code></pre>
 <p>What do these booths look like on a map? Let’s reuse the CED map above and plot a point for each booth location.</p>
-<div class="sourceCode" id="cb157"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb157-1"><a href="australian-election-data.html#cb157-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
-<span id="cb157-2"><a href="australian-election-data.html#cb157-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> ced2021) <span class="sc">+</span></span>
-<span id="cb157-3"><a href="australian-election-data.html#cb157-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> booths, <span class="fu">aes</span>(<span class="at">x =</span> Longitude, <span class="at">y =</span> Latitude), </span>
-<span id="cb157-4"><a href="australian-election-data.html#cb157-4" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">&quot;purple&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
-<span id="cb157-5"><a href="australian-election-data.html#cb157-5" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb157-6"><a href="australian-election-data.html#cb157-6" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Polling booths in Australia&quot;</span>,</span>
-<span id="cb157-7"><a href="australian-election-data.html#cb157-7" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot; &quot;</span>,</span>
-<span id="cb157-8"><a href="australian-election-data.html#cb157-8" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: Australian Electoral Commission 2016&quot;</span>,</span>
-<span id="cb157-9"><a href="australian-election-data.html#cb157-9" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
-<span id="cb157-10"><a href="australian-election-data.html#cb157-10" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;&quot;</span></span>
-<span id="cb157-11"><a href="australian-election-data.html#cb157-11" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
-<span id="cb157-12"><a href="australian-election-data.html#cb157-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb157-13"><a href="australian-election-data.html#cb157-13" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb157-14"><a href="australian-election-data.html#cb157-14" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb157-15"><a href="australian-election-data.html#cb157-15" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb157-16"><a href="australian-election-data.html#cb157-16" tabindex="-1"></a>    <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb157-17"><a href="australian-election-data.html#cb157-17" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb157-18"><a href="australian-election-data.html#cb157-18" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb157-19"><a href="australian-election-data.html#cb157-19" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
-<span id="cb157-20"><a href="australian-election-data.html#cb157-20" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>,</span>
-<span id="cb157-21"><a href="australian-election-data.html#cb157-21" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
-<span id="cb157-22"><a href="australian-election-data.html#cb157-22" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
-<span id="cb157-23"><a href="australian-election-data.html#cb157-23" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>)</span>
-<span id="cb157-24"><a href="australian-election-data.html#cb157-24" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb157-25"><a href="australian-election-data.html#cb157-25" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">112</span>, <span class="dv">157</span>)) <span class="sc">+</span> </span>
-<span id="cb157-26"><a href="australian-election-data.html#cb157-26" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">44</span>, <span class="sc">-</span><span class="dv">11</span>))</span></code></pre></div>
-<p><img src="_main_files/figure-html/unnamed-chunk-115-1.png" width="672" /></p>
+<div class="sourceCode" id="cb174"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb174-1"><a href="australian-election-data.html#cb174-1" tabindex="-1"></a><span class="fu">ggplot</span>() <span class="sc">+</span></span>
+<span id="cb174-2"><a href="australian-election-data.html#cb174-2" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data =</span> ced2021) <span class="sc">+</span></span>
+<span id="cb174-3"><a href="australian-election-data.html#cb174-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">data =</span> booths, <span class="fu">aes</span>(<span class="at">x =</span> Longitude, <span class="at">y =</span> Latitude), </span>
+<span id="cb174-4"><a href="australian-election-data.html#cb174-4" tabindex="-1"></a>             <span class="at">colour =</span> <span class="st">&quot;purple&quot;</span>, <span class="at">size =</span> <span class="dv">1</span>, <span class="at">alpha =</span> <span class="fl">0.3</span>, <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb174-5"><a href="australian-election-data.html#cb174-5" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb174-6"><a href="australian-election-data.html#cb174-6" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Polling booths in Australia&quot;</span>,</span>
+<span id="cb174-7"><a href="australian-election-data.html#cb174-7" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot; &quot;</span>,</span>
+<span id="cb174-8"><a href="australian-election-data.html#cb174-8" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: Australian Electoral Commission 2016&quot;</span>,</span>
+<span id="cb174-9"><a href="australian-election-data.html#cb174-9" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;&quot;</span>,</span>
+<span id="cb174-10"><a href="australian-election-data.html#cb174-10" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb174-11"><a href="australian-election-data.html#cb174-11" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb174-12"><a href="australian-election-data.html#cb174-12" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb174-13"><a href="australian-election-data.html#cb174-13" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb174-14"><a href="australian-election-data.html#cb174-14" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb174-15"><a href="australian-election-data.html#cb174-15" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb174-16"><a href="australian-election-data.html#cb174-16" tabindex="-1"></a>    <span class="at">axis.ticks.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb174-17"><a href="australian-election-data.html#cb174-17" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb174-18"><a href="australian-election-data.html#cb174-18" tabindex="-1"></a>    <span class="at">panel.grid.major =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb174-19"><a href="australian-election-data.html#cb174-19" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
+<span id="cb174-20"><a href="australian-election-data.html#cb174-20" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;right&quot;</span>,</span>
+<span id="cb174-21"><a href="australian-election-data.html#cb174-21" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb174-22"><a href="australian-election-data.html#cb174-22" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
+<span id="cb174-23"><a href="australian-election-data.html#cb174-23" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>)</span>
+<span id="cb174-24"><a href="australian-election-data.html#cb174-24" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb174-25"><a href="australian-election-data.html#cb174-25" tabindex="-1"></a>  <span class="fu">xlim</span>(<span class="fu">c</span>(<span class="dv">112</span>, <span class="dv">157</span>)) <span class="sc">+</span> </span>
+<span id="cb174-26"><a href="australian-election-data.html#cb174-26" tabindex="-1"></a>  <span class="fu">ylim</span>(<span class="fu">c</span>(<span class="sc">-</span><span class="dv">44</span>, <span class="sc">-</span><span class="dv">11</span>))</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-126-1.png" width="672" /></p>
 <p>Figuring out where a candidates votes come from <em>within</em> an electorate is fundamental to developing a campaign strategy. Even in small electorates (e.g. Wentworth), there are pockets of right leaning and left leaning districts. Once you factor in preference flows, this multi-variate calculus becomes important to winning or maintaining a seat.</p>
 <p>In the <code>eechidna</code>package, election results are provided at the resolution of polling place. Unfortunately, these are yet to be updated for elections after 2016.</p>
 <p>The data sets must be downloaded using the functions <code>firstpref_pollingbooth_download</code>, <code>twoparty_pollingbooth_download</code> or <code>twocand_pollingbooth_download</code> (depending on the vote type).</p>
