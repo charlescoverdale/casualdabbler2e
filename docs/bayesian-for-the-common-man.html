@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-02-19" />
+<meta name="date" content="2025-02-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="australian-election-data.html"/>
-
+<link rel="next" href="causal-inference.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -244,10 +244,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="14" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html"><i class="fa fa-check"></i><b>14</b> Bayesian for the common man</a>
 <ul>
-<li class="chapter" data-level="14.1" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html#probability-refresher"><i class="fa fa-check"></i><b>14.1</b> Probability refresher</a>
+<li class="chapter" data-level="14.1" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html#enter-rev.-bayes"><i class="fa fa-check"></i><b>14.1</b> Enter Rev. Bayes</a>
 <ul>
-<li class="chapter" data-level="14.1.1" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html#section"><i class="fa fa-check"></i><b>14.1.1</b> </a></li>
+<li><a href="bayesian-for-the-common-man.html#pb-a-fracpa-b-pbpa" id="toc-pb-a-fracpa-b-pbpa"><span class="toc-section-number">14.1.1</span> <span class="math display">\[
+P(B| A) = \frac{P(A | B) P(B)}{P(A)}
+\]</span></a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="causal-inference.html"><a href="causal-inference.html"><i class="fa fa-check"></i><b>15</b> Causal inference</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="causal-inference.html"><a href="causal-inference.html#what-causes-what"><i class="fa fa-check"></i><b>15.1</b> What causes what</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>16</b> Functions</a></li>
+<li class="chapter" data-level="17" data-path="packages.html"><a href="packages.html"><i class="fa fa-check"></i><b>17</b> Packages</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="packages.html"><a href="packages.html#pack-it-up"><i class="fa fa-check"></i><b>17.1</b> Pack it up</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://www.linkedin.com/in/charlescoverdale/" target="blank">Connect with me on linkedin</a></li>
@@ -272,13 +283,17 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="bayesian-for-the-common-man" class="section level1 hasAnchor" number="14">
 <h1><span class="header-section-number">Chapter 14</span> Bayesian for the common man<a href="bayesian-for-the-common-man.html#bayesian-for-the-common-man" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div id="probability-refresher" class="section level2 hasAnchor" number="14.1">
-<h2><span class="header-section-number">14.1</span> Probability refresher<a href="bayesian-for-the-common-man.html#probability-refresher" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="enter-rev.-bayes" class="section level2 hasAnchor" number="14.1">
+<h2><span class="header-section-number">14.1</span> Enter Rev. Bayes<a href="bayesian-for-the-common-man.html#enter-rev.-bayes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Bayes’ Theorem is named after 18th-century British statistician and theologian, Thomas Bayes. The theorem describes how to update the probability of a hypothesis based on new evidence.</p>
-<p>In traditional frequentist statistics, probability is interpreted as the long-run frequency of events in repeated trials.</p>
-<p>Bayesian statistics, on the other hand, allows us to incorporate prior knowledge or beliefs into our analysis and update those beliefs as we gather more data.</p>
-<div id="section" class="section level3" number="14.1.1">
-<h3><span class="header-section-number">14.1.1</span> </h3>
+<p>In traditional frequentist statistics, probability is interpreted as the long-run frequency of events in repeated trials (sampling). A p-value from a sampling distribution tells us: <em>What is the chance of seeing this result, given some hypothesis?</em></p>
+<p>Bayesian statistics, on the other hand, allows us to incorporate <em>prior</em> knowledge or beliefs into our analysis and update those beliefs as we gather more data. The central question of Bayes’ Theorem therefore is: <em>How likely is the hypothesis to be true, given the data I’ve seen?</em></p>
+<p>This isn’t semantics - it’s a completely different way of seeing the world.</p>
+<p>We can write Bayes’ Theorem using probability notation.</p>
+<div id="pb-a-fracpa-b-pbpa" class="section level3 hasAnchor" number="14.1.1">
+<h3 class="hasAnchor"><span class="header-section-number">14.1.1</span> <span class="math display">\[
+P(B| A) = \frac{P(A | B) P(B)}{P(A)}
+\]</span><a href="bayesian-for-the-common-man.html#pb-a-fracpa-b-pbpa" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 
 </div>
 </div>
@@ -288,8 +303,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="australian-election-data.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="australian-election-data.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="causal-inference.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
@@ -343,6 +358,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>

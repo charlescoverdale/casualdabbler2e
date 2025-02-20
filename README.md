@@ -1,8 +1,8 @@
 # R Cookbook for the Casual Dabbler (2nd edition)
 
-This repo contains the code use to produce [R Cookbook for the Casual Dabbler (2nd edition)](https://charlescoverdale.github.io/casualdabbler2e/).
+This repo contains the code use to publish [R Cookbook for the Casual Dabbler (2nd edition)](https://charlescoverdale.github.io/casualdabbler2e/). The philosophy of this book remains that *a little R knowledge can go a long way*.
 
-RCCD1e edition was originally published in 2020 as a side project during the COVID-19 lockdowns in Melbourne. A lot has changed in the R community since, and as such RCCD2e includes significant revisions.
+RCCD1e edition was originally published in 2020 as a side project during the COVID-19 lockdowns in Melbourne. A lot has changed in the R community since, and as such the 2025 update of RCCD2e includes significant revisions.
 
 The book is 100% written in R, and published using [Rmarkdown](https://rmarkdown.rstudio.com/) and [Bookdown](https://bookdown.org/).
 
@@ -32,10 +32,12 @@ The book is 100% written in R, and published using [Rmarkdown](https://rmarkdown
 11. ABS economic indicators
 12. Australian election data
 
-## Upcoming chapters
+## Upcoming chapters (mid-2025)
 
 13. Bayesian for the common man
 14. Causal inference
+15. Functions
+16. Packages
 
 ## Limitations
 

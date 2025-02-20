@@ -55,7 +55,7 @@ The summary version is the AEC carves up the population by state and territory, 
 Oh... and did I mention for reasons that aren't worth explaining that Tasmania has to have at least 5 seats? Our Federation is a funny thing. Anyhow, at time of writing this is how the breakdown of seats looks.
 
 | **State/Territory** | **Number of members of the House of Representatives (2022)** |
-|--------------------------|----------------------------------------------|
+|----|----|
 | New South Wales | 47 |
 | Victoria | 39 |
 | Queensland | 30 |

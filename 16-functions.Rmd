@@ -1,0 +1,5 @@
+# Functions
+
+*Note: Chapter under development*
+
+Hadley WIckham has a great [chapter on functions](https://r4ds.hadley.nz/functions.html) in his book [R for Data Science 2e](https://r4ds.hadley.nz/).

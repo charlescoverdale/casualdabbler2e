@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-02-19" />
+<meta name="date" content="2025-02-21" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -244,10 +244,21 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="14" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html"><i class="fa fa-check"></i><b>14</b> Bayesian for the common man</a>
 <ul>
-<li class="chapter" data-level="14.1" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html#probability-refresher"><i class="fa fa-check"></i><b>14.1</b> Probability refresher</a>
+<li class="chapter" data-level="14.1" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html#enter-rev.-bayes"><i class="fa fa-check"></i><b>14.1</b> Enter Rev. Bayes</a>
 <ul>
-<li class="chapter" data-level="14.1.1" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html#section"><i class="fa fa-check"></i><b>14.1.1</b> </a></li>
+<li><a href="bayesian-for-the-common-man.html#pb-a-fracpa-b-pbpa" id="toc-pb-a-fracpa-b-pbpa"><span class="toc-section-number">14.1.1</span> <span class="math display">\[
+P(B| A) = \frac{P(A | B) P(B)}{P(A)}
+\]</span></a></li>
 </ul></li>
+</ul></li>
+<li class="chapter" data-level="15" data-path="causal-inference.html"><a href="causal-inference.html"><i class="fa fa-check"></i><b>15</b> Causal inference</a>
+<ul>
+<li class="chapter" data-level="15.1" data-path="causal-inference.html"><a href="causal-inference.html#what-causes-what"><i class="fa fa-check"></i><b>15.1</b> What causes what</a></li>
+</ul></li>
+<li class="chapter" data-level="16" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>16</b> Functions</a></li>
+<li class="chapter" data-level="17" data-path="packages.html"><a href="packages.html"><i class="fa fa-check"></i><b>17</b> Packages</a>
+<ul>
+<li class="chapter" data-level="17.1" data-path="packages.html"><a href="packages.html#pack-it-up"><i class="fa fa-check"></i><b>17.1</b> Pack it up</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://www.linkedin.com/in/charlescoverdale/" target="blank">Connect with me on linkedin</a></li>
@@ -430,6 +441,20 @@ gitbook.start({
 });
 </script>
 
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    var src = "true";
+    if (src === "" || src === "true") src = "https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.9/latest.js?config=TeX-MML-AM_CHTML";
+    if (location.protocol !== "file:")
+      if (/^https?:/.test(src))
+        src = src.replace(/^https?:/, '');
+    script.src = src;
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
 </body>
 
 </html>
