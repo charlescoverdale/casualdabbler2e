@@ -34,7 +34,7 @@ To get GDP data from the ABS, we'll use the read_abs function from the `readrba`
 ```{r, warning=FALSE, message=FALSE, error=FALSE, fig.keep = TRUE, cache=TRUE}
 
 #For simplicity, we keep the download function seperate to the analysis
-all_gdp <- read_abs("5206.0")
+all_gdp <- readabs::read_abs("5206.0", tables=2)
 ```
 
 ```{r, warning=FALSE, message=FALSE, error=FALSE, fig.keep = TRUE}
@@ -126,7 +126,7 @@ Download the data
 ```{r, warning=FALSE, message=FALSE, error=FALSE, fig.keep = TRUE,cache=TRUE}
 
 #Download the time sreies
-all_unemployment <- read_abs("6202.0")
+all_unemployment <- readabs::read_abs("6202.0", tables=1)
 
 ```
 
@@ -193,7 +193,7 @@ Download the data
 
 ```{r, warning=FALSE, message=FALSE, error=FALSE, fig.keep = TRUE,cache=TRUE}
 
-all_CPI <- read_abs("6401.0")
+all_CPI <- readabs::read_abs("6401.0", tables = c(1, 2))
 
 ```
 
@@ -304,7 +304,7 @@ Download the data
 
 ```{r, warning=FALSE, message=FALSE, error=FALSE, fig.keep = TRUE,cache=TRUE}
 
-all_wpi <- read_abs("6345.0")
+all_wpi <- readabs::read_abs("6345.0")
 
 ```
 

@@ -26,7 +26,7 @@ library(broom)
 library(Census2016)  
 library(strayr)  
 library(absmapsdata)  
-library(officer)  
+library(officer)
 ```
 
 Will Mackey's `absmapsdata` package contains all the ABS' ASGS shapefiles. The data is now also callable through the (thoroughly updated and expanded) `strayr` package. For example:

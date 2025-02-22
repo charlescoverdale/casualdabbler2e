@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-02-21" />
+<meta name="date" content="2025-02-22" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -255,7 +255,12 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <ul>
 <li class="chapter" data-level="15.1" data-path="causal-inference.html"><a href="causal-inference.html#what-causes-what"><i class="fa fa-check"></i><b>15.1</b> What causes what</a></li>
 </ul></li>
-<li class="chapter" data-level="16" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>16</b> Functions</a></li>
+<li class="chapter" data-level="16" data-path="functions.html"><a href="functions.html"><i class="fa fa-check"></i><b>16</b> Functions</a>
+<ul>
+<li class="chapter" data-level="16.1" data-path="functions.html"><a href="functions.html#components"><i class="fa fa-check"></i><b>16.1</b> Components</a></li>
+<li class="chapter" data-level="16.2" data-path="functions.html"><a href="functions.html#luhn-example"><i class="fa fa-check"></i><b>16.2</b> Luhn example</a></li>
+<li class="chapter" data-level="16.3" data-path="functions.html"><a href="functions.html#loops-in-functions"><i class="fa fa-check"></i><b>16.3</b> Loops in functions</a></li>
+</ul></li>
 <li class="chapter" data-level="17" data-path="packages.html"><a href="packages.html"><i class="fa fa-check"></i><b>17</b> Packages</a>
 <ul>
 <li class="chapter" data-level="17.1" data-path="packages.html"><a href="packages.html#pack-it-up"><i class="fa fa-check"></i><b>17.1</b> Pack it up</a></li>
@@ -309,7 +314,7 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <h2><span class="header-section-number">12.1</span> GDP<a href="australian-economic-data.html#gdp" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>To get GDP data from the ABS, we’ll use the read_abs function from the <code>readrba</code> package.</p>
 <div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="australian-economic-data.html#cb126-1" tabindex="-1"></a><span class="co">#For simplicity, we keep the download function seperate to the analysis</span></span>
-<span id="cb126-2"><a href="australian-economic-data.html#cb126-2" tabindex="-1"></a>all_gdp <span class="ot">&lt;-</span> <span class="fu">read_abs</span>(<span class="st">&quot;5206.0&quot;</span>)</span></code></pre></div>
+<span id="cb126-2"><a href="australian-economic-data.html#cb126-2" tabindex="-1"></a>all_gdp <span class="ot">&lt;-</span> readabs<span class="sc">::</span><span class="fu">read_abs</span>(<span class="st">&quot;5206.0&quot;</span>, <span class="at">tables=</span><span class="dv">2</span>)</span></code></pre></div>
 <div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="australian-economic-data.html#cb127-1" tabindex="-1"></a><span class="co">#Select the seasonally adjusted data and filter for data and value columns</span></span>
 <span id="cb127-2"><a href="australian-economic-data.html#cb127-2" tabindex="-1"></a>gdp_level <span class="ot">&lt;-</span> all_gdp <span class="sc">%&gt;%</span> </span>
 <span id="cb127-3"><a href="australian-economic-data.html#cb127-3" tabindex="-1"></a>              <span class="fu">filter</span>(series <span class="sc">==</span> <span class="st">&quot;Gross domestic product: Chain volume measures ;&quot;</span>, </span>
@@ -346,17 +351,11 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <span id="cb127-34"><a href="australian-economic-data.html#cb127-34" tabindex="-1"></a>                   (quarterly_output<span class="sc">/</span>baseline_value)<span class="sc">*</span><span class="dv">100</span>)</span>
 <span id="cb127-35"><a href="australian-economic-data.html#cb127-35" tabindex="-1"></a></span>
 <span id="cb127-36"><a href="australian-economic-data.html#cb127-36" tabindex="-1"></a><span class="fu">tail</span>(gdp_level)</span></code></pre></div>
-<pre><code>## # A tibble: 6 × 9
-##   date       quarterly_output quarterly_growth_rate annual_gdp
-##   &lt;date&gt;                &lt;dbl&gt;                 &lt;dbl&gt;      &lt;dbl&gt;
-## 1 2023-06-01           646331                 0.334    2567511
-## 2 2023-09-01           649432                 0.480    2581019
-## 3 2023-12-01           650532                 0.169    2590477
-## 4 2024-03-01           651554                 0.157    2597849
-## 5 2024-06-01           652734                 0.181    2604252
-## 6 2024-09-01           654912                 0.334    2609732
-## # ℹ 5 more variables: annual_gdp_trillions &lt;dbl&gt;, annual_growth_rate &lt;dbl&gt;,
-## #   Quarter_of_year &lt;int&gt;, baseline_value &lt;dbl&gt;, baseline_comparison &lt;dbl&gt;</code></pre>
+<pre><code>## # A tibble: 0 × 9
+## # ℹ 9 variables: date &lt;date&gt;, quarterly_output &lt;dbl&gt;,
+## #   quarterly_growth_rate &lt;dbl&gt;, annual_gdp &lt;dbl&gt;, annual_gdp_trillions &lt;dbl&gt;,
+## #   annual_growth_rate &lt;dbl&gt;, Quarter_of_year &lt;int&gt;, baseline_value &lt;dbl&gt;,
+## #   baseline_comparison &lt;dbl&gt;</code></pre>
 <p>Now we can plot the GDP data for Australia.</p>
 <div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="australian-economic-data.html#cb129-1" tabindex="-1"></a>plot_gdp <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>gdp_level)<span class="sc">+</span></span>
 <span id="cb129-2"><a href="australian-economic-data.html#cb129-2" tabindex="-1"></a>            <span class="fu">geom_line</span>((<span class="fu">aes</span>(<span class="at">x=</span>date, <span class="at">y=</span>annual_gdp_trillions)), <span class="at">col=</span><span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
@@ -400,7 +399,7 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <h2><span class="header-section-number">12.2</span> Unemployment rate<a href="australian-economic-data.html#unemployment-rate" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Download the data</p>
 <div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="australian-economic-data.html#cb130-1" tabindex="-1"></a><span class="co">#Download the time sreies</span></span>
-<span id="cb130-2"><a href="australian-economic-data.html#cb130-2" tabindex="-1"></a>all_unemployment <span class="ot">&lt;-</span> <span class="fu">read_abs</span>(<span class="st">&quot;6202.0&quot;</span>)</span></code></pre></div>
+<span id="cb130-2"><a href="australian-economic-data.html#cb130-2" tabindex="-1"></a>all_unemployment <span class="ot">&lt;-</span> readabs<span class="sc">::</span><span class="fu">read_abs</span>(<span class="st">&quot;6202.0&quot;</span>, <span class="at">tables=</span><span class="dv">1</span>)</span></code></pre></div>
 <p>Clean and analyse the data</p>
 <div class="sourceCode" id="cb131"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb131-1"><a href="australian-economic-data.html#cb131-1" tabindex="-1"></a>unemployment_rate <span class="ot">&lt;-</span> all_unemployment <span class="sc">%&gt;%</span> </span>
 <span id="cb131-2"><a href="australian-economic-data.html#cb131-2" tabindex="-1"></a>              <span class="fu">filter</span>(series <span class="sc">==</span> <span class="st">&quot;Unemployment rate ;  Persons ;&quot;</span>,<span class="sc">!</span><span class="fu">is.na</span>(value)) <span class="sc">%&gt;%</span></span>
@@ -416,12 +415,12 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <pre><code>## # A tibble: 6 × 5
 ##   date       value mean_unemployment_rate percentile_25 percentile_75
 ##   &lt;date&gt;     &lt;dbl&gt;                  &lt;dbl&gt;         &lt;dbl&gt;         &lt;dbl&gt;
-## 1 2024-07-01  4.22                   6.58          5.27          7.92
-## 2 2024-08-01  4.13                   6.58          5.27          7.92
-## 3 2024-09-01  4.07                   6.58          5.27          7.92
-## 4 2024-10-01  4.11                   6.58          5.27          7.92
-## 5 2024-11-01  3.93                   6.58          5.27          7.92
-## 6 2024-12-01  3.98                   6.58          5.27          7.92</code></pre>
+## 1 2024-08-01  4.14                   6.57          5.27          7.92
+## 2 2024-09-01  4.07                   6.57          5.27          7.92
+## 3 2024-10-01  4.11                   6.57          5.27          7.92
+## 4 2024-11-01  3.94                   6.57          5.27          7.92
+## 5 2024-12-01  3.98                   6.57          5.27          7.92
+## 6 2025-01-01  4.11                   6.57          5.27          7.92</code></pre>
 <p>Plot the data</p>
 <div class="sourceCode" id="cb133"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb133-1"><a href="australian-economic-data.html#cb133-1" tabindex="-1"></a>plot_unemployment_rate <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(<span class="at">data=</span>unemployment_rate)<span class="sc">+</span></span>
 <span id="cb133-2"><a href="australian-economic-data.html#cb133-2" tabindex="-1"></a>                          <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> date, <span class="at">y =</span> value), <span class="at">col =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
@@ -461,7 +460,7 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <div id="inflation-cpi" class="section level2 hasAnchor" number="12.3">
 <h2><span class="header-section-number">12.3</span> Inflation (CPI)<a href="australian-economic-data.html#inflation-cpi" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Download the data</p>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="australian-economic-data.html#cb134-1" tabindex="-1"></a>all_CPI <span class="ot">&lt;-</span> <span class="fu">read_abs</span>(<span class="st">&quot;6401.0&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="australian-economic-data.html#cb134-1" tabindex="-1"></a>all_CPI <span class="ot">&lt;-</span> readabs<span class="sc">::</span><span class="fu">read_abs</span>(<span class="st">&quot;6401.0&quot;</span>, <span class="at">tables =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span></code></pre></div>
 <p>Clean and analyse the data</p>
 <div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="australian-economic-data.html#cb135-1" tabindex="-1"></a>Australia_CPI <span class="ot">&lt;-</span> all_CPI <span class="sc">%&gt;%</span> </span>
 <span id="cb135-2"><a href="australian-economic-data.html#cb135-2" tabindex="-1"></a>                 <span class="fu">filter</span>(series <span class="sc">==</span> <span class="st">&quot;Percentage Change from Corresponding Quarter of Previous Year ;  All groups CPI ;  Australia ;&quot;</span>,<span class="sc">!</span><span class="fu">is.na</span>(value)) <span class="sc">%&gt;%</span></span>
@@ -560,7 +559,7 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <div id="wage-price-index" class="section level2 hasAnchor" number="12.4">
 <h2><span class="header-section-number">12.4</span> Wage Price Index<a href="australian-economic-data.html#wage-price-index" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Download the data</p>
-<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="australian-economic-data.html#cb140-1" tabindex="-1"></a>all_wpi <span class="ot">&lt;-</span> <span class="fu">read_abs</span>(<span class="st">&quot;6345.0&quot;</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb140"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb140-1"><a href="australian-economic-data.html#cb140-1" tabindex="-1"></a>all_wpi <span class="ot">&lt;-</span> readabs<span class="sc">::</span><span class="fu">read_abs</span>(<span class="st">&quot;6345.0&quot;</span>)</span></code></pre></div>
 <p>Clean and analyse the data</p>
 <div class="sourceCode" id="cb141"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb141-1"><a href="australian-economic-data.html#cb141-1" tabindex="-1"></a>Australia_WPI <span class="ot">&lt;-</span> all_wpi <span class="sc">%&gt;%</span> </span>
 <span id="cb141-2"><a href="australian-economic-data.html#cb141-2" tabindex="-1"></a>                 <span class="fu">filter</span>(series <span class="sc">==</span> <span class="st">&quot;Percentage Change From Corresponding Quarter of Previous Year ;  Australia ;  Total hourly rates of pay excluding bonuses ;  Private and Public ;  All industries ;&quot;</span>,</span>
