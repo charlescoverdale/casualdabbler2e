@@ -196,6 +196,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>6</b> Forecasting</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="forecasting.html"><a href="forecasting.html#arima-models"><i class="fa fa-check"></i><b>6.1</b> ARIMA models</a></li>
+<li class="chapter" data-level="6.2" data-path="forecasting.html"><a href="forecasting.html#machine-learning"><i class="fa fa-check"></i><b>6.2</b> Machine learning</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="web-scraping.html"><a href="web-scraping.html"><i class="fa fa-check"></i><b>7</b> Web scraping</a>
 <ul>
@@ -291,38 +292,38 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <p>Numbers are great… but words literally tell a story. Analysing text (e.g. books, tweets, survey responses) in a quantitative format is naturally challenging - however there’s a few tricks which can simplify the process.</p>
 <p>This chapter outlines the process for inputting text data, and running some simple analysis. The notes and code loosely follow the fabulous book <a href="https://www.bookdepository.com/Text-Mining-with-R-Julia-Silge/9781491981658"><em>Text Mining with R</em></a> by Julia Silge and David Robinson.</p>
 <p>First up, let’s load some packages.</p>
-<div class="sourceCode" id="cb94"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb94-1"><a href="text-mining.html#cb94-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
-<span id="cb94-2"><a href="text-mining.html#cb94-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb94-3"><a href="text-mining.html#cb94-3" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb94-4"><a href="text-mining.html#cb94-4" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
-<span id="cb94-5"><a href="text-mining.html#cb94-5" tabindex="-1"></a><span class="fu">library</span>(textdata)</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="text-mining.html#cb108-1" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb108-2"><a href="text-mining.html#cb108-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb108-3"><a href="text-mining.html#cb108-3" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb108-4"><a href="text-mining.html#cb108-4" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb108-5"><a href="text-mining.html#cb108-5" tabindex="-1"></a><span class="fu">library</span>(textdata)</span></code></pre></div>
 <div id="frequency-analysis" class="section level2 hasAnchor" number="8.1">
 <h2><span class="header-section-number">8.1</span> Frequency analysis<a href="text-mining.html#frequency-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>There’s a online depository called <a href="https://www.gutenberg.org/">Project Gutenberg</a> which catalogue texts that have lost their copyright.</p>
 <p>It just so happens that <a href="https://www.gutenberg.org/ebooks/30">The Bible</a> is on this list. Let’s check out the most frequent words.</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="text-mining.html#cb95-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
-<span id="cb95-2"><a href="text-mining.html#cb95-2" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
-<span id="cb95-3"><a href="text-mining.html#cb95-3" tabindex="-1"></a></span>
-<span id="cb95-4"><a href="text-mining.html#cb95-4" tabindex="-1"></a><span class="co"># Correct URL for the raw text file</span></span>
-<span id="cb95-5"><a href="text-mining.html#cb95-5" tabindex="-1"></a>bible_url <span class="ot">&lt;-</span> <span class="st">&quot;https://raw.githubusercontent.com/charlescoverdale/casualdabbler2e/main/data/bible.txt&quot;</span></span>
-<span id="cb95-6"><a href="text-mining.html#cb95-6" tabindex="-1"></a></span>
-<span id="cb95-7"><a href="text-mining.html#cb95-7" tabindex="-1"></a><span class="co"># Read the text file directly from the URL</span></span>
-<span id="cb95-8"><a href="text-mining.html#cb95-8" tabindex="-1"></a>bible <span class="ot">&lt;-</span> <span class="fu">read_lines</span>(bible_url)</span>
-<span id="cb95-9"><a href="text-mining.html#cb95-9" tabindex="-1"></a></span>
-<span id="cb95-10"><a href="text-mining.html#cb95-10" tabindex="-1"></a><span class="co"># Convert to a tibble</span></span>
-<span id="cb95-11"><a href="text-mining.html#cb95-11" tabindex="-1"></a>bible_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">text =</span> bible)</span>
-<span id="cb95-12"><a href="text-mining.html#cb95-12" tabindex="-1"></a></span>
-<span id="cb95-13"><a href="text-mining.html#cb95-13" tabindex="-1"></a><span class="co"># Tokenize words and remove stop words</span></span>
-<span id="cb95-14"><a href="text-mining.html#cb95-14" tabindex="-1"></a>bible_tidy <span class="ot">&lt;-</span> bible_df <span class="sc">%&gt;%</span></span>
-<span id="cb95-15"><a href="text-mining.html#cb95-15" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">%&gt;%</span></span>
-<span id="cb95-16"><a href="text-mining.html#cb95-16" tabindex="-1"></a>  <span class="fu">anti_join</span>(stop_words, <span class="at">by =</span> <span class="st">&quot;word&quot;</span>)</span>
-<span id="cb95-17"><a href="text-mining.html#cb95-17" tabindex="-1"></a></span>
-<span id="cb95-18"><a href="text-mining.html#cb95-18" tabindex="-1"></a><span class="co"># Find and display the most common words</span></span>
-<span id="cb95-19"><a href="text-mining.html#cb95-19" tabindex="-1"></a>common_words <span class="ot">&lt;-</span> bible_tidy <span class="sc">%&gt;%</span></span>
-<span id="cb95-20"><a href="text-mining.html#cb95-20" tabindex="-1"></a>  <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb95-21"><a href="text-mining.html#cb95-21" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">20</span>)  <span class="co"># Show the top 20 words</span></span>
-<span id="cb95-22"><a href="text-mining.html#cb95-22" tabindex="-1"></a></span>
-<span id="cb95-23"><a href="text-mining.html#cb95-23" tabindex="-1"></a><span class="fu">print</span>(common_words)</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="text-mining.html#cb109-1" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb109-2"><a href="text-mining.html#cb109-2" tabindex="-1"></a><span class="fu">library</span>(tidytext)</span>
+<span id="cb109-3"><a href="text-mining.html#cb109-3" tabindex="-1"></a></span>
+<span id="cb109-4"><a href="text-mining.html#cb109-4" tabindex="-1"></a><span class="co"># Correct URL for the raw text file</span></span>
+<span id="cb109-5"><a href="text-mining.html#cb109-5" tabindex="-1"></a>bible_url <span class="ot">&lt;-</span> <span class="st">&quot;https://raw.githubusercontent.com/charlescoverdale/casualdabbler2e/main/data/bible.txt&quot;</span></span>
+<span id="cb109-6"><a href="text-mining.html#cb109-6" tabindex="-1"></a></span>
+<span id="cb109-7"><a href="text-mining.html#cb109-7" tabindex="-1"></a><span class="co"># Read the text file directly from the URL</span></span>
+<span id="cb109-8"><a href="text-mining.html#cb109-8" tabindex="-1"></a>bible <span class="ot">&lt;-</span> <span class="fu">read_lines</span>(bible_url)</span>
+<span id="cb109-9"><a href="text-mining.html#cb109-9" tabindex="-1"></a></span>
+<span id="cb109-10"><a href="text-mining.html#cb109-10" tabindex="-1"></a><span class="co"># Convert to a tibble</span></span>
+<span id="cb109-11"><a href="text-mining.html#cb109-11" tabindex="-1"></a>bible_df <span class="ot">&lt;-</span> <span class="fu">tibble</span>(<span class="at">text =</span> bible)</span>
+<span id="cb109-12"><a href="text-mining.html#cb109-12" tabindex="-1"></a></span>
+<span id="cb109-13"><a href="text-mining.html#cb109-13" tabindex="-1"></a><span class="co"># Tokenize words and remove stop words</span></span>
+<span id="cb109-14"><a href="text-mining.html#cb109-14" tabindex="-1"></a>bible_tidy <span class="ot">&lt;-</span> bible_df <span class="sc">%&gt;%</span></span>
+<span id="cb109-15"><a href="text-mining.html#cb109-15" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">%&gt;%</span></span>
+<span id="cb109-16"><a href="text-mining.html#cb109-16" tabindex="-1"></a>  <span class="fu">anti_join</span>(stop_words, <span class="at">by =</span> <span class="st">&quot;word&quot;</span>)</span>
+<span id="cb109-17"><a href="text-mining.html#cb109-17" tabindex="-1"></a></span>
+<span id="cb109-18"><a href="text-mining.html#cb109-18" tabindex="-1"></a><span class="co"># Find and display the most common words</span></span>
+<span id="cb109-19"><a href="text-mining.html#cb109-19" tabindex="-1"></a>common_words <span class="ot">&lt;-</span> bible_tidy <span class="sc">%&gt;%</span></span>
+<span id="cb109-20"><a href="text-mining.html#cb109-20" tabindex="-1"></a>  <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb109-21"><a href="text-mining.html#cb109-21" tabindex="-1"></a>  <span class="fu">head</span>(<span class="dv">20</span>)  <span class="co"># Show the top 20 words</span></span>
+<span id="cb109-22"><a href="text-mining.html#cb109-22" tabindex="-1"></a></span>
+<span id="cb109-23"><a href="text-mining.html#cb109-23" tabindex="-1"></a><span class="fu">print</span>(common_words)</span></code></pre></div>
 <pre><code>## # A tibble: 20 × 2
 ##    word       n
 ##    &lt;chr&gt;  &lt;int&gt;
@@ -353,22 +354,22 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <p>Just like a frequency analysis, we can do a ‘vibe’ analysis (i.e. sentiment of a text) using a clever thesaurus matching technique.</p>
 <p>In the <code>tidytext</code> package are lexicons which include the general sentiment of words (e.g. the emotion you can use to describe that word).</p>
 <p>Let’s see the count of words most associated with ‘joy’ in the bible.</p>
-<div class="sourceCode" id="cb97"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb97-1"><a href="text-mining.html#cb97-1" tabindex="-1"></a><span class="co"># Tokenize words</span></span>
-<span id="cb97-2"><a href="text-mining.html#cb97-2" tabindex="-1"></a>bible_tidy <span class="ot">&lt;-</span> bible_df <span class="sc">%&gt;%</span></span>
-<span id="cb97-3"><a href="text-mining.html#cb97-3" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">%&gt;%</span></span>
-<span id="cb97-4"><a href="text-mining.html#cb97-4" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">tolower</span>(word))  <span class="co"># Ensure lowercase matching</span></span>
-<span id="cb97-5"><a href="text-mining.html#cb97-5" tabindex="-1"></a></span>
-<span id="cb97-6"><a href="text-mining.html#cb97-6" tabindex="-1"></a><span class="co"># Get NRC lexicon &amp; filter for &quot;joy&quot;</span></span>
-<span id="cb97-7"><a href="text-mining.html#cb97-7" tabindex="-1"></a>nrcjoy <span class="ot">&lt;-</span> tidytext<span class="sc">::</span><span class="fu">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb97-8"><a href="text-mining.html#cb97-8" tabindex="-1"></a>  <span class="fu">filter</span>(sentiment <span class="sc">==</span> <span class="st">&quot;joy&quot;</span>)</span>
-<span id="cb97-9"><a href="text-mining.html#cb97-9" tabindex="-1"></a></span>
-<span id="cb97-10"><a href="text-mining.html#cb97-10" tabindex="-1"></a><span class="co"># Join words with NRC joy sentiment list &amp; count occurrences</span></span>
-<span id="cb97-11"><a href="text-mining.html#cb97-11" tabindex="-1"></a>bible_joy_words <span class="ot">&lt;-</span> bible_tidy <span class="sc">%&gt;%</span></span>
-<span id="cb97-12"><a href="text-mining.html#cb97-12" tabindex="-1"></a>  <span class="fu">inner_join</span>(nrcjoy, <span class="at">by =</span> <span class="st">&quot;word&quot;</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb97-13"><a href="text-mining.html#cb97-13" tabindex="-1"></a>  <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb97-14"><a href="text-mining.html#cb97-14" tabindex="-1"></a></span>
-<span id="cb97-15"><a href="text-mining.html#cb97-15" tabindex="-1"></a><span class="co"># View top joyful words</span></span>
-<span id="cb97-16"><a href="text-mining.html#cb97-16" tabindex="-1"></a><span class="fu">print</span>(bible_joy_words)</span></code></pre></div>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="text-mining.html#cb111-1" tabindex="-1"></a><span class="co"># Tokenize words</span></span>
+<span id="cb111-2"><a href="text-mining.html#cb111-2" tabindex="-1"></a>bible_tidy <span class="ot">&lt;-</span> bible_df <span class="sc">%&gt;%</span></span>
+<span id="cb111-3"><a href="text-mining.html#cb111-3" tabindex="-1"></a>  <span class="fu">unnest_tokens</span>(word, text) <span class="sc">%&gt;%</span></span>
+<span id="cb111-4"><a href="text-mining.html#cb111-4" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">tolower</span>(word))  <span class="co"># Ensure lowercase matching</span></span>
+<span id="cb111-5"><a href="text-mining.html#cb111-5" tabindex="-1"></a></span>
+<span id="cb111-6"><a href="text-mining.html#cb111-6" tabindex="-1"></a><span class="co"># Get NRC lexicon &amp; filter for &quot;joy&quot;</span></span>
+<span id="cb111-7"><a href="text-mining.html#cb111-7" tabindex="-1"></a>nrcjoy <span class="ot">&lt;-</span> tidytext<span class="sc">::</span><span class="fu">get_sentiments</span>(<span class="st">&quot;nrc&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb111-8"><a href="text-mining.html#cb111-8" tabindex="-1"></a>  <span class="fu">filter</span>(sentiment <span class="sc">==</span> <span class="st">&quot;joy&quot;</span>)</span>
+<span id="cb111-9"><a href="text-mining.html#cb111-9" tabindex="-1"></a></span>
+<span id="cb111-10"><a href="text-mining.html#cb111-10" tabindex="-1"></a><span class="co"># Join words with NRC joy sentiment list &amp; count occurrences</span></span>
+<span id="cb111-11"><a href="text-mining.html#cb111-11" tabindex="-1"></a>bible_joy_words <span class="ot">&lt;-</span> bible_tidy <span class="sc">%&gt;%</span></span>
+<span id="cb111-12"><a href="text-mining.html#cb111-12" tabindex="-1"></a>  <span class="fu">inner_join</span>(nrcjoy, <span class="at">by =</span> <span class="st">&quot;word&quot;</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb111-13"><a href="text-mining.html#cb111-13" tabindex="-1"></a>  <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb111-14"><a href="text-mining.html#cb111-14" tabindex="-1"></a></span>
+<span id="cb111-15"><a href="text-mining.html#cb111-15" tabindex="-1"></a><span class="co"># View top joyful words</span></span>
+<span id="cb111-16"><a href="text-mining.html#cb111-16" tabindex="-1"></a><span class="fu">print</span>(bible_joy_words)</span></code></pre></div>
 <pre><code>## # A tibble: 264 × 2
 ##    word         n
 ##    &lt;chr&gt;    &lt;int&gt;

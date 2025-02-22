@@ -196,6 +196,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="6" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>6</b> Forecasting</a>
 <ul>
 <li class="chapter" data-level="6.1" data-path="forecasting.html"><a href="forecasting.html#arima-models"><i class="fa fa-check"></i><b>6.1</b> ARIMA models</a></li>
+<li class="chapter" data-level="6.2" data-path="forecasting.html"><a href="forecasting.html#machine-learning"><i class="fa fa-check"></i><b>6.2</b> Machine learning</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="web-scraping.html"><a href="web-scraping.html"><i class="fa fa-check"></i><b>7</b> Web scraping</a>
 <ul>
@@ -391,6 +392,112 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <span id="cb79-4"><a href="forecasting.html#cb79-4" tabindex="-1"></a><span class="co"># Plot the forecast</span></span>
 <span id="cb79-5"><a href="forecasting.html#cb79-5" tabindex="-1"></a><span class="fu">plot</span>(ARIMA_forecast)</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-64-2.png" width="672" /></p>
+</div>
+<div id="machine-learning" class="section level2 hasAnchor" number="6.2">
+<h2><span class="header-section-number">6.2</span> Machine learning<a href="forecasting.html#machine-learning" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>There probably isn’t a hotter term this decade than ‘machine learning’. But the principles of getting machines to be able to perform an operation based on an unknown input has been around for the best part of 100 years. ‘Figure it out’ is now an instruction you can tell a computer… and sure enough with some careful programming (and a truckload of data to conduct trial and error experiments on) - we can get pretty close.</p>
+<p>I used these handy resources when writing this guide:</p>
+<ul>
+<li><p><a href="https://topepo.github.io/caret/index.html">The Caret Package - Max Kuhn</a></p></li>
+<li><p><a href="https://www.machinelearningplus.com/machine-learning/caret-package/">Caret Package - Selva Prabhakaran</a></p></li>
+<li><p><a href="http://uc-r.github.io/mars">Multivariate Adaptive Regression Splines</a></p></li>
+</ul>
+<p>We’ll start our ML journey by loading some packages.</p>
+<div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="forecasting.html#cb80-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;pacman&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;pacman&quot;</span>)</span>
+<span id="cb80-2"><a href="forecasting.html#cb80-2" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(</span>
+<span id="cb80-3"><a href="forecasting.html#cb80-3" tabindex="-1"></a>  ggplot2, caret, skimr, RANN, randomForest, fastAdaboost, gbm, xgboost,</span>
+<span id="cb80-4"><a href="forecasting.html#cb80-4" tabindex="-1"></a>  caretEnsemble, C50, caTools</span>
+<span id="cb80-5"><a href="forecasting.html#cb80-5" tabindex="-1"></a>)</span></code></pre></div>
+<pre><code>## 
+##   There is a binary version available but the source version is later:
+##               binary  source needs_compilation
+## randomForest 4.7-1.1 4.7-1.2              TRUE</code></pre>
+<pre><code>## installing the source package &#39;randomForest&#39;</code></pre>
+<pre><code>## Warning in utils::install.packages(package, ...): installation of package
+## &#39;randomForest&#39; had non-zero exit status</code></pre>
+<pre><code>## Warning in p_install(package, character.only = TRUE, ...):</code></pre>
+<pre><code>## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+## logical.return = TRUE, : there is no package called &#39;randomForest&#39;</code></pre>
+<pre><code>## Warning: package &#39;fastAdaboost&#39; is not available for this version of R
+## 
+## A version of this package for your version of R might be available elsewhere,
+## see the ideas at
+## https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Installing-packages</code></pre>
+<pre><code>## Warning: &#39;BiocManager&#39; not available.  Could not check Bioconductor.
+## 
+## Please use `install.packages(&#39;BiocManager&#39;)` and then retry.</code></pre>
+<pre><code>## Warning in p_install(package, character.only = TRUE, ...):</code></pre>
+<pre><code>## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
+## logical.return = TRUE, : there is no package called &#39;fastAdaboost&#39;</code></pre>
+<pre><code>## Warning in pacman::p_load(ggplot2, caret, skimr, RANN, randomForest, fastAdaboost, : Failed to install/load:
+## randomForest, fastAdaboost</code></pre>
+<p>We know that a model is just any function (of one or more variables) that helps to explain observations. The most basic models to explain a data set are <code>mean,</code> <code>min</code>, and <code>max</code>. These functions don’t rely on any variables outside of the variable of interest itself.</p>
+<p>Moving to the slightly more abstract, we recall that a linear regression fits a straight line through a data set that minimizes the variance (i.e. the errors) between each point and the model line.</p>
+<p>To fit a linear regression, we use the <code>lm()</code> function in the following format:<br />
+<code>linear_model &lt;- lm(y ~ x, dataset)</code></p>
+<p>To make predictions using mod on the original data, we can call the predict() function:</p>
+<p><code>predict_data &lt;- predict(linear_model, dataset)</code></p>
+<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="forecasting.html#cb91-1" tabindex="-1"></a><span class="co"># Let&#39;s use the mtcars dataset as an example</span></span>
+<span id="cb91-2"><a href="forecasting.html#cb91-2" tabindex="-1"></a></span>
+<span id="cb91-3"><a href="forecasting.html#cb91-3" tabindex="-1"></a><span class="co"># Fit a model to the mtcars data</span></span>
+<span id="cb91-4"><a href="forecasting.html#cb91-4" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
+<span id="cb91-5"><a href="forecasting.html#cb91-5" tabindex="-1"></a></span>
+<span id="cb91-6"><a href="forecasting.html#cb91-6" tabindex="-1"></a><span class="co"># Build a linear model to explain mpg using hp</span></span>
+<span id="cb91-7"><a href="forecasting.html#cb91-7" tabindex="-1"></a>mtcars_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> hp, mtcars)</span>
+<span id="cb91-8"><a href="forecasting.html#cb91-8" tabindex="-1"></a></span>
+<span id="cb91-9"><a href="forecasting.html#cb91-9" tabindex="-1"></a><span class="co"># Run the model over the data</span></span>
+<span id="cb91-10"><a href="forecasting.html#cb91-10" tabindex="-1"></a>mtcars_model_estimates <span class="ot">&lt;-</span> <span class="fu">predict</span>(mtcars_model,mtcars)</span>
+<span id="cb91-11"><a href="forecasting.html#cb91-11" tabindex="-1"></a></span>
+<span id="cb91-12"><a href="forecasting.html#cb91-12" tabindex="-1"></a><span class="co"># Bind the original figures for mpg with the predicted figures for mpg</span></span>
+<span id="cb91-13"><a href="forecasting.html#cb91-13" tabindex="-1"></a>mtcars_model_outputs <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">Actual_mpg=</span>mtcars<span class="sc">$</span>mpg,</span>
+<span id="cb91-14"><a href="forecasting.html#cb91-14" tabindex="-1"></a>                              <span class="at">Actual_hp=</span>mtcars<span class="sc">$</span>hp,</span>
+<span id="cb91-15"><a href="forecasting.html#cb91-15" tabindex="-1"></a>                              <span class="at">Predicted_mpg=</span>mtcars_model_estimates,</span>
+<span id="cb91-16"><a href="forecasting.html#cb91-16" tabindex="-1"></a>                              <span class="at">Residuals=</span><span class="fu">resid</span>(mtcars_model),</span>
+<span id="cb91-17"><a href="forecasting.html#cb91-17" tabindex="-1"></a>                              <span class="at">Fitted=</span><span class="fu">fitted</span>(mtcars_model))</span>
+<span id="cb91-18"><a href="forecasting.html#cb91-18" tabindex="-1"></a></span>
+<span id="cb91-19"><a href="forecasting.html#cb91-19" tabindex="-1"></a><span class="co"># Ensure the outputs are a df</span></span>
+<span id="cb91-20"><a href="forecasting.html#cb91-20" tabindex="-1"></a>mtcars_model_outputs <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(mtcars_model_outputs)</span></code></pre></div>
+<p>We can see how well this model estimated the dataset by looking at the residuals on a plot.</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="forecasting.html#cb92-1" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars_model_outputs) <span class="sc">+</span></span>
+<span id="cb92-2"><a href="forecasting.html#cb92-2" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> Actual_hp, <span class="at">y =</span> Predicted_mpg), <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb92-3"><a href="forecasting.html#cb92-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> Actual_hp, <span class="at">y =</span> Actual_mpg), <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb92-4"><a href="forecasting.html#cb92-4" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> Actual_hp, <span class="at">y =</span> Actual_mpg, <span class="at">xend =</span> Actual_hp, <span class="at">yend =</span> Fitted),</span>
+<span id="cb92-5"><a href="forecasting.html#cb92-5" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">linetype =</span> <span class="st">&quot;dotted&quot;</span>) <span class="sc">+</span></span>
+<span id="cb92-6"><a href="forecasting.html#cb92-6" tabindex="-1"></a>  </span>
+<span id="cb92-7"><a href="forecasting.html#cb92-7" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb92-8"><a href="forecasting.html#cb92-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Building a Regression Model&quot;</span>,</span>
+<span id="cb92-9"><a href="forecasting.html#cb92-9" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Higher horsepower cars get fewer miles per gallon&quot;</span>,</span>
+<span id="cb92-10"><a href="forecasting.html#cb92-10" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: mtcars dataset&quot;</span>,</span>
+<span id="cb92-11"><a href="forecasting.html#cb92-11" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Horsepower&quot;</span>,</span>
+<span id="cb92-12"><a href="forecasting.html#cb92-12" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Miles per Gallon&quot;</span></span>
+<span id="cb92-13"><a href="forecasting.html#cb92-13" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb92-14"><a href="forecasting.html#cb92-14" tabindex="-1"></a>  </span>
+<span id="cb92-15"><a href="forecasting.html#cb92-15" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb92-16"><a href="forecasting.html#cb92-16" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb92-17"><a href="forecasting.html#cb92-17" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb92-18"><a href="forecasting.html#cb92-18" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb92-19"><a href="forecasting.html#cb92-19" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">25</span>)),</span>
+<span id="cb92-20"><a href="forecasting.html#cb92-20" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb92-21"><a href="forecasting.html#cb92-21" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb92-22"><a href="forecasting.html#cb92-22" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">3</span>)),</span>
+<span id="cb92-23"><a href="forecasting.html#cb92-23" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">10</span>)), </span>
+<span id="cb92-24"><a href="forecasting.html#cb92-24" tabindex="-1"></a>    <span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb92-25"><a href="forecasting.html#cb92-25" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb92-26"><a href="forecasting.html#cb92-26" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb92-27"><a href="forecasting.html#cb92-27" tabindex="-1"></a>  )</span></code></pre></div>
+<p><img src="_main_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
+<p>To quantify the model fit in a single number, we can use the Root Mean Square Error (RMSE).</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="forecasting.html#cb93-1" tabindex="-1"></a><span class="co"># Manually calculate RMSE</span></span>
+<span id="cb93-2"><a href="forecasting.html#cb93-2" tabindex="-1"></a>error <span class="ot">&lt;-</span> mtcars_model_outputs<span class="sc">$</span>Actual_mpg <span class="sc">-</span> mtcars_model_outputs<span class="sc">$</span>Fitted</span>
+<span id="cb93-3"><a href="forecasting.html#cb93-3" tabindex="-1"></a>mtcars_rmse_manual <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>(error<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb93-4"><a href="forecasting.html#cb93-4" tabindex="-1"></a></span>
+<span id="cb93-5"><a href="forecasting.html#cb93-5" tabindex="-1"></a><span class="co"># Alternative: Using Residuals column directly</span></span>
+<span id="cb93-6"><a href="forecasting.html#cb93-6" tabindex="-1"></a>mtcars_rmse_residuals <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>(mtcars_model_outputs<span class="sc">$</span>Residuals<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb93-7"><a href="forecasting.html#cb93-7" tabindex="-1"></a></span>
+<span id="cb93-8"><a href="forecasting.html#cb93-8" tabindex="-1"></a><span class="co"># Print results</span></span>
+<span id="cb93-9"><a href="forecasting.html#cb93-9" tabindex="-1"></a><span class="fu">print</span>(mtcars_rmse_manual)</span>
+<span id="cb93-10"><a href="forecasting.html#cb93-10" tabindex="-1"></a><span class="fu">print</span>(mtcars_rmse_residuals)</span></code></pre></div>
+<p>So in very rough terms, we can say that the model predicts miles per gallon for a given level of horsepower with around 4 mpg of error.</p>
 
 </div>
 </div>

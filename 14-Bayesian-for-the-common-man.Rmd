@@ -1,5 +1,7 @@
 # Bayesian for the common man
 
+*Note: Chapter under development*
+
 ## Enter Rev. Bayes
 
 Bayes' Theorem is named after 18th-century British statistician and theologian, Thomas Bayes. The theorem describes how to update the probability of a hypothesis based on new evidence.

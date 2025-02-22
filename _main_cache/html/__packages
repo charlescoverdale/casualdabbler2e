@@ -54,3 +54,11 @@ zoo
 fstcore
 mapview
 osrm
+caret
+skimr
+RANN
+gbm
+xgboost
+caretEnsemble
+C50
+caTools

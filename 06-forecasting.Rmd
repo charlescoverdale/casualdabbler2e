@@ -136,3 +136,116 @@ ARIMA_forecast <- forecast::forecast(ARIMA_model, h = 36, level = c(95))
 # Plot the forecast
 plot(ARIMA_forecast)
 ```
+
+## Machine learning
+
+There probably isn't a hotter term this decade than 'machine learning'. But the principles of getting machines to be able to perform an operation based on an unknown input has been around for the best part of 100 years. 'Figure it out' is now an instruction you can tell a computer... and sure enough with some careful programming (and a truckload of data to conduct trial and error experiments on) - we can get pretty close.
+
+I used these handy resources when writing this guide:
+
+-   [The Caret Package - Max Kuhn](https://topepo.github.io/caret/index.html)
+
+-   [Caret Package - Selva Prabhakaran](https://www.machinelearningplus.com/machine-learning/caret-package/)
+
+-   [Multivariate Adaptive Regression Splines](http://uc-r.github.io/mars)
+
+We'll start our ML journey by loading some packages.
+
+```{r}
+
+if (!requireNamespace("pacman", quietly = TRUE)) install.packages("pacman")
+pacman::p_load(
+  ggplot2, caret, skimr, RANN, randomForest, fastAdaboost, gbm, xgboost,
+  caretEnsemble, C50, caTools
+)
+
+```
+
+We know that a model is just any function (of one or more variables) that helps to explain observations. The most basic models to explain a data set are `mean,` `min`, and `max`. These functions don't rely on any variables outside of the variable of interest itself.
+
+Moving to the slightly more abstract, we recall that a linear regression fits a straight line through a data set that minimizes the variance (i.e. the errors) between each point and the model line.
+
+To fit a linear regression, we use the `lm()` function in the following format:\
+`linear_model <- lm(y ~ x, dataset)`
+
+To make predictions using mod on the original data, we can call the predict() function:
+
+`predict_data <- predict(linear_model, dataset)`
+
+```{r,results='hide', warning=FALSE,message=FALSE}
+
+# Let's use the mtcars dataset as an example
+
+# Fit a model to the mtcars data
+data(mtcars)
+
+# Build a linear model to explain mpg using hp
+mtcars_model <- lm(mpg ~ hp, mtcars)
+
+# Run the model over the data
+mtcars_model_estimates <- predict(mtcars_model,mtcars)
+
+# Bind the original figures for mpg with the predicted figures for mpg
+mtcars_model_outputs <- cbind(Actual_mpg=mtcars$mpg,
+                              Actual_hp=mtcars$hp,
+                              Predicted_mpg=mtcars_model_estimates,
+                              Residuals=resid(mtcars_model),
+                              Fitted=fitted(mtcars_model))
+
+# Ensure the outputs are a df
+mtcars_model_outputs <- as.data.frame(mtcars_model_outputs)
+
+
+
+```
+
+We can see how well this model estimated the dataset by looking at the residuals on a plot.
+
+```{r}
+ggplot(mtcars_model_outputs) +
+  geom_line(aes(x = Actual_hp, y = Predicted_mpg), color = "blue") +
+  geom_point(aes(x = Actual_hp, y = Actual_mpg), color = "blue", alpha = 0.5) +
+  geom_segment(aes(x = Actual_hp, y = Actual_mpg, xend = Actual_hp, yend = Fitted),
+               color = "black", alpha = 0.8, linetype = "dotted") +
+  
+  labs(
+    title = "Building a Regression Model",
+    subtitle = "Higher horsepower cars get fewer miles per gallon",
+    caption = "Data: mtcars dataset",
+    x = "Horsepower",
+    y = "Miles per Gallon"
+  ) +
+  
+  theme_minimal() +
+  theme(
+    legend.position = "bottom",
+    plot.title = element_text(face = "bold", size = 12),
+    plot.subtitle = element_text(size = 11, margin = margin(b = 25)),
+    plot.caption = element_text(size = 8),
+    axis.text = element_text(size = 8),
+    axis.title.y = element_text(margin = margin(r = 3)),
+    axis.text.y = element_text(margin = margin(l = 10)), 
+    axis.line.x = element_line(color = "black", size = 0.4),
+    axis.ticks.x = element_line(color = "black", size = 0.4),
+    panel.grid.minor = element_blank()
+  )
+
+```
+
+To quantify the model fit in a single number, we can use the Root Mean Square Error (RMSE).
+
+```{r,results='hide', warning=FALSE,message=FALSE}
+
+# Manually calculate RMSE
+error <- mtcars_model_outputs$Actual_mpg - mtcars_model_outputs$Fitted
+mtcars_rmse_manual <- sqrt(mean(error^2))
+
+# Alternative: Using Residuals column directly
+mtcars_rmse_residuals <- sqrt(mean(mtcars_model_outputs$Residuals^2))
+
+# Print results
+print(mtcars_rmse_manual)
+print(mtcars_rmse_residuals)
+```
+
+So in very rough terms, we can say that the model predicts miles per gallon for a given level of horsepower with around 4 mpg of error.
