@@ -142,8 +142,8 @@ ggplot(wr100) +
   scale_y_continuous(limits = c(9.5, 11), breaks = c(9.5, 10, 10.5, 11)) +
   
   theme(
-    axis.text.y = element_text(vjust = -0.5, margin = margin(l = 20, r = -20)),
-    plot.subtitle = element_text(margin = margin(0, 0, 25, 0),size=11),
+    axis.text.y = element_text(vjust = -0.5, margin = ggplot2::margin(l = 20, r = -20)),
+    plot.subtitle = element_text(margin = ggplot2::margin(0, 0, 25, 0),size=11),
     legend.title = element_blank(),
     plot.title = element_text(face = "bold", size = 12),
     plot.caption = element_text(size = 8),

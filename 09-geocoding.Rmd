@@ -133,7 +133,7 @@ camera_geocoded_clean <- camera_geocoded_clean %>% rename(address_long=address)
 
 #Select only the columns we need
 camera_geocoded_clean <- camera_geocoded_clean %>% 
-                          select("LOCATION",
+                          dplyr::select("LOCATION",
                                  "SUBURB",
                                  "ADDRESS",
                                  "lon", 

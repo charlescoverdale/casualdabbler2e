@@ -62,3 +62,16 @@ xgboost
 caretEnsemble
 C50
 caTools
+randomForest
+MASS
+tidymodels
+dials
+infer
+modeldata
+parsnip
+recipes
+rsample
+tune
+workflows
+workflowsets
+yardstick

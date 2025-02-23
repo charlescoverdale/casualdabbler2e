@@ -161,7 +161,7 @@ ggplot(MEL_temp_Jan, aes(x = Date, y = Temp)) +
     plot.subtitle = element_text(size = 11),
     plot.caption = element_text(size = 8),
     axis.text = element_text(size = 8),
-    axis.title.y = element_text(size = 9, margin = margin(r = 10)),
+    axis.title.y = element_text(size = 9, margin = ggplot2::margin(r = 10)),
     panel.grid.minor = element_blank(),
     panel.grid.major.x = element_blank(),
     axis.line.x = element_line(colour = "black", size = 0.4),
@@ -380,7 +380,7 @@ hist_data <- data.frame(X1=sample(0:100,100,rep=TRUE))
             theme(panel.grid.minor = element_blank())+
             theme(panel.grid.major.x = element_blank()) +
   
-            theme(plot.subtitle = element_text(margin=margin(0,0,15,0))) +
+            theme(plot.subtitle = element_text(margin=ggplot2::margin(0,0,15,0))) +
             
             theme(plot.margin=unit(c(0.5,0.5,0.5,0.5),"cm"))
 
@@ -607,7 +607,7 @@ base_chart +
             theme(panel.grid.minor = element_blank())+
             theme(panel.grid.major.x = element_blank()) +
   
-            theme(plot.subtitle = element_text(margin=margin(0,0,15,0))) +
+            theme(plot.subtitle = element_text(margin=ggplot2::margin(0,0,15,0))) +
             
             theme(plot.margin=unit(c(0.5,0.5,0.5,0.5),"cm"))
                           
@@ -656,7 +656,7 @@ ggplot(pie_data, aes(x="", y=proportion, fill=group)) +
   theme(plot.subtitle=element_text(size=11))+
   theme(plot.caption=element_text(size=8))+
 
-  theme(plot.subtitle = element_text(margin=margin(0,0,5,0))) +
+  theme(plot.subtitle = element_text(margin=ggplot2::margin(0,0,5,0))) +
   theme(plot.margin=unit(c(0.5,0.5,0.5,0.5),"cm"))
   
   # ggsave(plot=last_plot(),

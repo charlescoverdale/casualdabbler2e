@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-02-22" />
+<meta name="date" content="2025-02-24" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -195,8 +195,9 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="6" data-path="forecasting.html"><a href="forecasting.html"><i class="fa fa-check"></i><b>6</b> Forecasting</a>
 <ul>
-<li class="chapter" data-level="6.1" data-path="forecasting.html"><a href="forecasting.html#arima-models"><i class="fa fa-check"></i><b>6.1</b> ARIMA models</a></li>
+<li class="chapter" data-level="6.1" data-path="forecasting.html"><a href="forecasting.html#arima"><i class="fa fa-check"></i><b>6.1</b> ARIMA</a></li>
 <li class="chapter" data-level="6.2" data-path="forecasting.html"><a href="forecasting.html#machine-learning"><i class="fa fa-check"></i><b>6.2</b> Machine learning</a></li>
+<li class="chapter" data-level="6.3" data-path="forecasting.html"><a href="forecasting.html#random-forest"><i class="fa fa-check"></i><b>6.3</b> Random forest</a></li>
 </ul></li>
 <li class="chapter" data-level="7" data-path="web-scraping.html"><a href="web-scraping.html"><i class="fa fa-check"></i><b>7</b> Web scraping</a>
 <ul>
@@ -302,13 +303,14 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <span id="cb71-8"><a href="forecasting.html#cb71-8" tabindex="-1"></a><span class="fu">library</span>(lubridate)   <span class="co"># Date and time manipulation</span></span>
 <span id="cb71-9"><a href="forecasting.html#cb71-9" tabindex="-1"></a><span class="fu">library</span>(gapminder)   <span class="co"># Gapminder data for examples</span></span>
 <span id="cb71-10"><a href="forecasting.html#cb71-10" tabindex="-1"></a><span class="fu">library</span>(ggalt)       <span class="co"># Additional ggplot2 geoms</span></span>
-<span id="cb71-11"><a href="forecasting.html#cb71-11" tabindex="-1"></a><span class="fu">library</span>(scales)      <span class="co"># Scale functions for ggplot2</span></span></code></pre></div>
+<span id="cb71-11"><a href="forecasting.html#cb71-11" tabindex="-1"></a><span class="fu">library</span>(scales)      <span class="co"># Scale functions for ggplot2</span></span>
+<span id="cb71-12"><a href="forecasting.html#cb71-12" tabindex="-1"></a><span class="fu">library</span>(readrba)     <span class="co"># Get aus econ data  </span></span></code></pre></div>
 <p>We’ll start with some pre-loaded time series data. The <code>ggplot2</code> package includes a data set called ‘economics’ that contains US economic indicators from the 1960’s to 2015.</p>
 <div class="sourceCode" id="cb72"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb72-1"><a href="forecasting.html#cb72-1" tabindex="-1"></a>econ_data <span class="ot">&lt;-</span> economics <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="fu">c</span>(<span class="st">&quot;date&quot;</span>, <span class="st">&quot;uempmed&quot;</span>))</span>
 <span id="cb72-2"><a href="forecasting.html#cb72-2" tabindex="-1"></a>econ_data <span class="ot">&lt;-</span> econ_data <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">filter</span>((date <span class="sc">&gt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;1970-01-01&quot;</span>) </span>
 <span id="cb72-3"><a href="forecasting.html#cb72-3" tabindex="-1"></a>                                          <span class="sc">&amp;</span> date <span class="sc">&lt;=</span> <span class="fu">as.Date</span>(<span class="st">&quot;1999-12-31&quot;</span>)))</span></code></pre></div>
 <p>As a side note: We can also get Australian unemployment rate data using the <code>readrba</code> function.</p>
-<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="forecasting.html#cb73-1" tabindex="-1"></a>aus_unemp_rate <span class="ot">&lt;-</span> <span class="fu">read_rba</span>(<span class="at">series_id =</span> <span class="st">&quot;GLFSURSA&quot;</span>) </span>
+<div class="sourceCode" id="cb73"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb73-1"><a href="forecasting.html#cb73-1" tabindex="-1"></a>aus_unemp_rate <span class="ot">&lt;-</span> readrba<span class="sc">::</span><span class="fu">read_rba</span>(<span class="at">series_id =</span> <span class="st">&quot;GLFSURSA&quot;</span>) </span>
 <span id="cb73-2"><a href="forecasting.html#cb73-2" tabindex="-1"></a><span class="fu">head</span>(aus_unemp_rate)</span></code></pre></div>
 <p>Let’s plot the US data to see what we are working with.</p>
 <div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="forecasting.html#cb74-1" tabindex="-1"></a><span class="fu">ggplot</span>(econ_data) <span class="sc">+</span></span>
@@ -322,12 +324,12 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <span id="cb74-9"><a href="forecasting.html#cb74-9" tabindex="-1"></a>  </span>
 <span id="cb74-10"><a href="forecasting.html#cb74-10" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb74-11"><a href="forecasting.html#cb74-11" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb74-12"><a href="forecasting.html#cb74-12" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">0</span>)),</span>
+<span id="cb74-12"><a href="forecasting.html#cb74-12" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">margin =</span> ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">0</span>)),</span>
 <span id="cb74-13"><a href="forecasting.html#cb74-13" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
 <span id="cb74-14"><a href="forecasting.html#cb74-14" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
 <span id="cb74-15"><a href="forecasting.html#cb74-15" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
-<span id="cb74-16"><a href="forecasting.html#cb74-16" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">3</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">l =</span> <span class="dv">0</span>)),</span>
-<span id="cb74-17"><a href="forecasting.html#cb74-17" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">10</span>)),</span>
+<span id="cb74-16"><a href="forecasting.html#cb74-16" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">3</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">l =</span> <span class="dv">0</span>)),</span>
+<span id="cb74-17"><a href="forecasting.html#cb74-17" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">margin =</span> ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">10</span>)),</span>
 <span id="cb74-18"><a href="forecasting.html#cb74-18" tabindex="-1"></a>    <span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
 <span id="cb74-19"><a href="forecasting.html#cb74-19" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
 <span id="cb74-20"><a href="forecasting.html#cb74-20" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
@@ -335,8 +337,8 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <span id="cb74-22"><a href="forecasting.html#cb74-22" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span></span>
 <span id="cb74-23"><a href="forecasting.html#cb74-23" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-62-1.png" width="672" /></p>
-<div id="arima-models" class="section level2 hasAnchor" number="6.1">
-<h2><span class="header-section-number">6.1</span> ARIMA models<a href="forecasting.html#arima-models" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="arima" class="section level2 hasAnchor" number="6.1">
+<h2><span class="header-section-number">6.1</span> ARIMA<a href="forecasting.html#arima" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>AutoRegressive Integrated Moving Average (ARIMA) models are a handy tool to have in the toolbox. An ARIMA model describes where Yt depends on its own lags. A moving average (MA only) model is one where Yt depends only on the lagged forecast errors. We combine these together (technically we integrate them) and get ARIMA.</p>
 <p>When working with ARIMAs, we need to ‘difference’ our series to make it stationary.</p>
 <p>We check if it is stationary using the augmented Dickey-Fuller test. The null hypothesis assumes that the series is non-stationary. A series is said to be stationary when its mean, variance, and autocovariance don’t change much over time.</p>
@@ -367,12 +369,12 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <span id="cb77-16"><a href="forecasting.html#cb77-16" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
 <span id="cb77-17"><a href="forecasting.html#cb77-17" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
 <span id="cb77-18"><a href="forecasting.html#cb77-18" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
-<span id="cb77-19"><a href="forecasting.html#cb77-19" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">0</span>)),</span>
+<span id="cb77-19"><a href="forecasting.html#cb77-19" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>, <span class="at">margin =</span> ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">25</span>, <span class="dv">0</span>)),</span>
 <span id="cb77-20"><a href="forecasting.html#cb77-20" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>),</span>
 <span id="cb77-21"><a href="forecasting.html#cb77-21" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
 <span id="cb77-22"><a href="forecasting.html#cb77-22" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
-<span id="cb77-23"><a href="forecasting.html#cb77-23" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">3</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">l =</span> <span class="dv">0</span>)),</span>
-<span id="cb77-24"><a href="forecasting.html#cb77-24" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">10</span>)),</span>
+<span id="cb77-23"><a href="forecasting.html#cb77-23" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="at">t =</span> <span class="dv">0</span>, <span class="at">r =</span> <span class="dv">3</span>, <span class="at">b =</span> <span class="dv">0</span>, <span class="at">l =</span> <span class="dv">0</span>)),</span>
+<span id="cb77-24"><a href="forecasting.html#cb77-24" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">vjust =</span> <span class="sc">-</span><span class="fl">0.5</span>, <span class="at">margin =</span> ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">20</span>, <span class="at">r =</span> <span class="sc">-</span><span class="dv">10</span>)),</span>
 <span id="cb77-25"><a href="forecasting.html#cb77-25" tabindex="-1"></a>    <span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
 <span id="cb77-26"><a href="forecasting.html#cb77-26" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">colour =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
 <span id="cb77-27"><a href="forecasting.html#cb77-27" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>(),</span>
@@ -405,99 +407,216 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <p>We’ll start our ML journey by loading some packages.</p>
 <div class="sourceCode" id="cb80"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb80-1"><a href="forecasting.html#cb80-1" tabindex="-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">requireNamespace</span>(<span class="st">&quot;pacman&quot;</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">&quot;pacman&quot;</span>)</span>
 <span id="cb80-2"><a href="forecasting.html#cb80-2" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(</span>
-<span id="cb80-3"><a href="forecasting.html#cb80-3" tabindex="-1"></a>  ggplot2, caret, skimr, RANN, randomForest, fastAdaboost, gbm, xgboost,</span>
+<span id="cb80-3"><a href="forecasting.html#cb80-3" tabindex="-1"></a>  ggplot2, caret, skimr, RANN, randomForest, gbm, xgboost,</span>
 <span id="cb80-4"><a href="forecasting.html#cb80-4" tabindex="-1"></a>  caretEnsemble, C50, caTools</span>
 <span id="cb80-5"><a href="forecasting.html#cb80-5" tabindex="-1"></a>)</span></code></pre></div>
-<pre><code>## 
-##   There is a binary version available but the source version is later:
-##               binary  source needs_compilation
-## randomForest 4.7-1.1 4.7-1.2              TRUE</code></pre>
-<pre><code>## installing the source package &#39;randomForest&#39;</code></pre>
-<pre><code>## Warning in utils::install.packages(package, ...): installation of package
-## &#39;randomForest&#39; had non-zero exit status</code></pre>
-<pre><code>## Warning in p_install(package, character.only = TRUE, ...):</code></pre>
-<pre><code>## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
-## logical.return = TRUE, : there is no package called &#39;randomForest&#39;</code></pre>
-<pre><code>## Warning: package &#39;fastAdaboost&#39; is not available for this version of R
-## 
-## A version of this package for your version of R might be available elsewhere,
-## see the ideas at
-## https://cran.r-project.org/doc/manuals/r-patched/R-admin.html#Installing-packages</code></pre>
-<pre><code>## Warning: &#39;BiocManager&#39; not available.  Could not check Bioconductor.
-## 
-## Please use `install.packages(&#39;BiocManager&#39;)` and then retry.</code></pre>
-<pre><code>## Warning in p_install(package, character.only = TRUE, ...):</code></pre>
-<pre><code>## Warning in library(package, lib.loc = lib.loc, character.only = TRUE,
-## logical.return = TRUE, : there is no package called &#39;fastAdaboost&#39;</code></pre>
-<pre><code>## Warning in pacman::p_load(ggplot2, caret, skimr, RANN, randomForest, fastAdaboost, : Failed to install/load:
-## randomForest, fastAdaboost</code></pre>
 <p>We know that a model is just any function (of one or more variables) that helps to explain observations. The most basic models to explain a data set are <code>mean,</code> <code>min</code>, and <code>max</code>. These functions don’t rely on any variables outside of the variable of interest itself.</p>
 <p>Moving to the slightly more abstract, we recall that a linear regression fits a straight line through a data set that minimizes the variance (i.e. the errors) between each point and the model line.</p>
 <p>To fit a linear regression, we use the <code>lm()</code> function in the following format:<br />
 <code>linear_model &lt;- lm(y ~ x, dataset)</code></p>
 <p>To make predictions using mod on the original data, we can call the predict() function:</p>
 <p><code>predict_data &lt;- predict(linear_model, dataset)</code></p>
-<div class="sourceCode" id="cb91"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb91-1"><a href="forecasting.html#cb91-1" tabindex="-1"></a><span class="co"># Let&#39;s use the mtcars dataset as an example</span></span>
-<span id="cb91-2"><a href="forecasting.html#cb91-2" tabindex="-1"></a></span>
-<span id="cb91-3"><a href="forecasting.html#cb91-3" tabindex="-1"></a><span class="co"># Fit a model to the mtcars data</span></span>
-<span id="cb91-4"><a href="forecasting.html#cb91-4" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
-<span id="cb91-5"><a href="forecasting.html#cb91-5" tabindex="-1"></a></span>
-<span id="cb91-6"><a href="forecasting.html#cb91-6" tabindex="-1"></a><span class="co"># Build a linear model to explain mpg using hp</span></span>
-<span id="cb91-7"><a href="forecasting.html#cb91-7" tabindex="-1"></a>mtcars_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> hp, mtcars)</span>
-<span id="cb91-8"><a href="forecasting.html#cb91-8" tabindex="-1"></a></span>
-<span id="cb91-9"><a href="forecasting.html#cb91-9" tabindex="-1"></a><span class="co"># Run the model over the data</span></span>
-<span id="cb91-10"><a href="forecasting.html#cb91-10" tabindex="-1"></a>mtcars_model_estimates <span class="ot">&lt;-</span> <span class="fu">predict</span>(mtcars_model,mtcars)</span>
-<span id="cb91-11"><a href="forecasting.html#cb91-11" tabindex="-1"></a></span>
-<span id="cb91-12"><a href="forecasting.html#cb91-12" tabindex="-1"></a><span class="co"># Bind the original figures for mpg with the predicted figures for mpg</span></span>
-<span id="cb91-13"><a href="forecasting.html#cb91-13" tabindex="-1"></a>mtcars_model_outputs <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">Actual_mpg=</span>mtcars<span class="sc">$</span>mpg,</span>
-<span id="cb91-14"><a href="forecasting.html#cb91-14" tabindex="-1"></a>                              <span class="at">Actual_hp=</span>mtcars<span class="sc">$</span>hp,</span>
-<span id="cb91-15"><a href="forecasting.html#cb91-15" tabindex="-1"></a>                              <span class="at">Predicted_mpg=</span>mtcars_model_estimates,</span>
-<span id="cb91-16"><a href="forecasting.html#cb91-16" tabindex="-1"></a>                              <span class="at">Residuals=</span><span class="fu">resid</span>(mtcars_model),</span>
-<span id="cb91-17"><a href="forecasting.html#cb91-17" tabindex="-1"></a>                              <span class="at">Fitted=</span><span class="fu">fitted</span>(mtcars_model))</span>
-<span id="cb91-18"><a href="forecasting.html#cb91-18" tabindex="-1"></a></span>
-<span id="cb91-19"><a href="forecasting.html#cb91-19" tabindex="-1"></a><span class="co"># Ensure the outputs are a df</span></span>
-<span id="cb91-20"><a href="forecasting.html#cb91-20" tabindex="-1"></a>mtcars_model_outputs <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(mtcars_model_outputs)</span></code></pre></div>
+<div class="sourceCode" id="cb81"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb81-1"><a href="forecasting.html#cb81-1" tabindex="-1"></a><span class="co"># Let&#39;s use the mtcars dataset as an example</span></span>
+<span id="cb81-2"><a href="forecasting.html#cb81-2" tabindex="-1"></a></span>
+<span id="cb81-3"><a href="forecasting.html#cb81-3" tabindex="-1"></a><span class="co"># Fit a model to the mtcars data</span></span>
+<span id="cb81-4"><a href="forecasting.html#cb81-4" tabindex="-1"></a><span class="fu">data</span>(mtcars)</span>
+<span id="cb81-5"><a href="forecasting.html#cb81-5" tabindex="-1"></a></span>
+<span id="cb81-6"><a href="forecasting.html#cb81-6" tabindex="-1"></a><span class="co"># Build a linear model to explain mpg using hp</span></span>
+<span id="cb81-7"><a href="forecasting.html#cb81-7" tabindex="-1"></a>mtcars_model <span class="ot">&lt;-</span> <span class="fu">lm</span>(mpg <span class="sc">~</span> hp, mtcars)</span>
+<span id="cb81-8"><a href="forecasting.html#cb81-8" tabindex="-1"></a></span>
+<span id="cb81-9"><a href="forecasting.html#cb81-9" tabindex="-1"></a><span class="co"># Run the model over the data</span></span>
+<span id="cb81-10"><a href="forecasting.html#cb81-10" tabindex="-1"></a>mtcars_model_estimates <span class="ot">&lt;-</span> <span class="fu">predict</span>(mtcars_model,mtcars)</span>
+<span id="cb81-11"><a href="forecasting.html#cb81-11" tabindex="-1"></a></span>
+<span id="cb81-12"><a href="forecasting.html#cb81-12" tabindex="-1"></a><span class="co"># Bind the original figures for mpg with the predicted figures for mpg</span></span>
+<span id="cb81-13"><a href="forecasting.html#cb81-13" tabindex="-1"></a>mtcars_model_outputs <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="at">Actual_mpg=</span>mtcars<span class="sc">$</span>mpg,</span>
+<span id="cb81-14"><a href="forecasting.html#cb81-14" tabindex="-1"></a>                              <span class="at">Actual_hp=</span>mtcars<span class="sc">$</span>hp,</span>
+<span id="cb81-15"><a href="forecasting.html#cb81-15" tabindex="-1"></a>                              <span class="at">Predicted_mpg=</span>mtcars_model_estimates,</span>
+<span id="cb81-16"><a href="forecasting.html#cb81-16" tabindex="-1"></a>                              <span class="at">Residuals=</span><span class="fu">resid</span>(mtcars_model),</span>
+<span id="cb81-17"><a href="forecasting.html#cb81-17" tabindex="-1"></a>                              <span class="at">Fitted=</span><span class="fu">fitted</span>(mtcars_model))</span>
+<span id="cb81-18"><a href="forecasting.html#cb81-18" tabindex="-1"></a></span>
+<span id="cb81-19"><a href="forecasting.html#cb81-19" tabindex="-1"></a><span class="co"># Ensure the outputs are a df</span></span>
+<span id="cb81-20"><a href="forecasting.html#cb81-20" tabindex="-1"></a>mtcars_model_outputs <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(mtcars_model_outputs)</span></code></pre></div>
 <p>We can see how well this model estimated the dataset by looking at the residuals on a plot.</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="forecasting.html#cb92-1" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars_model_outputs) <span class="sc">+</span></span>
-<span id="cb92-2"><a href="forecasting.html#cb92-2" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> Actual_hp, <span class="at">y =</span> Predicted_mpg), <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
-<span id="cb92-3"><a href="forecasting.html#cb92-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> Actual_hp, <span class="at">y =</span> Actual_mpg), <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb92-4"><a href="forecasting.html#cb92-4" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> Actual_hp, <span class="at">y =</span> Actual_mpg, <span class="at">xend =</span> Actual_hp, <span class="at">yend =</span> Fitted),</span>
-<span id="cb92-5"><a href="forecasting.html#cb92-5" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">linetype =</span> <span class="st">&quot;dotted&quot;</span>) <span class="sc">+</span></span>
-<span id="cb92-6"><a href="forecasting.html#cb92-6" tabindex="-1"></a>  </span>
-<span id="cb92-7"><a href="forecasting.html#cb92-7" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb92-8"><a href="forecasting.html#cb92-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Building a Regression Model&quot;</span>,</span>
-<span id="cb92-9"><a href="forecasting.html#cb92-9" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Higher horsepower cars get fewer miles per gallon&quot;</span>,</span>
-<span id="cb92-10"><a href="forecasting.html#cb92-10" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: mtcars dataset&quot;</span>,</span>
-<span id="cb92-11"><a href="forecasting.html#cb92-11" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Horsepower&quot;</span>,</span>
-<span id="cb92-12"><a href="forecasting.html#cb92-12" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Miles per Gallon&quot;</span></span>
-<span id="cb92-13"><a href="forecasting.html#cb92-13" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb92-14"><a href="forecasting.html#cb92-14" tabindex="-1"></a>  </span>
-<span id="cb92-15"><a href="forecasting.html#cb92-15" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb92-16"><a href="forecasting.html#cb92-16" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
-<span id="cb92-17"><a href="forecasting.html#cb92-17" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
-<span id="cb92-18"><a href="forecasting.html#cb92-18" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
-<span id="cb92-19"><a href="forecasting.html#cb92-19" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">25</span>)),</span>
-<span id="cb92-20"><a href="forecasting.html#cb92-20" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
-<span id="cb92-21"><a href="forecasting.html#cb92-21" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
-<span id="cb92-22"><a href="forecasting.html#cb92-22" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">3</span>)),</span>
-<span id="cb92-23"><a href="forecasting.html#cb92-23" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> <span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">10</span>)), </span>
-<span id="cb92-24"><a href="forecasting.html#cb92-24" tabindex="-1"></a>    <span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
-<span id="cb92-25"><a href="forecasting.html#cb92-25" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
-<span id="cb92-26"><a href="forecasting.html#cb92-26" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
-<span id="cb92-27"><a href="forecasting.html#cb92-27" tabindex="-1"></a>  )</span></code></pre></div>
+<div class="sourceCode" id="cb82"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb82-1"><a href="forecasting.html#cb82-1" tabindex="-1"></a><span class="fu">ggplot</span>(mtcars_model_outputs) <span class="sc">+</span></span>
+<span id="cb82-2"><a href="forecasting.html#cb82-2" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> Actual_hp, <span class="at">y =</span> Predicted_mpg), <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>) <span class="sc">+</span></span>
+<span id="cb82-3"><a href="forecasting.html#cb82-3" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> Actual_hp, <span class="at">y =</span> Actual_mpg), <span class="at">color =</span> <span class="st">&quot;blue&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb82-4"><a href="forecasting.html#cb82-4" tabindex="-1"></a>  <span class="fu">geom_segment</span>(<span class="fu">aes</span>(<span class="at">x =</span> Actual_hp, <span class="at">y =</span> Actual_mpg, <span class="at">xend =</span> Actual_hp, <span class="at">yend =</span> Fitted),</span>
+<span id="cb82-5"><a href="forecasting.html#cb82-5" tabindex="-1"></a>               <span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">alpha =</span> <span class="fl">0.8</span>, <span class="at">linetype =</span> <span class="st">&quot;dotted&quot;</span>) <span class="sc">+</span></span>
+<span id="cb82-6"><a href="forecasting.html#cb82-6" tabindex="-1"></a>  </span>
+<span id="cb82-7"><a href="forecasting.html#cb82-7" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb82-8"><a href="forecasting.html#cb82-8" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">&quot;Building a Regression Model&quot;</span>,</span>
+<span id="cb82-9"><a href="forecasting.html#cb82-9" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">&quot;Higher horsepower cars get fewer miles per gallon&quot;</span>,</span>
+<span id="cb82-10"><a href="forecasting.html#cb82-10" tabindex="-1"></a>    <span class="at">caption =</span> <span class="st">&quot;Data: mtcars dataset&quot;</span>,</span>
+<span id="cb82-11"><a href="forecasting.html#cb82-11" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">&quot;Horsepower&quot;</span>,</span>
+<span id="cb82-12"><a href="forecasting.html#cb82-12" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">&quot;Miles per Gallon&quot;</span></span>
+<span id="cb82-13"><a href="forecasting.html#cb82-13" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb82-14"><a href="forecasting.html#cb82-14" tabindex="-1"></a>  </span>
+<span id="cb82-15"><a href="forecasting.html#cb82-15" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb82-16"><a href="forecasting.html#cb82-16" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb82-17"><a href="forecasting.html#cb82-17" tabindex="-1"></a>    <span class="at">legend.position =</span> <span class="st">&quot;bottom&quot;</span>,</span>
+<span id="cb82-18"><a href="forecasting.html#cb82-18" tabindex="-1"></a>    <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">&quot;bold&quot;</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb82-19"><a href="forecasting.html#cb82-19" tabindex="-1"></a>    <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">11</span>, <span class="at">margin =</span> ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="at">b =</span> <span class="dv">25</span>)),</span>
+<span id="cb82-20"><a href="forecasting.html#cb82-20" tabindex="-1"></a>    <span class="at">plot.caption =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb82-21"><a href="forecasting.html#cb82-21" tabindex="-1"></a>    <span class="at">axis.text =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">8</span>),</span>
+<span id="cb82-22"><a href="forecasting.html#cb82-22" tabindex="-1"></a>    <span class="at">axis.title.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="at">r =</span> <span class="dv">3</span>)),</span>
+<span id="cb82-23"><a href="forecasting.html#cb82-23" tabindex="-1"></a>    <span class="at">axis.text.y =</span> <span class="fu">element_text</span>(<span class="at">margin =</span> ggplot2<span class="sc">::</span><span class="fu">margin</span>(<span class="at">l =</span> <span class="dv">10</span>)), </span>
+<span id="cb82-24"><a href="forecasting.html#cb82-24" tabindex="-1"></a>    <span class="at">axis.line.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb82-25"><a href="forecasting.html#cb82-25" tabindex="-1"></a>    <span class="at">axis.ticks.x =</span> <span class="fu">element_line</span>(<span class="at">color =</span> <span class="st">&quot;black&quot;</span>, <span class="at">size =</span> <span class="fl">0.4</span>),</span>
+<span id="cb82-26"><a href="forecasting.html#cb82-26" tabindex="-1"></a>    <span class="at">panel.grid.minor =</span> <span class="fu">element_blank</span>()</span>
+<span id="cb82-27"><a href="forecasting.html#cb82-27" tabindex="-1"></a>  )</span></code></pre></div>
 <p><img src="_main_files/figure-html/unnamed-chunk-67-1.png" width="672" /></p>
 <p>To quantify the model fit in a single number, we can use the Root Mean Square Error (RMSE).</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="forecasting.html#cb93-1" tabindex="-1"></a><span class="co"># Manually calculate RMSE</span></span>
-<span id="cb93-2"><a href="forecasting.html#cb93-2" tabindex="-1"></a>error <span class="ot">&lt;-</span> mtcars_model_outputs<span class="sc">$</span>Actual_mpg <span class="sc">-</span> mtcars_model_outputs<span class="sc">$</span>Fitted</span>
-<span id="cb93-3"><a href="forecasting.html#cb93-3" tabindex="-1"></a>mtcars_rmse_manual <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>(error<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb93-4"><a href="forecasting.html#cb93-4" tabindex="-1"></a></span>
-<span id="cb93-5"><a href="forecasting.html#cb93-5" tabindex="-1"></a><span class="co"># Alternative: Using Residuals column directly</span></span>
-<span id="cb93-6"><a href="forecasting.html#cb93-6" tabindex="-1"></a>mtcars_rmse_residuals <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>(mtcars_model_outputs<span class="sc">$</span>Residuals<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb93-7"><a href="forecasting.html#cb93-7" tabindex="-1"></a></span>
-<span id="cb93-8"><a href="forecasting.html#cb93-8" tabindex="-1"></a><span class="co"># Print results</span></span>
-<span id="cb93-9"><a href="forecasting.html#cb93-9" tabindex="-1"></a><span class="fu">print</span>(mtcars_rmse_manual)</span>
-<span id="cb93-10"><a href="forecasting.html#cb93-10" tabindex="-1"></a><span class="fu">print</span>(mtcars_rmse_residuals)</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb83-1"><a href="forecasting.html#cb83-1" tabindex="-1"></a><span class="co"># Manually calculate RMSE</span></span>
+<span id="cb83-2"><a href="forecasting.html#cb83-2" tabindex="-1"></a>error <span class="ot">&lt;-</span> mtcars_model_outputs<span class="sc">$</span>Actual_mpg <span class="sc">-</span> mtcars_model_outputs<span class="sc">$</span>Fitted</span>
+<span id="cb83-3"><a href="forecasting.html#cb83-3" tabindex="-1"></a>mtcars_rmse_manual <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>(error<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb83-4"><a href="forecasting.html#cb83-4" tabindex="-1"></a></span>
+<span id="cb83-5"><a href="forecasting.html#cb83-5" tabindex="-1"></a><span class="co"># Alternative: Using Residuals column directly</span></span>
+<span id="cb83-6"><a href="forecasting.html#cb83-6" tabindex="-1"></a>mtcars_rmse_residuals <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>(mtcars_model_outputs<span class="sc">$</span>Residuals<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb83-7"><a href="forecasting.html#cb83-7" tabindex="-1"></a></span>
+<span id="cb83-8"><a href="forecasting.html#cb83-8" tabindex="-1"></a><span class="co"># Print results</span></span>
+<span id="cb83-9"><a href="forecasting.html#cb83-9" tabindex="-1"></a><span class="fu">print</span>(mtcars_rmse_manual)</span>
+<span id="cb83-10"><a href="forecasting.html#cb83-10" tabindex="-1"></a><span class="fu">print</span>(mtcars_rmse_residuals)</span></code></pre></div>
 <p>So in very rough terms, we can say that the model predicts miles per gallon for a given level of horsepower with around 4 mpg of error.</p>
+</div>
+<div id="random-forest" class="section level2 hasAnchor" number="6.3">
+<h2><span class="header-section-number">6.3</span> Random forest<a href="forecasting.html#random-forest" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>True ‘machine learning’ takes this process a step further by creating <em>many</em> models using <em>many</em> parameters to find the best explanatory variables. There’s a myriad of ways to achieve this. One useful approach is Random Forest models. These algorithms combine decision trees (discussed below) to make predictions.</p>
+<p>In this section, we will use the <code>Boston</code> dataset from the <code>MASS</code> package to predict house prices using machine learning models. The dataset contains information on housing prices in the Boston area, with various predictors such as crime rate, number of rooms, and property tax rates. The target variable <code>medv</code> represents the median value of owner-occupied homes in $1000s.</p>
+<p>We will first split the dataset into training and testing sets, train a Random Forest model, evaluate its performance, and then compare it with a linear regression model using <code>tidymodels</code>.</p>
+<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="forecasting.html#cb84-1" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
+<span id="cb84-2"><a href="forecasting.html#cb84-2" tabindex="-1"></a><span class="fu">library</span>(MASS)</span></code></pre></div>
+<pre><code>## 
+## Attaching package: &#39;MASS&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:patchwork&#39;:
+## 
+##     area</code></pre>
+<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
+## 
+##     select</code></pre>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="forecasting.html#cb88-1" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb88-2"><a href="forecasting.html#cb88-2" tabindex="-1"></a></span>
+<span id="cb88-3"><a href="forecasting.html#cb88-3" tabindex="-1"></a><span class="co"># Load the Boston housing dataset</span></span>
+<span id="cb88-4"><a href="forecasting.html#cb88-4" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;Boston&quot;</span>)</span>
+<span id="cb88-5"><a href="forecasting.html#cb88-5" tabindex="-1"></a></span>
+<span id="cb88-6"><a href="forecasting.html#cb88-6" tabindex="-1"></a><span class="co"># Splitting the dataset into training (80%) and testing (20%) sets</span></span>
+<span id="cb88-7"><a href="forecasting.html#cb88-7" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb88-8"><a href="forecasting.html#cb88-8" tabindex="-1"></a>train_index <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(Boston<span class="sc">$</span>medv, <span class="at">p=</span><span class="fl">0.8</span>, <span class="at">list=</span><span class="cn">FALSE</span>)</span>
+<span id="cb88-9"><a href="forecasting.html#cb88-9" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> Boston[train_index, ]</span>
+<span id="cb88-10"><a href="forecasting.html#cb88-10" tabindex="-1"></a>test_data <span class="ot">&lt;-</span> Boston[<span class="sc">-</span>train_index, ]</span>
+<span id="cb88-11"><a href="forecasting.html#cb88-11" tabindex="-1"></a></span>
+<span id="cb88-12"><a href="forecasting.html#cb88-12" tabindex="-1"></a><span class="co"># Display the first few rows of each dataset to confirm the split</span></span>
+<span id="cb88-13"><a href="forecasting.html#cb88-13" tabindex="-1"></a><span class="fu">head</span>(train_data)</span></code></pre></div>
+<pre><code>##      crim   zn indus chas   nox    rm  age    dis rad tax ptratio  black lstat
+## 1 0.00632 18.0  2.31    0 0.538 6.575 65.2 4.0900   1 296    15.3 396.90  4.98
+## 2 0.02731  0.0  7.07    0 0.469 6.421 78.9 4.9671   2 242    17.8 396.90  9.14
+## 4 0.03237  0.0  2.18    0 0.458 6.998 45.8 6.0622   3 222    18.7 394.63  2.94
+## 5 0.06905  0.0  2.18    0 0.458 7.147 54.2 6.0622   3 222    18.7 396.90  5.33
+## 7 0.08829 12.5  7.87    0 0.524 6.012 66.6 5.5605   5 311    15.2 395.60 12.43
+## 8 0.14455 12.5  7.87    0 0.524 6.172 96.1 5.9505   5 311    15.2 396.90 19.15
+##   medv
+## 1 24.0
+## 2 21.6
+## 4 33.4
+## 5 36.2
+## 7 22.9
+## 8 27.1</code></pre>
+<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="forecasting.html#cb90-1" tabindex="-1"></a><span class="fu">head</span>(test_data)</span></code></pre></div>
+<pre><code>##       crim   zn indus chas   nox    rm   age    dis rad tax ptratio  black
+## 3  0.02729  0.0  7.07    0 0.469 7.185  61.1 4.9671   2 242    17.8 392.83
+## 6  0.02985  0.0  2.18    0 0.458 6.430  58.7 6.0622   3 222    18.7 394.12
+## 9  0.21124 12.5  7.87    0 0.524 5.631 100.0 6.0821   5 311    15.2 386.63
+## 11 0.22489 12.5  7.87    0 0.524 6.377  94.3 6.3467   5 311    15.2 392.52
+## 14 0.62976  0.0  8.14    0 0.538 5.949  61.8 4.7075   4 307    21.0 396.90
+## 15 0.63796  0.0  8.14    0 0.538 6.096  84.5 4.4619   4 307    21.0 380.02
+##    lstat medv
+## 3   4.03 34.7
+## 6   5.21 28.7
+## 9  29.93 16.5
+## 11 20.45 15.0
+## 14  8.26 20.4
+## 15 10.26 18.2</code></pre>
+<p>We will now train a Random Forest model using the <code>randomForest</code> package. The algorithm builds multiple decision trees and averages their predictions to improve accuracy and reduce overfitting.</p>
+<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="forecasting.html#cb92-1" tabindex="-1"></a><span class="co"># Train a Random Forest model with 100 trees</span></span>
+<span id="cb92-2"><a href="forecasting.html#cb92-2" tabindex="-1"></a>model <span class="ot">&lt;-</span> randomForest<span class="sc">::</span><span class="fu">randomForest</span>(medv <span class="sc">~</span> ., <span class="at">data=</span>train_data, <span class="at">ntree=</span><span class="dv">100</span>)</span>
+<span id="cb92-3"><a href="forecasting.html#cb92-3" tabindex="-1"></a></span>
+<span id="cb92-4"><a href="forecasting.html#cb92-4" tabindex="-1"></a><span class="co"># Make predictions on the test set</span></span>
+<span id="cb92-5"><a href="forecasting.html#cb92-5" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, test_data)</span></code></pre></div>
+<p>We use Root Mean Square Error (RMSE) to measure the model’s performance as we did in the previous section.</p>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="forecasting.html#cb93-1" tabindex="-1"></a><span class="co"># Calculate RMSE</span></span>
+<span id="cb93-2"><a href="forecasting.html#cb93-2" tabindex="-1"></a>rmse <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((predictions <span class="sc">-</span> test_data<span class="sc">$</span>medv)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb93-3"><a href="forecasting.html#cb93-3" tabindex="-1"></a></span>
+<span id="cb93-4"><a href="forecasting.html#cb93-4" tabindex="-1"></a><span class="co"># Print RMSE result</span></span>
+<span id="cb93-5"><a href="forecasting.html#cb93-5" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;RMSE:&quot;</span>, <span class="fu">round</span>(rmse, <span class="dv">2</span>)))</span></code></pre></div>
+<pre><code>## [1] &quot;RMSE: 2.96&quot;</code></pre>
+<p>To compare performance of our <code>randomForest</code> model, we train a simple linear regression model using the <code>tidymodels</code> framework. Linear regression attempts to fit a straight line that best represents the relationship between predictors and the target variable.</p>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="forecasting.html#cb95-1" tabindex="-1"></a><span class="co"># Load necessary library</span></span>
+<span id="cb95-2"><a href="forecasting.html#cb95-2" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span></code></pre></div>
+<pre><code>## ── Attaching packages ────────────────────────────────────── tidymodels 1.3.0 ──</code></pre>
+<pre><code>## ✔ dials        1.4.0     ✔ rsample      1.2.1
+## ✔ infer        1.0.7     ✔ tune         1.3.0
+## ✔ modeldata    1.4.0     ✔ workflows    1.2.0
+## ✔ parsnip      1.3.0     ✔ workflowsets 1.1.0
+## ✔ recipes      1.1.1     ✔ yardstick    1.3.2</code></pre>
+<pre><code>## ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
+## ✖ rlang::%@%()             masks purrr::%@%()
+## ✖ yardstick::accuracy()    masks forecast::accuracy()
+## ✖ modelr::bootstrap()      masks broom::bootstrap()
+## ✖ ggalt::bytes()           masks rlang::bytes()
+## ✖ randomForest::combine()  masks dplyr::combine()
+## ✖ scales::discard()        masks purrr::discard()
+## ✖ dplyr::filter()          masks stats::filter()
+## ✖ recipes::fixed()         masks stringr::fixed()
+## ✖ rlang::flatten()         masks purrr::flatten()
+## ✖ rlang::flatten_chr()     masks purrr::flatten_chr()
+## ✖ rlang::flatten_dbl()     masks purrr::flatten_dbl()
+## ✖ rlang::flatten_int()     masks purrr::flatten_int()
+## ✖ rlang::flatten_lgl()     masks purrr::flatten_lgl()
+## ✖ rlang::flatten_raw()     masks purrr::flatten_raw()
+## ✖ rlang::invoke()          masks purrr::invoke()
+## ✖ dplyr::lag()             masks stats::lag()
+## ✖ caret::lift()            masks purrr::lift()
+## ✖ yardstick::mae()         masks modelr::mae()
+## ✖ yardstick::mape()        masks modelr::mape()
+## ✖ randomForest::margin()   masks ggplot2::margin()
+## ✖ yardstick::precision()   masks caret::precision()
+## ✖ yardstick::recall()      masks caret::recall()
+## ✖ .GlobalEnv::rmse()       masks yardstick::rmse(), modelr::rmse()
+## ✖ MASS::select()           masks dplyr::select()
+## ✖ yardstick::sensitivity() masks caret::sensitivity()
+## ✖ xgboost::slice()         masks dplyr::slice()
+## ✖ yardstick::spec()        masks readr::spec()
+## ✖ yardstick::specificity() masks caret::specificity()
+## ✖ rlang::splice()          masks purrr::splice()
+## ✖ recipes::step()          masks stats::step()</code></pre>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="forecasting.html#cb99-1" tabindex="-1"></a><span class="co"># Set a seed for reproducibility</span></span>
+<span id="cb99-2"><a href="forecasting.html#cb99-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb99-3"><a href="forecasting.html#cb99-3" tabindex="-1"></a></span>
+<span id="cb99-4"><a href="forecasting.html#cb99-4" tabindex="-1"></a><span class="co"># Define a linear regression model</span></span>
+<span id="cb99-5"><a href="forecasting.html#cb99-5" tabindex="-1"></a>ml_model <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb99-6"><a href="forecasting.html#cb99-6" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&quot;lm&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb99-7"><a href="forecasting.html#cb99-7" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">&quot;regression&quot;</span>)</span>
+<span id="cb99-8"><a href="forecasting.html#cb99-8" tabindex="-1"></a></span>
+<span id="cb99-9"><a href="forecasting.html#cb99-9" tabindex="-1"></a><span class="co"># Create a workflow that includes the model and the formula</span></span>
+<span id="cb99-10"><a href="forecasting.html#cb99-10" tabindex="-1"></a>tidymodels_workflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb99-11"><a href="forecasting.html#cb99-11" tabindex="-1"></a>  <span class="fu">add_model</span>(ml_model) <span class="sc">%&gt;%</span> </span>
+<span id="cb99-12"><a href="forecasting.html#cb99-12" tabindex="-1"></a>  <span class="fu">add_formula</span>(medv <span class="sc">~</span> .)</span>
+<span id="cb99-13"><a href="forecasting.html#cb99-13" tabindex="-1"></a></span>
+<span id="cb99-14"><a href="forecasting.html#cb99-14" tabindex="-1"></a><span class="co"># Train the linear regression model</span></span>
+<span id="cb99-15"><a href="forecasting.html#cb99-15" tabindex="-1"></a>trained_model <span class="ot">&lt;-</span> tidymodels_workflow <span class="sc">%&gt;%</span> <span class="fu">fit</span>(<span class="at">data =</span> train_data)</span></code></pre></div>
+<p>After training the model, we can use it to make predictions on the <code>test_data</code>. The <code>predict()</code> function returns predicted values, which are then combined with the actual test data for comparison.</p>
+<p>The <code>metrics()</code> function calculates various performance metrics, such as RMSE, MAE, and R², to evaluate the model’s predictive accuracy. The <code>truth</code> argument specifies the actual values (<code>medv</code>), and the <code>estimate</code> argument specifies the predicted values (<code>.pred</code>).</p>
+<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="forecasting.html#cb100-1" tabindex="-1"></a><span class="co"># Make predictions using the trained model</span></span>
+<span id="cb100-2"><a href="forecasting.html#cb100-2" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(trained_model, test_data) <span class="sc">%&gt;%</span> <span class="fu">bind_cols</span>(test_data)</span>
+<span id="cb100-3"><a href="forecasting.html#cb100-3" tabindex="-1"></a></span>
+<span id="cb100-4"><a href="forecasting.html#cb100-4" tabindex="-1"></a><span class="co"># Evaluate model performance using metrics function</span></span>
+<span id="cb100-5"><a href="forecasting.html#cb100-5" tabindex="-1"></a><span class="fu">metrics</span>(predictions, <span class="at">truth =</span> medv, <span class="at">estimate =</span> .pred)</span></code></pre></div>
+<pre><code>## # A tibble: 3 × 3
+##   .metric .estimator .estimate
+##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
+## 1 rmse    standard       4.59 
+## 2 rsq     standard       0.761
+## 3 mae     standard       3.37</code></pre>
+<p>As we see, our <code>randomForest</code> model performed much better, with a RMSE of 2.96 compared to 4.58.</p>
 
 </div>
 </div>

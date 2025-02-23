@@ -107,10 +107,10 @@ plot_gdp <- ggplot(data=gdp_level)+
             theme(panel.grid.major.x = element_blank()) +
 
             theme(axis.title.y = 
-            element_text(margin = margin(t = 0, r = 0, b = 0, l = 0)))+
+            element_text(margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 0)))+
                          
             theme(axis.text.y = element_text(vjust = -0.5, 
-                                             margin = margin(l = 20, r = -45)))+
+                                             margin = ggplot2::margin(l = 20, r = -45)))+
   
             theme(axis.line.x = element_line(colour ="black", size=0.4))+
             theme(axis.ticks.x = element_line(colour ="black", size=0.4))
@@ -175,10 +175,10 @@ plot_unemployment_rate <- ggplot(data=unemployment_rate)+
             theme(panel.grid.major.x = element_blank()) +
 
             theme(axis.title.y = 
-            element_text(margin = margin(t = 0, r = 0, b = 0, l = 0)))+
+            element_text(margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 0)))+
                          
             theme(axis.text.y = element_text(vjust = -0.5, 
-                                             margin = margin(l = 20, r = -15)))+
+                                             margin = ggplot2::margin(l = 20, r = -15)))+
   
             theme(axis.line.x = element_line(colour ="black", size=0.4))+
             theme(axis.ticks.x = element_line(colour ="black", size=0.4))
@@ -249,9 +249,9 @@ plot_CPI <- ggplot(data = Australia_CPI %>%
   theme(panel.grid.minor = element_blank()) +
   theme(panel.grid.major.x = element_blank()) +
   
-  theme(axis.title.y = element_text(margin = margin(t = 0, r = 0, b = 0, l = 0))) +
+  theme(axis.title.y = element_text(margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 0))) +
   theme(axis.text.y = element_text(vjust = -0.5, 
-                                   margin = margin(l = 20, r = -15))) +
+                                   margin = ggplot2::margin(l = 20, r = -15))) +
   
   theme(axis.line.x = element_line(colour = "black", size = 0.4)) +
   theme(axis.ticks.x = element_line(colour = "black", size = 0.4))
@@ -282,13 +282,13 @@ plot_CPI_hist <- ggplot(Australia_CPI, aes(x = value)) +
   theme(
     legend.position = "bottom",
     plot.title = element_text(face = "bold", size = 12),
-    plot.subtitle = element_text(size = 11, margin = margin(b = 15)),
+    plot.subtitle = element_text(size = 11, margin = ggplot2::margin(b = 15)),
     plot.caption = element_text(size = 8),
     axis.text = element_text(size = 8),
     panel.grid.minor = element_blank(),
     panel.grid.major.x = element_blank(),
-    axis.title.y = element_text(margin = margin(t = 0, r = 0, b = 20, l = 0)),
-    axis.text.y = element_text(vjust = -0.5, margin = margin(l = 20, r = -2)),
+    axis.title.y = element_text(margin = ggplot2::margin(t = 0, r = 0, b = 20, l = 0)),
+    axis.text.y = element_text(vjust = -0.5, margin = ggplot2::margin(l = 20, r = -2)),
     axis.line.x = element_line(colour = "black", size = 0.4),
     axis.ticks.x = element_line(colour = "black", size = 0.4)
   )
@@ -350,10 +350,10 @@ plot_WPI <- ggplot(data=Australia_WPI)+
             theme(panel.grid.major.x = element_blank()) +
 
             theme(axis.title.y = 
-            element_text(margin = margin(t = 0, r = 0, b = 0, l = 0)))+
+            element_text(margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 0)))+
                          
             theme(axis.text.y = element_text(vjust = -0.5, 
-                                             margin = margin(l = 20, r = -15)))+
+                                             margin = ggplot2::margin(l = 20, r = -15)))+
   
             theme(axis.line.x = element_line(colour ="black", size=0.4))+
             theme(axis.ticks.x = element_line(colour ="black", size=0.4))
@@ -422,8 +422,8 @@ plot_exchange_rate_AUD <- ggplot(data = exchange_rate_AUD) +
     plot.subtitle = element_text(size = 11),
     plot.caption = element_text(size = 8),
     axis.text = element_text(size = 8),
-    axis.title.y = element_text(margin = margin(t = 0, r = 0, b = 0, l = 0)),
-    axis.text.y = element_text(vjust = -0.5, margin = margin(l = 20, r = -15)),
+    axis.title.y = element_text(margin = ggplot2::margin(t = 0, r = 0, b = 0, l = 0)),
+    axis.text.y = element_text(vjust = -0.5, margin = ggplot2::margin(l = 20, r = -15)),
     axis.line.x = element_line(colour = "black", size = 0.4),
     axis.ticks.x = element_line(colour = "black", size = 0.4),
     panel.grid.minor = element_blank(),
