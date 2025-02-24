@@ -2,15 +2,15 @@
 
 *Note: Chapter under development*
 
-Afunction is essentially a set of instructions that takes inputs (arguments), processes them, and returns an output. Instead of writing the same code repeatedly, you can define a function once and use it whenever needed. This makes your scripts cleaner and easier to maintain.
+Functions are set sof instructions that take inputs (arguments), processes them, and returns an output. Instead of writing the same code repeatedly, you can define a function once and use it whenever needed. This makes your scripts cleaner and easier to maintain.
 
-I reccomend Hadley WIckham's great [chapter on functions](https://r4ds.hadley.nz/functions.html) in his book [R for Data Science 2e](https://r4ds.hadley.nz/).
+I recommend Hadley Wickham's great [chapter on functions](https://r4ds.hadley.nz/functions.html) in his book [R for Data Science 2e](https://r4ds.hadley.nz/).
 
 ## Components
 
 A function in R is defined using the `function` keyword. Here is a simple function that adds two numbers:
 
-```{r}
+```{r,results='hide', warning=FALSE,message=FALSE}
 
 add_numbers <- function(a, b) {
   result <- a + b
@@ -31,7 +31,7 @@ In this example, we see a function consisting of:
 
 We can also reference functions (from other packages) for use in our own custom functions. This data cleaning functions references `dplyr`, `stringr,` and `tidyr`.
 
-```{r}
+```{r,results='hide', warning=FALSE,message=FALSE}
 
 # Practical Example: Data Cleaning Function
 
@@ -66,7 +66,7 @@ It follows these steps:
 
 That's a lot of info... instead let's write a function to check if a credit card number is valid:
 
-```{r}
+```{r,results='hide', warning=FALSE,message=FALSE}
 
 validate_credit_card <- function(card_number) {
   digits <- as.numeric(strsplit(as.character(card_number), "")[[1]])
@@ -98,7 +98,7 @@ A *factorial* is a mathematical operation denoted by an exclamation mark (!), us
 
 Let's write a looping function to calculate 10! (10x9x8x7x6x5x4x3x2x1)
 
-```{r}
+```{r,results='hide', warning=FALSE,message=FALSE}
 
 ## Calculating Factorial Using a Loop
 

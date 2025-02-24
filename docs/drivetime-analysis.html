@@ -219,7 +219,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="10" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html"><i class="fa fa-check"></i><b>10</b> Drivetime analysis</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html#method-1-osrm-isochrones"><i class="fa fa-check"></i><b>10.1</b> Method 1: OSRM isochrones</a></li>
+<li class="chapter" data-level="10.1" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html#osrm-isochrones"><i class="fa fa-check"></i><b>10.1</b> OSRM isochrones</a></li>
 </ul></li>
 <li class="chapter" data-level="11" data-path="raster-data.html"><a href="raster-data.html"><i class="fa fa-check"></i><b>11</b> Raster data</a>
 <ul>
@@ -298,56 +298,56 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <li><p>There’s various companies that own drive time data. Most of these are map makers (e.g. google, ESRI, and Tom Tom).</p></li>
 </ul>
 <p>To get started, let’s install and load packages.</p>
-<div class="sourceCode" id="cb135"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb135-1"><a href="drivetime-analysis.html#cb135-1" tabindex="-1"></a><span class="co">#Loads the required required packages</span></span>
-<span id="cb135-2"><a href="drivetime-analysis.html#cb135-2" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggmap, </span>
-<span id="cb135-3"><a href="drivetime-analysis.html#cb135-3" tabindex="-1"></a>               tmaptools, </span>
-<span id="cb135-4"><a href="drivetime-analysis.html#cb135-4" tabindex="-1"></a>               RCurl, </span>
-<span id="cb135-5"><a href="drivetime-analysis.html#cb135-5" tabindex="-1"></a>               jsonlite, </span>
-<span id="cb135-6"><a href="drivetime-analysis.html#cb135-6" tabindex="-1"></a>               tidyverse, </span>
-<span id="cb135-7"><a href="drivetime-analysis.html#cb135-7" tabindex="-1"></a>               leaflet, </span>
-<span id="cb135-8"><a href="drivetime-analysis.html#cb135-8" tabindex="-1"></a>               writexl, </span>
-<span id="cb135-9"><a href="drivetime-analysis.html#cb135-9" tabindex="-1"></a>               readr, </span>
-<span id="cb135-10"><a href="drivetime-analysis.html#cb135-10" tabindex="-1"></a>               readxl, </span>
-<span id="cb135-11"><a href="drivetime-analysis.html#cb135-11" tabindex="-1"></a>               sf, </span>
-<span id="cb135-12"><a href="drivetime-analysis.html#cb135-12" tabindex="-1"></a>               mapview, </span>
-<span id="cb135-13"><a href="drivetime-analysis.html#cb135-13" tabindex="-1"></a>               rgdal, </span>
-<span id="cb135-14"><a href="drivetime-analysis.html#cb135-14" tabindex="-1"></a>               osrm)</span></code></pre></div>
+<div class="sourceCode" id="cb122"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb122-1"><a href="drivetime-analysis.html#cb122-1" tabindex="-1"></a><span class="co">#Loads the required required packages</span></span>
+<span id="cb122-2"><a href="drivetime-analysis.html#cb122-2" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggmap, </span>
+<span id="cb122-3"><a href="drivetime-analysis.html#cb122-3" tabindex="-1"></a>               tmaptools, </span>
+<span id="cb122-4"><a href="drivetime-analysis.html#cb122-4" tabindex="-1"></a>               RCurl, </span>
+<span id="cb122-5"><a href="drivetime-analysis.html#cb122-5" tabindex="-1"></a>               jsonlite, </span>
+<span id="cb122-6"><a href="drivetime-analysis.html#cb122-6" tabindex="-1"></a>               tidyverse, </span>
+<span id="cb122-7"><a href="drivetime-analysis.html#cb122-7" tabindex="-1"></a>               leaflet, </span>
+<span id="cb122-8"><a href="drivetime-analysis.html#cb122-8" tabindex="-1"></a>               writexl, </span>
+<span id="cb122-9"><a href="drivetime-analysis.html#cb122-9" tabindex="-1"></a>               readr, </span>
+<span id="cb122-10"><a href="drivetime-analysis.html#cb122-10" tabindex="-1"></a>               readxl, </span>
+<span id="cb122-11"><a href="drivetime-analysis.html#cb122-11" tabindex="-1"></a>               sf, </span>
+<span id="cb122-12"><a href="drivetime-analysis.html#cb122-12" tabindex="-1"></a>               mapview, </span>
+<span id="cb122-13"><a href="drivetime-analysis.html#cb122-13" tabindex="-1"></a>               rgdal, </span>
+<span id="cb122-14"><a href="drivetime-analysis.html#cb122-14" tabindex="-1"></a>               osrm)</span></code></pre></div>
 <pre><code>## 
 ##   There are binary versions available but the source versions are later:
 ##           binary source needs_compilation
 ## sf        1.0-15 1.0-19              TRUE
 ## stars      0.5-5  0.6-8             FALSE
 ## tmaptools  3.1-1    3.2             FALSE</code></pre>
-<div id="method-1-osrm-isochrones" class="section level2 hasAnchor" number="10.1">
-<h2><span class="header-section-number">10.1</span> Method 1: OSRM isochrones<a href="drivetime-analysis.html#method-1-osrm-isochrones" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<div id="osrm-isochrones" class="section level2 hasAnchor" number="10.1">
+<h2><span class="header-section-number">10.1</span> OSRM isochrones<a href="drivetime-analysis.html#osrm-isochrones" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p><em>Useful links for further reading: <a href="https://gis.stackexchange.com/questions/347807/using-osrm-to-create-isochrones-in-r-potentially-problematic-at-10-minutes-dri">Source 1</a>, <a href="https://rpubs.com/maiae/drivetime">Source 2</a></em></p>
 <p>The OSRM package (<a href="https://github.com/riatelab/osrm">Github</a>) pulls from OpenStreetMap to find travel times based on location.</p>
 <p>The downside is that the polygons it generates are pretty chunky… i.e. it doesn’t take into account major roads and streets as the key tributaries/arteries of a city area. We can get around this a bit by dialing up the ‘res’ (i.e. the resolution) in the <code>osrmIsochrone</code> function… but it’s only a partial solution.</p>
 <p>Uncomment the leaflet function below to view an interactive map.</p>
-<div class="sourceCode" id="cb137"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb137-1"><a href="drivetime-analysis.html#cb137-1" tabindex="-1"></a><span class="co"># Create a dataframe with the latitude and longitude</span></span>
-<span id="cb137-2"><a href="drivetime-analysis.html#cb137-2" tabindex="-1"></a>locations <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
-<span id="cb137-3"><a href="drivetime-analysis.html#cb137-3" tabindex="-1"></a>  <span class="sc">~</span>place,     <span class="sc">~</span>lon,     <span class="sc">~</span>lat,</span>
-<span id="cb137-4"><a href="drivetime-analysis.html#cb137-4" tabindex="-1"></a>  <span class="st">&quot;Melbourne&quot;</span>, <span class="fl">144.9631</span>, <span class="sc">-</span><span class="fl">37.8136</span></span>
-<span id="cb137-5"><a href="drivetime-analysis.html#cb137-5" tabindex="-1"></a>)</span>
-<span id="cb137-6"><a href="drivetime-analysis.html#cb137-6" tabindex="-1"></a></span>
-<span id="cb137-7"><a href="drivetime-analysis.html#cb137-7" tabindex="-1"></a><span class="co"># Run it through the osrm package to calculate isochrones</span></span>
-<span id="cb137-8"><a href="drivetime-analysis.html#cb137-8" tabindex="-1"></a>iso <span class="ot">&lt;-</span> <span class="fu">osrmIsochrone</span>(</span>
-<span id="cb137-9"><a href="drivetime-analysis.html#cb137-9" tabindex="-1"></a>  <span class="at">loc =</span> <span class="fu">c</span>(locations<span class="sc">$</span>lon, locations<span class="sc">$</span>lat), </span>
-<span id="cb137-10"><a href="drivetime-analysis.html#cb137-10" tabindex="-1"></a>  <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">30</span>, <span class="at">by =</span> <span class="dv">5</span>),</span>
-<span id="cb137-11"><a href="drivetime-analysis.html#cb137-11" tabindex="-1"></a>  <span class="at">res =</span> <span class="dv">50</span></span>
-<span id="cb137-12"><a href="drivetime-analysis.html#cb137-12" tabindex="-1"></a>)</span>
-<span id="cb137-13"><a href="drivetime-analysis.html#cb137-13" tabindex="-1"></a></span>
-<span id="cb137-14"><a href="drivetime-analysis.html#cb137-14" tabindex="-1"></a><span class="co"># Create an interactive map</span></span>
-<span id="cb137-15"><a href="drivetime-analysis.html#cb137-15" tabindex="-1"></a><span class="co"># leaflet() %&gt;%</span></span>
-<span id="cb137-16"><a href="drivetime-analysis.html#cb137-16" tabindex="-1"></a><span class="co">#   setView(mean(locations$lon), mean(locations$lat), zoom = 7) %&gt;%</span></span>
-<span id="cb137-17"><a href="drivetime-analysis.html#cb137-17" tabindex="-1"></a><span class="co">#   addProviderTiles(&quot;CartoDB.Positron&quot;, group = &quot;Greyscale&quot;) %&gt;%</span></span>
-<span id="cb137-18"><a href="drivetime-analysis.html#cb137-18" tabindex="-1"></a><span class="co">#   addMarkers(lng = locations$lon, lat = locations$lat) %&gt;%</span></span>
-<span id="cb137-19"><a href="drivetime-analysis.html#cb137-19" tabindex="-1"></a><span class="co">#   addPolygons(</span></span>
-<span id="cb137-20"><a href="drivetime-analysis.html#cb137-20" tabindex="-1"></a><span class="co">#     fill = TRUE, stroke = TRUE, color = &quot;black&quot;,</span></span>
-<span id="cb137-21"><a href="drivetime-analysis.html#cb137-21" tabindex="-1"></a><span class="co">#     weight = 0.5, fillOpacity = 0.2,</span></span>
-<span id="cb137-22"><a href="drivetime-analysis.html#cb137-22" tabindex="-1"></a><span class="co">#     data = iso,</span></span>
-<span id="cb137-23"><a href="drivetime-analysis.html#cb137-23" tabindex="-1"></a><span class="co">#     group = &quot;Drive Time&quot;</span></span>
-<span id="cb137-24"><a href="drivetime-analysis.html#cb137-24" tabindex="-1"></a><span class="co">#   )</span></span></code></pre></div>
+<div class="sourceCode" id="cb124"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb124-1"><a href="drivetime-analysis.html#cb124-1" tabindex="-1"></a><span class="co"># Create a dataframe with the latitude and longitude</span></span>
+<span id="cb124-2"><a href="drivetime-analysis.html#cb124-2" tabindex="-1"></a>locations <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tribble</span>(</span>
+<span id="cb124-3"><a href="drivetime-analysis.html#cb124-3" tabindex="-1"></a>  <span class="sc">~</span>place,     <span class="sc">~</span>lon,     <span class="sc">~</span>lat,</span>
+<span id="cb124-4"><a href="drivetime-analysis.html#cb124-4" tabindex="-1"></a>  <span class="st">&quot;Melbourne&quot;</span>, <span class="fl">144.9631</span>, <span class="sc">-</span><span class="fl">37.8136</span></span>
+<span id="cb124-5"><a href="drivetime-analysis.html#cb124-5" tabindex="-1"></a>)</span>
+<span id="cb124-6"><a href="drivetime-analysis.html#cb124-6" tabindex="-1"></a></span>
+<span id="cb124-7"><a href="drivetime-analysis.html#cb124-7" tabindex="-1"></a><span class="co"># Run it through the osrm package to calculate isochrones</span></span>
+<span id="cb124-8"><a href="drivetime-analysis.html#cb124-8" tabindex="-1"></a>iso <span class="ot">&lt;-</span> <span class="fu">osrmIsochrone</span>(</span>
+<span id="cb124-9"><a href="drivetime-analysis.html#cb124-9" tabindex="-1"></a>  <span class="at">loc =</span> <span class="fu">c</span>(locations<span class="sc">$</span>lon, locations<span class="sc">$</span>lat), </span>
+<span id="cb124-10"><a href="drivetime-analysis.html#cb124-10" tabindex="-1"></a>  <span class="at">breaks =</span> <span class="fu">seq</span>(<span class="at">from =</span> <span class="dv">0</span>, <span class="at">to =</span> <span class="dv">30</span>, <span class="at">by =</span> <span class="dv">5</span>),</span>
+<span id="cb124-11"><a href="drivetime-analysis.html#cb124-11" tabindex="-1"></a>  <span class="at">res =</span> <span class="dv">50</span></span>
+<span id="cb124-12"><a href="drivetime-analysis.html#cb124-12" tabindex="-1"></a>)</span>
+<span id="cb124-13"><a href="drivetime-analysis.html#cb124-13" tabindex="-1"></a></span>
+<span id="cb124-14"><a href="drivetime-analysis.html#cb124-14" tabindex="-1"></a><span class="co"># Create an interactive map</span></span>
+<span id="cb124-15"><a href="drivetime-analysis.html#cb124-15" tabindex="-1"></a><span class="co"># leaflet() %&gt;%</span></span>
+<span id="cb124-16"><a href="drivetime-analysis.html#cb124-16" tabindex="-1"></a><span class="co">#   setView(mean(locations$lon), mean(locations$lat), zoom = 7) %&gt;%</span></span>
+<span id="cb124-17"><a href="drivetime-analysis.html#cb124-17" tabindex="-1"></a><span class="co">#   addProviderTiles(&quot;CartoDB.Positron&quot;, group = &quot;Greyscale&quot;) %&gt;%</span></span>
+<span id="cb124-18"><a href="drivetime-analysis.html#cb124-18" tabindex="-1"></a><span class="co">#   addMarkers(lng = locations$lon, lat = locations$lat) %&gt;%</span></span>
+<span id="cb124-19"><a href="drivetime-analysis.html#cb124-19" tabindex="-1"></a><span class="co">#   addPolygons(</span></span>
+<span id="cb124-20"><a href="drivetime-analysis.html#cb124-20" tabindex="-1"></a><span class="co">#     fill = TRUE, stroke = TRUE, color = &quot;black&quot;,</span></span>
+<span id="cb124-21"><a href="drivetime-analysis.html#cb124-21" tabindex="-1"></a><span class="co">#     weight = 0.5, fillOpacity = 0.2,</span></span>
+<span id="cb124-22"><a href="drivetime-analysis.html#cb124-22" tabindex="-1"></a><span class="co">#     data = iso,</span></span>
+<span id="cb124-23"><a href="drivetime-analysis.html#cb124-23" tabindex="-1"></a><span class="co">#     group = &quot;Drive Time&quot;</span></span>
+<span id="cb124-24"><a href="drivetime-analysis.html#cb124-24" tabindex="-1"></a><span class="co">#   )</span></span></code></pre></div>
 
 </div>
 </div>

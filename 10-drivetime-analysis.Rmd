@@ -30,7 +30,7 @@ pacman::p_load(ggmap,
                osrm)
 ```
 
-## Method 1: OSRM isochrones
+## OSRM isochrones
 
 *Useful links for further reading: [Source 1](https://gis.stackexchange.com/questions/347807/using-osrm-to-create-isochrones-in-r-potentially-problematic-at-10-minutes-dri), [Source 2](https://rpubs.com/maiae/drivetime)*
 

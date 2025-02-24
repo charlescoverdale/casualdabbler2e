@@ -204,7 +204,7 @@ mtcars_model_outputs <- as.data.frame(mtcars_model_outputs)
 
 We can see how well this model estimated the dataset by looking at the residuals on a plot.
 
-```{r}
+```{r,results='hide', warning=FALSE,message=FALSE}
 ggplot(mtcars_model_outputs) +
   geom_line(aes(x = Actual_hp, y = Predicted_mpg), color = "blue") +
   geom_point(aes(x = Actual_hp, y = Actual_mpg), color = "blue", alpha = 0.5) +
@@ -262,7 +262,7 @@ In this section, we will use the `Boston` dataset from the `MASS` package to pre
 
 We will first split the dataset into training and testing sets, train a Random Forest model, evaluate its performance, and then compare it with a linear regression model using `tidymodels`.
 
-```{r}
+```{r,results='hide', warning=FALSE,message=FALSE}
 
 # Load necessary libraries
 library(MASS)
@@ -284,7 +284,7 @@ head(test_data)
 
 We will now train a Random Forest model using the `randomForest` package. The algorithm builds multiple decision trees and averages their predictions to improve accuracy and reduce overfitting.
 
-```{r}
+```{r,results='hide', warning=FALSE,message=FALSE}
 
 # Train a Random Forest model with 100 trees
 model <- randomForest::randomForest(medv ~ ., data=train_data, ntree=100)
@@ -296,7 +296,7 @@ predictions <- predict(model, test_data)
 
 We use Root Mean Square Error (RMSE) to measure the model's performance as we did in the previous section.
 
-```{r}
+```{r,results='hide', warning=FALSE,message=FALSE}
 
 # Calculate RMSE
 rmse <- sqrt(mean((predictions - test_data$medv)^2))
@@ -308,7 +308,7 @@ print(paste("RMSE:", round(rmse, 2)))
 
 To compare performance of our `randomForest` model, we train a simple linear regression model using the `tidymodels` framework. Linear regression attempts to fit a straight line that best represents the relationship between predictors and the target variable.
 
-```{r}
+```{r,results='hide', warning=FALSE,message=FALSE}
 
 # Load necessary library
 library(tidymodels)
@@ -335,7 +335,7 @@ After training the model, we can use it to make predictions on the `test_data`. 
 
 The `metrics()` function calculates various performance metrics, such as RMSE, MAE, and R², to evaluate the model's predictive accuracy. The `truth` argument specifies the actual values (`medv`), and the `estimate` argument specifies the predicted values (`.pred`).
 
-```{r}
+```{r,results='hide', warning=FALSE,message=FALSE}
 
 # Make predictions using the trained model
 predictions <- predict(trained_model, test_data) %>% bind_cols(test_data)

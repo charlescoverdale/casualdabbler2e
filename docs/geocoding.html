@@ -219,7 +219,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="10" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html"><i class="fa fa-check"></i><b>10</b> Drivetime analysis</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html#method-1-osrm-isochrones"><i class="fa fa-check"></i><b>10.1</b> Method 1: OSRM isochrones</a></li>
+<li class="chapter" data-level="10.1" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html#osrm-isochrones"><i class="fa fa-check"></i><b>10.1</b> OSRM isochrones</a></li>
 </ul></li>
 <li class="chapter" data-level="11" data-path="raster-data.html"><a href="raster-data.html"><i class="fa fa-check"></i><b>11</b> Raster data</a>
 <ul>
@@ -299,19 +299,19 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <div id="spatial-data" class="section level2 hasAnchor" number="9.2">
 <h2><span class="header-section-number">9.2</span> Spatial data<a href="geocoding.html#spatial-data" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>Let’s get started by loading up some packages.</p>
-<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="geocoding.html#cb121-1" tabindex="-1"></a><span class="co">#Loads the required required packages</span></span>
-<span id="cb121-2"><a href="geocoding.html#cb121-2" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggmap, </span>
-<span id="cb121-3"><a href="geocoding.html#cb121-3" tabindex="-1"></a>               tmaptools, </span>
-<span id="cb121-4"><a href="geocoding.html#cb121-4" tabindex="-1"></a>               RCurl, </span>
-<span id="cb121-5"><a href="geocoding.html#cb121-5" tabindex="-1"></a>               jsonlite, </span>
-<span id="cb121-6"><a href="geocoding.html#cb121-6" tabindex="-1"></a>               tidyverse, </span>
-<span id="cb121-7"><a href="geocoding.html#cb121-7" tabindex="-1"></a>               leaflet, </span>
-<span id="cb121-8"><a href="geocoding.html#cb121-8" tabindex="-1"></a>               writexl, </span>
-<span id="cb121-9"><a href="geocoding.html#cb121-9" tabindex="-1"></a>               readr, </span>
-<span id="cb121-10"><a href="geocoding.html#cb121-10" tabindex="-1"></a>               readxl, </span>
-<span id="cb121-11"><a href="geocoding.html#cb121-11" tabindex="-1"></a>               sf, </span>
-<span id="cb121-12"><a href="geocoding.html#cb121-12" tabindex="-1"></a>               mapview, </span>
-<span id="cb121-13"><a href="geocoding.html#cb121-13" tabindex="-1"></a>               rgdal)</span></code></pre></div>
+<div class="sourceCode" id="cb108"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb108-1"><a href="geocoding.html#cb108-1" tabindex="-1"></a><span class="co">#Loads the required required packages</span></span>
+<span id="cb108-2"><a href="geocoding.html#cb108-2" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(ggmap, </span>
+<span id="cb108-3"><a href="geocoding.html#cb108-3" tabindex="-1"></a>               tmaptools, </span>
+<span id="cb108-4"><a href="geocoding.html#cb108-4" tabindex="-1"></a>               RCurl, </span>
+<span id="cb108-5"><a href="geocoding.html#cb108-5" tabindex="-1"></a>               jsonlite, </span>
+<span id="cb108-6"><a href="geocoding.html#cb108-6" tabindex="-1"></a>               tidyverse, </span>
+<span id="cb108-7"><a href="geocoding.html#cb108-7" tabindex="-1"></a>               leaflet, </span>
+<span id="cb108-8"><a href="geocoding.html#cb108-8" tabindex="-1"></a>               writexl, </span>
+<span id="cb108-9"><a href="geocoding.html#cb108-9" tabindex="-1"></a>               readr, </span>
+<span id="cb108-10"><a href="geocoding.html#cb108-10" tabindex="-1"></a>               readxl, </span>
+<span id="cb108-11"><a href="geocoding.html#cb108-11" tabindex="-1"></a>               sf, </span>
+<span id="cb108-12"><a href="geocoding.html#cb108-12" tabindex="-1"></a>               mapview, </span>
+<span id="cb108-13"><a href="geocoding.html#cb108-13" tabindex="-1"></a>               rgdal)</span></code></pre></div>
 <pre><code>## 
 ##   There are binary versions available but the source versions are later:
 ##           binary source needs_compilation
@@ -320,28 +320,28 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 ## tmaptools  3.1-1    3.2             FALSE</code></pre>
 <p>Next, we’ll introduce some address data.</p>
 <p>Approved speed camera <a href="https://www.camerassavelives.vic.gov.au/camera-locations/approved-mobile-camera-locations">locations</a> in Victoria, Australia are publicly available through the government website. We can download the dataset as a spreadsheet and import it into R as a csv.</p>
-<div class="sourceCode" id="cb123"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb123-1"><a href="geocoding.html#cb123-1" tabindex="-1"></a><span class="co">#Read in spreadsheet</span></span>
-<span id="cb123-2"><a href="geocoding.html#cb123-2" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&#39;https://raw.githubusercontent.com/charlescoverdale/bookdata/main/mobile-camera-locations-june-2022.csv&#39;</span></span>
-<span id="cb123-3"><a href="geocoding.html#cb123-3" tabindex="-1"></a></span>
-<span id="cb123-4"><a href="geocoding.html#cb123-4" tabindex="-1"></a><span class="co">#Note: We need to import as a csv rather than xlsx for url functionality</span></span>
-<span id="cb123-5"><a href="geocoding.html#cb123-5" tabindex="-1"></a>camera_address <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
-<span id="cb123-6"><a href="geocoding.html#cb123-6" tabindex="-1"></a></span>
-<span id="cb123-7"><a href="geocoding.html#cb123-7" tabindex="-1"></a><span class="co">#Fix the column labels</span></span>
-<span id="cb123-8"><a href="geocoding.html#cb123-8" tabindex="-1"></a>camera_address <span class="ot">&lt;-</span> janitor<span class="sc">::</span><span class="fu">row_to_names</span>(camera_address,<span class="dv">1</span>)</span>
-<span id="cb123-9"><a href="geocoding.html#cb123-9" tabindex="-1"></a></span>
-<span id="cb123-10"><a href="geocoding.html#cb123-10" tabindex="-1"></a><span class="co">#Convert the suburb column to title case</span></span>
-<span id="cb123-11"><a href="geocoding.html#cb123-11" tabindex="-1"></a>camera_address<span class="sc">$</span>SUBURB <span class="ot">&lt;-</span> <span class="fu">str_to_title</span>(camera_address<span class="sc">$</span>SUBURB)</span>
-<span id="cb123-12"><a href="geocoding.html#cb123-12" tabindex="-1"></a></span>
-<span id="cb123-13"><a href="geocoding.html#cb123-13" tabindex="-1"></a><span class="co">#Concatenate the two fields into a single address field</span></span>
-<span id="cb123-14"><a href="geocoding.html#cb123-14" tabindex="-1"></a>camera_address<span class="sc">$</span>ADDRESS <span class="ot">&lt;-</span> <span class="fu">paste</span>(camera_address<span class="sc">$</span>LOCATION,</span>
-<span id="cb123-15"><a href="geocoding.html#cb123-15" tabindex="-1"></a>                                camera_address<span class="sc">$</span>SUBURB,</span>
-<span id="cb123-16"><a href="geocoding.html#cb123-16" tabindex="-1"></a>                                <span class="at">sep=</span><span class="st">&quot;, &quot;</span>)</span>
-<span id="cb123-17"><a href="geocoding.html#cb123-17" tabindex="-1"></a></span>
-<span id="cb123-18"><a href="geocoding.html#cb123-18" tabindex="-1"></a><span class="co">#Add in Australia to the address field just to idiot proof the df</span></span>
-<span id="cb123-19"><a href="geocoding.html#cb123-19" tabindex="-1"></a>camera_address<span class="sc">$</span>ADDRESS <span class="ot">&lt;-</span> <span class="fu">paste</span>(camera_address<span class="sc">$</span>ADDRESS, <span class="st">&quot;, Australia&quot;</span>, <span class="at">sep=</span><span class="st">&quot;&quot;</span>)</span>
-<span id="cb123-20"><a href="geocoding.html#cb123-20" tabindex="-1"></a></span>
-<span id="cb123-21"><a href="geocoding.html#cb123-21" tabindex="-1"></a><span class="co">#Preview the data</span></span>
-<span id="cb123-22"><a href="geocoding.html#cb123-22" tabindex="-1"></a><span class="fu">head</span>(camera_address)</span></code></pre></div>
+<div class="sourceCode" id="cb110"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb110-1"><a href="geocoding.html#cb110-1" tabindex="-1"></a><span class="co">#Read in spreadsheet</span></span>
+<span id="cb110-2"><a href="geocoding.html#cb110-2" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&#39;https://raw.githubusercontent.com/charlescoverdale/bookdata/main/mobile-camera-locations-june-2022.csv&#39;</span></span>
+<span id="cb110-3"><a href="geocoding.html#cb110-3" tabindex="-1"></a></span>
+<span id="cb110-4"><a href="geocoding.html#cb110-4" tabindex="-1"></a><span class="co">#Note: We need to import as a csv rather than xlsx for url functionality</span></span>
+<span id="cb110-5"><a href="geocoding.html#cb110-5" tabindex="-1"></a>camera_address <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url, <span class="at">header=</span><span class="cn">TRUE</span>)</span>
+<span id="cb110-6"><a href="geocoding.html#cb110-6" tabindex="-1"></a></span>
+<span id="cb110-7"><a href="geocoding.html#cb110-7" tabindex="-1"></a><span class="co">#Fix the column labels</span></span>
+<span id="cb110-8"><a href="geocoding.html#cb110-8" tabindex="-1"></a>camera_address <span class="ot">&lt;-</span> janitor<span class="sc">::</span><span class="fu">row_to_names</span>(camera_address,<span class="dv">1</span>)</span>
+<span id="cb110-9"><a href="geocoding.html#cb110-9" tabindex="-1"></a></span>
+<span id="cb110-10"><a href="geocoding.html#cb110-10" tabindex="-1"></a><span class="co">#Convert the suburb column to title case</span></span>
+<span id="cb110-11"><a href="geocoding.html#cb110-11" tabindex="-1"></a>camera_address<span class="sc">$</span>SUBURB <span class="ot">&lt;-</span> <span class="fu">str_to_title</span>(camera_address<span class="sc">$</span>SUBURB)</span>
+<span id="cb110-12"><a href="geocoding.html#cb110-12" tabindex="-1"></a></span>
+<span id="cb110-13"><a href="geocoding.html#cb110-13" tabindex="-1"></a><span class="co">#Concatenate the two fields into a single address field</span></span>
+<span id="cb110-14"><a href="geocoding.html#cb110-14" tabindex="-1"></a>camera_address<span class="sc">$</span>ADDRESS <span class="ot">&lt;-</span> <span class="fu">paste</span>(camera_address<span class="sc">$</span>LOCATION,</span>
+<span id="cb110-15"><a href="geocoding.html#cb110-15" tabindex="-1"></a>                                camera_address<span class="sc">$</span>SUBURB,</span>
+<span id="cb110-16"><a href="geocoding.html#cb110-16" tabindex="-1"></a>                                <span class="at">sep=</span><span class="st">&quot;, &quot;</span>)</span>
+<span id="cb110-17"><a href="geocoding.html#cb110-17" tabindex="-1"></a></span>
+<span id="cb110-18"><a href="geocoding.html#cb110-18" tabindex="-1"></a><span class="co">#Add in Australia to the address field just to idiot proof the df</span></span>
+<span id="cb110-19"><a href="geocoding.html#cb110-19" tabindex="-1"></a>camera_address<span class="sc">$</span>ADDRESS <span class="ot">&lt;-</span> <span class="fu">paste</span>(camera_address<span class="sc">$</span>ADDRESS, <span class="st">&quot;, Australia&quot;</span>, <span class="at">sep=</span><span class="st">&quot;&quot;</span>)</span>
+<span id="cb110-20"><a href="geocoding.html#cb110-20" tabindex="-1"></a></span>
+<span id="cb110-21"><a href="geocoding.html#cb110-21" tabindex="-1"></a><span class="co">#Preview the data</span></span>
+<span id="cb110-22"><a href="geocoding.html#cb110-22" tabindex="-1"></a><span class="fu">head</span>(camera_address)</span></code></pre></div>
 <pre><code>##           LOCATION            SUBURB Reason Code Audit Date
 ## 2        Abey Road        Cobblebank         BCD     May-22
 ## 3      Adam Street     Golden Square         ACD     Apr-22
@@ -370,78 +370,78 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <li><p>You can ping the API 2,500 times a day. Lucky for us this dataset is only 1,800 rows long!</p></li>
 </ul>
 <p>Uncomment the chunk below (using Ctrl+Shift+C) and enter your unique key from google to run the code.</p>
-<div class="sourceCode" id="cb125"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb125-1"><a href="geocoding.html#cb125-1" tabindex="-1"></a><span class="co"># #Input the google API key</span></span>
-<span id="cb125-2"><a href="geocoding.html#cb125-2" tabindex="-1"></a><span class="co"># register_google(key = &quot;PASTE YOUR UNIQUE KEY HERE&quot;)</span></span>
-<span id="cb125-3"><a href="geocoding.html#cb125-3" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb125-4"><a href="geocoding.html#cb125-4" tabindex="-1"></a><span class="co"># #Run the geocode function from ggmap package</span></span>
-<span id="cb125-5"><a href="geocoding.html#cb125-5" tabindex="-1"></a><span class="co"># camera_ggmap &lt;- ggmap::geocode(location = camera_address$ADDRESS,</span></span>
-<span id="cb125-6"><a href="geocoding.html#cb125-6" tabindex="-1"></a><span class="co">#                          output = &quot;more&quot;,</span></span>
-<span id="cb125-7"><a href="geocoding.html#cb125-7" tabindex="-1"></a><span class="co">#                          source = &quot;google&quot;)</span></span>
-<span id="cb125-8"><a href="geocoding.html#cb125-8" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb125-9"><a href="geocoding.html#cb125-9" tabindex="-1"></a><span class="co"># #We&#39;ll bind the newly created address columns to the original df</span></span>
-<span id="cb125-10"><a href="geocoding.html#cb125-10" tabindex="-1"></a><span class="co"># camera_ggmap &lt;- cbind(camera_address, camera_ggmap)</span></span>
-<span id="cb125-11"><a href="geocoding.html#cb125-11" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb125-12"><a href="geocoding.html#cb125-12" tabindex="-1"></a><span class="co"># #Print the results</span></span>
-<span id="cb125-13"><a href="geocoding.html#cb125-13" tabindex="-1"></a><span class="co"># head(camera_ggmap)</span></span>
-<span id="cb125-14"><a href="geocoding.html#cb125-14" tabindex="-1"></a><span class="co"># </span></span>
-<span id="cb125-15"><a href="geocoding.html#cb125-15" tabindex="-1"></a><span class="co"># #Write the data to a df</span></span>
-<span id="cb125-16"><a href="geocoding.html#cb125-16" tabindex="-1"></a><span class="co"># readr::write_csv(camera_ggmap,&quot;C:/Data/camera_geocoded.csv&quot;)</span></span></code></pre></div>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="geocoding.html#cb112-1" tabindex="-1"></a><span class="co"># #Input the google API key</span></span>
+<span id="cb112-2"><a href="geocoding.html#cb112-2" tabindex="-1"></a><span class="co"># register_google(key = &quot;PASTE YOUR UNIQUE KEY HERE&quot;)</span></span>
+<span id="cb112-3"><a href="geocoding.html#cb112-3" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb112-4"><a href="geocoding.html#cb112-4" tabindex="-1"></a><span class="co"># #Run the geocode function from ggmap package</span></span>
+<span id="cb112-5"><a href="geocoding.html#cb112-5" tabindex="-1"></a><span class="co"># camera_ggmap &lt;- ggmap::geocode(location = camera_address$ADDRESS,</span></span>
+<span id="cb112-6"><a href="geocoding.html#cb112-6" tabindex="-1"></a><span class="co">#                          output = &quot;more&quot;,</span></span>
+<span id="cb112-7"><a href="geocoding.html#cb112-7" tabindex="-1"></a><span class="co">#                          source = &quot;google&quot;)</span></span>
+<span id="cb112-8"><a href="geocoding.html#cb112-8" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb112-9"><a href="geocoding.html#cb112-9" tabindex="-1"></a><span class="co"># #We&#39;ll bind the newly created address columns to the original df</span></span>
+<span id="cb112-10"><a href="geocoding.html#cb112-10" tabindex="-1"></a><span class="co"># camera_ggmap &lt;- cbind(camera_address, camera_ggmap)</span></span>
+<span id="cb112-11"><a href="geocoding.html#cb112-11" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb112-12"><a href="geocoding.html#cb112-12" tabindex="-1"></a><span class="co"># #Print the results</span></span>
+<span id="cb112-13"><a href="geocoding.html#cb112-13" tabindex="-1"></a><span class="co"># head(camera_ggmap)</span></span>
+<span id="cb112-14"><a href="geocoding.html#cb112-14" tabindex="-1"></a><span class="co"># </span></span>
+<span id="cb112-15"><a href="geocoding.html#cb112-15" tabindex="-1"></a><span class="co"># #Write the data to a df</span></span>
+<span id="cb112-16"><a href="geocoding.html#cb112-16" tabindex="-1"></a><span class="co"># readr::write_csv(camera_ggmap,&quot;C:/Data/camera_geocoded.csv&quot;)</span></span></code></pre></div>
 <p>We’ll load up the output this chunk generates and continue.</p>
-<div class="sourceCode" id="cb126"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb126-1"><a href="geocoding.html#cb126-1" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&#39;https://raw.githubusercontent.com/charlescoverdale/bookdata/main/camera_geocoded.csv&#39;</span></span>
-<span id="cb126-2"><a href="geocoding.html#cb126-2" tabindex="-1"></a></span>
-<span id="cb126-3"><a href="geocoding.html#cb126-3" tabindex="-1"></a><span class="co">#Note: We need to import as a csv rather than xlsx for url functionality</span></span>
-<span id="cb126-4"><a href="geocoding.html#cb126-4" tabindex="-1"></a>camera_ggmap <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url, <span class="at">header=</span><span class="cn">TRUE</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb113"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb113-1"><a href="geocoding.html#cb113-1" tabindex="-1"></a>url <span class="ot">&lt;-</span> <span class="st">&#39;https://raw.githubusercontent.com/charlescoverdale/bookdata/main/camera_geocoded.csv&#39;</span></span>
+<span id="cb113-2"><a href="geocoding.html#cb113-2" tabindex="-1"></a></span>
+<span id="cb113-3"><a href="geocoding.html#cb113-3" tabindex="-1"></a><span class="co">#Note: We need to import as a csv rather than xlsx for url functionality</span></span>
+<span id="cb113-4"><a href="geocoding.html#cb113-4" tabindex="-1"></a>camera_ggmap <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(url, <span class="at">header=</span><span class="cn">TRUE</span>)</span></code></pre></div>
 </div>
 <div id="geocode-analysis" class="section level2 hasAnchor" number="9.4">
 <h2><span class="header-section-number">9.4</span> Geocode analysis<a href="geocoding.html#geocode-analysis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The raw dataset our geocode produced looks good! Although… it could probably use some cleaning.</p>
 <p>Let’s rename this dataset so we don’t loose the original df (and therefore have to run the google query again). This is simply a best practice step to build in some redundancy.</p>
-<div class="sourceCode" id="cb127"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb127-1"><a href="geocoding.html#cb127-1" tabindex="-1"></a>camera_geocoded <span class="ot">&lt;-</span> camera_ggmap</span></code></pre></div>
-<div class="sourceCode" id="cb128"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb128-1"><a href="geocoding.html#cb128-1" tabindex="-1"></a><span class="co">#Rename df</span></span>
-<span id="cb128-2"><a href="geocoding.html#cb128-2" tabindex="-1"></a>camera_geocoded_clean <span class="ot">&lt;-</span> camera_geocoded</span>
-<span id="cb128-3"><a href="geocoding.html#cb128-3" tabindex="-1"></a></span>
-<span id="cb128-4"><a href="geocoding.html#cb128-4" tabindex="-1"></a><span class="co">#Rename the API generated address field</span></span>
-<span id="cb128-5"><a href="geocoding.html#cb128-5" tabindex="-1"></a>camera_geocoded_clean <span class="ot">&lt;-</span> camera_geocoded_clean <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">address_long=</span>address)</span>
-<span id="cb128-6"><a href="geocoding.html#cb128-6" tabindex="-1"></a></span>
-<span id="cb128-7"><a href="geocoding.html#cb128-7" tabindex="-1"></a><span class="co">#Select only the columns we need</span></span>
-<span id="cb128-8"><a href="geocoding.html#cb128-8" tabindex="-1"></a>camera_geocoded_clean <span class="ot">&lt;-</span> camera_geocoded_clean <span class="sc">%&gt;%</span> </span>
-<span id="cb128-9"><a href="geocoding.html#cb128-9" tabindex="-1"></a>                          dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="st">&quot;LOCATION&quot;</span>,</span>
-<span id="cb128-10"><a href="geocoding.html#cb128-10" tabindex="-1"></a>                                 <span class="st">&quot;SUBURB&quot;</span>,</span>
-<span id="cb128-11"><a href="geocoding.html#cb128-11" tabindex="-1"></a>                                 <span class="st">&quot;ADDRESS&quot;</span>,</span>
-<span id="cb128-12"><a href="geocoding.html#cb128-12" tabindex="-1"></a>                                 <span class="st">&quot;lon&quot;</span>, </span>
-<span id="cb128-13"><a href="geocoding.html#cb128-13" tabindex="-1"></a>                                 <span class="st">&quot;lat&quot;</span>, </span>
-<span id="cb128-14"><a href="geocoding.html#cb128-14" tabindex="-1"></a>                                 <span class="st">&quot;address_long&quot;</span></span>
-<span id="cb128-15"><a href="geocoding.html#cb128-15" tabindex="-1"></a>                                 )</span>
-<span id="cb128-16"><a href="geocoding.html#cb128-16" tabindex="-1"></a></span>
-<span id="cb128-17"><a href="geocoding.html#cb128-17" tabindex="-1"></a><span class="co">#Make all the column names the same format</span></span>
-<span id="cb128-18"><a href="geocoding.html#cb128-18" tabindex="-1"></a>camera_geocoded_clean <span class="ot">&lt;-</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>(camera_geocoded_clean)</span>
-<span id="cb128-19"><a href="geocoding.html#cb128-19" tabindex="-1"></a></span>
-<span id="cb128-20"><a href="geocoding.html#cb128-20" tabindex="-1"></a><span class="co">#We still need to convert address_long to title case</span></span>
-<span id="cb128-21"><a href="geocoding.html#cb128-21" tabindex="-1"></a>camera_geocoded_clean<span class="sc">$</span>address_long <span class="ot">&lt;-</span> <span class="fu">str_to_title</span>(camera_geocoded_clean<span class="sc">$</span>address_long)</span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb114-1"><a href="geocoding.html#cb114-1" tabindex="-1"></a>camera_geocoded <span class="ot">&lt;-</span> camera_ggmap</span></code></pre></div>
+<div class="sourceCode" id="cb115"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb115-1"><a href="geocoding.html#cb115-1" tabindex="-1"></a><span class="co">#Rename df</span></span>
+<span id="cb115-2"><a href="geocoding.html#cb115-2" tabindex="-1"></a>camera_geocoded_clean <span class="ot">&lt;-</span> camera_geocoded</span>
+<span id="cb115-3"><a href="geocoding.html#cb115-3" tabindex="-1"></a></span>
+<span id="cb115-4"><a href="geocoding.html#cb115-4" tabindex="-1"></a><span class="co">#Rename the API generated address field</span></span>
+<span id="cb115-5"><a href="geocoding.html#cb115-5" tabindex="-1"></a>camera_geocoded_clean <span class="ot">&lt;-</span> camera_geocoded_clean <span class="sc">%&gt;%</span> <span class="fu">rename</span>(<span class="at">address_long=</span>address)</span>
+<span id="cb115-6"><a href="geocoding.html#cb115-6" tabindex="-1"></a></span>
+<span id="cb115-7"><a href="geocoding.html#cb115-7" tabindex="-1"></a><span class="co">#Select only the columns we need</span></span>
+<span id="cb115-8"><a href="geocoding.html#cb115-8" tabindex="-1"></a>camera_geocoded_clean <span class="ot">&lt;-</span> camera_geocoded_clean <span class="sc">%&gt;%</span> </span>
+<span id="cb115-9"><a href="geocoding.html#cb115-9" tabindex="-1"></a>                          dplyr<span class="sc">::</span><span class="fu">select</span>(<span class="st">&quot;LOCATION&quot;</span>,</span>
+<span id="cb115-10"><a href="geocoding.html#cb115-10" tabindex="-1"></a>                                 <span class="st">&quot;SUBURB&quot;</span>,</span>
+<span id="cb115-11"><a href="geocoding.html#cb115-11" tabindex="-1"></a>                                 <span class="st">&quot;ADDRESS&quot;</span>,</span>
+<span id="cb115-12"><a href="geocoding.html#cb115-12" tabindex="-1"></a>                                 <span class="st">&quot;lon&quot;</span>, </span>
+<span id="cb115-13"><a href="geocoding.html#cb115-13" tabindex="-1"></a>                                 <span class="st">&quot;lat&quot;</span>, </span>
+<span id="cb115-14"><a href="geocoding.html#cb115-14" tabindex="-1"></a>                                 <span class="st">&quot;address_long&quot;</span></span>
+<span id="cb115-15"><a href="geocoding.html#cb115-15" tabindex="-1"></a>                                 )</span>
+<span id="cb115-16"><a href="geocoding.html#cb115-16" tabindex="-1"></a></span>
+<span id="cb115-17"><a href="geocoding.html#cb115-17" tabindex="-1"></a><span class="co">#Make all the column names the same format</span></span>
+<span id="cb115-18"><a href="geocoding.html#cb115-18" tabindex="-1"></a>camera_geocoded_clean <span class="ot">&lt;-</span> janitor<span class="sc">::</span><span class="fu">clean_names</span>(camera_geocoded_clean)</span>
+<span id="cb115-19"><a href="geocoding.html#cb115-19" tabindex="-1"></a></span>
+<span id="cb115-20"><a href="geocoding.html#cb115-20" tabindex="-1"></a><span class="co">#We still need to convert address_long to title case</span></span>
+<span id="cb115-21"><a href="geocoding.html#cb115-21" tabindex="-1"></a>camera_geocoded_clean<span class="sc">$</span>address_long <span class="ot">&lt;-</span> <span class="fu">str_to_title</span>(camera_geocoded_clean<span class="sc">$</span>address_long)</span></code></pre></div>
 <p>If we want to go one step further, we can create spatial points from this list of coordinates. This is a good step for eyeballing the data. We see most of it is in Victoria (as expected!)… but it has picked up a couple of points in Sydney and WA.</p>
 <p>These are worth investigating separately for correction or exclusion.</p>
 <p>Uncomment the mapview function below to see these points on a leaflet map.</p>
-<div class="sourceCode" id="cb129"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb129-1"><a href="geocoding.html#cb129-1" tabindex="-1"></a><span class="co">#Convert data frame to sf object</span></span>
-<span id="cb129-2"><a href="geocoding.html#cb129-2" tabindex="-1"></a>camera_points <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_as_sf</span>(<span class="at">x =</span> camera_geocoded_clean, </span>
-<span id="cb129-3"><a href="geocoding.html#cb129-3" tabindex="-1"></a>                               <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;lon&quot;</span>, <span class="st">&quot;lat&quot;</span>),</span>
-<span id="cb129-4"><a href="geocoding.html#cb129-4" tabindex="-1"></a>                               <span class="at">crs =</span> <span class="st">&quot;+proj=longlat </span></span>
-<span id="cb129-5"><a href="geocoding.html#cb129-5" tabindex="-1"></a><span class="st">                                      +datum=WGS84 </span></span>
-<span id="cb129-6"><a href="geocoding.html#cb129-6" tabindex="-1"></a><span class="st">                                      +ellps=WGS84 </span></span>
-<span id="cb129-7"><a href="geocoding.html#cb129-7" tabindex="-1"></a><span class="st">                                      +towgs84=0,0,0&quot;</span>)</span>
-<span id="cb129-8"><a href="geocoding.html#cb129-8" tabindex="-1"></a></span>
-<span id="cb129-9"><a href="geocoding.html#cb129-9" tabindex="-1"></a><span class="co">#Plot an interactive map</span></span>
-<span id="cb129-10"><a href="geocoding.html#cb129-10" tabindex="-1"></a><span class="co"># mapview(camera_points)</span></span></code></pre></div>
+<div class="sourceCode" id="cb116"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb116-1"><a href="geocoding.html#cb116-1" tabindex="-1"></a><span class="co">#Convert data frame to sf object</span></span>
+<span id="cb116-2"><a href="geocoding.html#cb116-2" tabindex="-1"></a>camera_points <span class="ot">&lt;-</span> sf<span class="sc">::</span><span class="fu">st_as_sf</span>(<span class="at">x =</span> camera_geocoded_clean, </span>
+<span id="cb116-3"><a href="geocoding.html#cb116-3" tabindex="-1"></a>                               <span class="at">coords =</span> <span class="fu">c</span>(<span class="st">&quot;lon&quot;</span>, <span class="st">&quot;lat&quot;</span>),</span>
+<span id="cb116-4"><a href="geocoding.html#cb116-4" tabindex="-1"></a>                               <span class="at">crs =</span> <span class="st">&quot;+proj=longlat </span></span>
+<span id="cb116-5"><a href="geocoding.html#cb116-5" tabindex="-1"></a><span class="st">                                      +datum=WGS84 </span></span>
+<span id="cb116-6"><a href="geocoding.html#cb116-6" tabindex="-1"></a><span class="st">                                      +ellps=WGS84 </span></span>
+<span id="cb116-7"><a href="geocoding.html#cb116-7" tabindex="-1"></a><span class="st">                                      +towgs84=0,0,0&quot;</span>)</span>
+<span id="cb116-8"><a href="geocoding.html#cb116-8" tabindex="-1"></a></span>
+<span id="cb116-9"><a href="geocoding.html#cb116-9" tabindex="-1"></a><span class="co">#Plot an interactive map</span></span>
+<span id="cb116-10"><a href="geocoding.html#cb116-10" tabindex="-1"></a><span class="co"># mapview(camera_points)</span></span></code></pre></div>
 <p>We can export these points as a shapefile using the <code>rgdal</code> package.Let’s now have a look at our edge case datapoints.</p>
 <p>There’s a couple of ways to do this… but one of the simplest is to extract the postcode as a separate field. We can then simply sort by postcodes that do not start with the number 3.</p>
-<div class="sourceCode" id="cb130"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb130-1"><a href="geocoding.html#cb130-1" tabindex="-1"></a>camera_points<span class="sc">$</span>postcode <span class="ot">&lt;-</span> <span class="fu">str_sub</span>(camera_points<span class="sc">$</span>address_long, </span>
-<span id="cb130-2"><a href="geocoding.html#cb130-2" tabindex="-1"></a>                                   <span class="at">start=</span> <span class="sc">-</span><span class="dv">16</span>,  </span>
-<span id="cb130-3"><a href="geocoding.html#cb130-3" tabindex="-1"></a>                                   <span class="at">end=</span> <span class="sc">-</span><span class="dv">12</span>)</span>
-<span id="cb130-4"><a href="geocoding.html#cb130-4" tabindex="-1"></a></span>
-<span id="cb130-5"><a href="geocoding.html#cb130-5" tabindex="-1"></a>camera_points<span class="sc">$</span>postcode <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(camera_points<span class="sc">$</span>postcode)</span>
-<span id="cb130-6"><a href="geocoding.html#cb130-6" tabindex="-1"></a></span>
-<span id="cb130-7"><a href="geocoding.html#cb130-7" tabindex="-1"></a>outliers <span class="ot">&lt;-</span> camera_points <span class="sc">%&gt;%</span> <span class="fu">filter</span> (postcode <span class="sc">&lt;</span><span class="dv">3000</span> <span class="sc">|</span> postcode <span class="sc">&gt;=</span> <span class="dv">4000</span>)</span>
-<span id="cb130-8"><a href="geocoding.html#cb130-8" tabindex="-1"></a></span>
-<span id="cb130-9"><a href="geocoding.html#cb130-9" tabindex="-1"></a><span class="fu">print</span>(outliers)</span></code></pre></div>
+<div class="sourceCode" id="cb117"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb117-1"><a href="geocoding.html#cb117-1" tabindex="-1"></a>camera_points<span class="sc">$</span>postcode <span class="ot">&lt;-</span> <span class="fu">str_sub</span>(camera_points<span class="sc">$</span>address_long, </span>
+<span id="cb117-2"><a href="geocoding.html#cb117-2" tabindex="-1"></a>                                   <span class="at">start=</span> <span class="sc">-</span><span class="dv">16</span>,  </span>
+<span id="cb117-3"><a href="geocoding.html#cb117-3" tabindex="-1"></a>                                   <span class="at">end=</span> <span class="sc">-</span><span class="dv">12</span>)</span>
+<span id="cb117-4"><a href="geocoding.html#cb117-4" tabindex="-1"></a></span>
+<span id="cb117-5"><a href="geocoding.html#cb117-5" tabindex="-1"></a>camera_points<span class="sc">$</span>postcode <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(camera_points<span class="sc">$</span>postcode)</span>
+<span id="cb117-6"><a href="geocoding.html#cb117-6" tabindex="-1"></a></span>
+<span id="cb117-7"><a href="geocoding.html#cb117-7" tabindex="-1"></a>outliers <span class="ot">&lt;-</span> camera_points <span class="sc">%&gt;%</span> <span class="fu">filter</span> (postcode <span class="sc">&lt;</span><span class="dv">3000</span> <span class="sc">|</span> postcode <span class="sc">&gt;=</span> <span class="dv">4000</span>)</span>
+<span id="cb117-8"><a href="geocoding.html#cb117-8" tabindex="-1"></a></span>
+<span id="cb117-9"><a href="geocoding.html#cb117-9" tabindex="-1"></a><span class="fu">print</span>(outliers)</span></code></pre></div>
 <pre><code>## Simple feature collection with 7 features and 5 fields
 ## Geometry type: POINT
 ## Dimension:     XY
@@ -485,9 +485,9 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <p>Easy enough. We see there’s 7 rows that don’t have a postcode starting in a 3000 postcode.</p>
 <p>Four of these are in NSW, two in QLD, and one in WA. It looks like they are real (e.g. the streets and suburbs do exist in that state)… so for now let’s just exclude them from our dataset. We’ll do this by filtering by postcode.</p>
 <p>Uncomment the mapview function below to see these points on a leaflet map.</p>
-<div class="sourceCode" id="cb132"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb132-1"><a href="geocoding.html#cb132-1" tabindex="-1"></a>camera_points_vic <span class="ot">&lt;-</span> camera_points <span class="sc">%&gt;%</span> <span class="fu">filter</span> (postcode<span class="sc">&gt;</span><span class="st">&quot;3000&quot;</span> <span class="sc">&amp;</span> postcode<span class="sc">&lt;</span><span class="st">&quot;4000&quot;</span>)</span>
-<span id="cb132-2"><a href="geocoding.html#cb132-2" tabindex="-1"></a></span>
-<span id="cb132-3"><a href="geocoding.html#cb132-3" tabindex="-1"></a><span class="fu">head</span>(camera_points_vic)</span></code></pre></div>
+<div class="sourceCode" id="cb119"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb119-1"><a href="geocoding.html#cb119-1" tabindex="-1"></a>camera_points_vic <span class="ot">&lt;-</span> camera_points <span class="sc">%&gt;%</span> <span class="fu">filter</span> (postcode<span class="sc">&gt;</span><span class="st">&quot;3000&quot;</span> <span class="sc">&amp;</span> postcode<span class="sc">&lt;</span><span class="st">&quot;4000&quot;</span>)</span>
+<span id="cb119-2"><a href="geocoding.html#cb119-2" tabindex="-1"></a></span>
+<span id="cb119-3"><a href="geocoding.html#cb119-3" tabindex="-1"></a><span class="fu">head</span>(camera_points_vic)</span></code></pre></div>
 <pre><code>## Simple feature collection with 6 features and 5 fields
 ## Geometry type: POINT
 ## Dimension:     XY
@@ -524,8 +524,8 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 ## 4     3045
 ## 5     3064
 ## 6     3064</code></pre>
-<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="geocoding.html#cb134-1" tabindex="-1"></a><span class="co">#Plot an interactive map</span></span>
-<span id="cb134-2"><a href="geocoding.html#cb134-2" tabindex="-1"></a><span class="co"># mapview(camera_points_vic)</span></span></code></pre></div>
+<div class="sourceCode" id="cb121"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb121-1"><a href="geocoding.html#cb121-1" tabindex="-1"></a><span class="co">#Plot an interactive map</span></span>
+<span id="cb121-2"><a href="geocoding.html#cb121-2" tabindex="-1"></a><span class="co"># mapview(camera_points_vic)</span></span></code></pre></div>
 <p>There we go! A clean, geocoded dataset of speed camera locations in Victoria.</p>
 
 </div>

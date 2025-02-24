@@ -219,7 +219,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </ul></li>
 <li class="chapter" data-level="10" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html"><i class="fa fa-check"></i><b>10</b> Drivetime analysis</a>
 <ul>
-<li class="chapter" data-level="10.1" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html#method-1-osrm-isochrones"><i class="fa fa-check"></i><b>10.1</b> Method 1: OSRM isochrones</a></li>
+<li class="chapter" data-level="10.1" data-path="drivetime-analysis.html"><a href="drivetime-analysis.html#osrm-isochrones"><i class="fa fa-check"></i><b>10.1</b> OSRM isochrones</a></li>
 </ul></li>
 <li class="chapter" data-level="11" data-path="raster-data.html"><a href="raster-data.html"><i class="fa fa-check"></i><b>11</b> Raster data</a>
 <ul>
@@ -484,138 +484,59 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <p>In this section, we will use the <code>Boston</code> dataset from the <code>MASS</code> package to predict house prices using machine learning models. The dataset contains information on housing prices in the Boston area, with various predictors such as crime rate, number of rooms, and property tax rates. The target variable <code>medv</code> represents the median value of owner-occupied homes in $1000s.</p>
 <p>We will first split the dataset into training and testing sets, train a Random Forest model, evaluate its performance, and then compare it with a linear regression model using <code>tidymodels</code>.</p>
 <div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="forecasting.html#cb84-1" tabindex="-1"></a><span class="co"># Load necessary libraries</span></span>
-<span id="cb84-2"><a href="forecasting.html#cb84-2" tabindex="-1"></a><span class="fu">library</span>(MASS)</span></code></pre></div>
-<pre><code>## 
-## Attaching package: &#39;MASS&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:patchwork&#39;:
-## 
-##     area</code></pre>
-<pre><code>## The following object is masked from &#39;package:dplyr&#39;:
-## 
-##     select</code></pre>
-<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="forecasting.html#cb88-1" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
-<span id="cb88-2"><a href="forecasting.html#cb88-2" tabindex="-1"></a></span>
-<span id="cb88-3"><a href="forecasting.html#cb88-3" tabindex="-1"></a><span class="co"># Load the Boston housing dataset</span></span>
-<span id="cb88-4"><a href="forecasting.html#cb88-4" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;Boston&quot;</span>)</span>
-<span id="cb88-5"><a href="forecasting.html#cb88-5" tabindex="-1"></a></span>
-<span id="cb88-6"><a href="forecasting.html#cb88-6" tabindex="-1"></a><span class="co"># Splitting the dataset into training (80%) and testing (20%) sets</span></span>
-<span id="cb88-7"><a href="forecasting.html#cb88-7" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb88-8"><a href="forecasting.html#cb88-8" tabindex="-1"></a>train_index <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(Boston<span class="sc">$</span>medv, <span class="at">p=</span><span class="fl">0.8</span>, <span class="at">list=</span><span class="cn">FALSE</span>)</span>
-<span id="cb88-9"><a href="forecasting.html#cb88-9" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> Boston[train_index, ]</span>
-<span id="cb88-10"><a href="forecasting.html#cb88-10" tabindex="-1"></a>test_data <span class="ot">&lt;-</span> Boston[<span class="sc">-</span>train_index, ]</span>
-<span id="cb88-11"><a href="forecasting.html#cb88-11" tabindex="-1"></a></span>
-<span id="cb88-12"><a href="forecasting.html#cb88-12" tabindex="-1"></a><span class="co"># Display the first few rows of each dataset to confirm the split</span></span>
-<span id="cb88-13"><a href="forecasting.html#cb88-13" tabindex="-1"></a><span class="fu">head</span>(train_data)</span></code></pre></div>
-<pre><code>##      crim   zn indus chas   nox    rm  age    dis rad tax ptratio  black lstat
-## 1 0.00632 18.0  2.31    0 0.538 6.575 65.2 4.0900   1 296    15.3 396.90  4.98
-## 2 0.02731  0.0  7.07    0 0.469 6.421 78.9 4.9671   2 242    17.8 396.90  9.14
-## 4 0.03237  0.0  2.18    0 0.458 6.998 45.8 6.0622   3 222    18.7 394.63  2.94
-## 5 0.06905  0.0  2.18    0 0.458 7.147 54.2 6.0622   3 222    18.7 396.90  5.33
-## 7 0.08829 12.5  7.87    0 0.524 6.012 66.6 5.5605   5 311    15.2 395.60 12.43
-## 8 0.14455 12.5  7.87    0 0.524 6.172 96.1 5.9505   5 311    15.2 396.90 19.15
-##   medv
-## 1 24.0
-## 2 21.6
-## 4 33.4
-## 5 36.2
-## 7 22.9
-## 8 27.1</code></pre>
-<div class="sourceCode" id="cb90"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb90-1"><a href="forecasting.html#cb90-1" tabindex="-1"></a><span class="fu">head</span>(test_data)</span></code></pre></div>
-<pre><code>##       crim   zn indus chas   nox    rm   age    dis rad tax ptratio  black
-## 3  0.02729  0.0  7.07    0 0.469 7.185  61.1 4.9671   2 242    17.8 392.83
-## 6  0.02985  0.0  2.18    0 0.458 6.430  58.7 6.0622   3 222    18.7 394.12
-## 9  0.21124 12.5  7.87    0 0.524 5.631 100.0 6.0821   5 311    15.2 386.63
-## 11 0.22489 12.5  7.87    0 0.524 6.377  94.3 6.3467   5 311    15.2 392.52
-## 14 0.62976  0.0  8.14    0 0.538 5.949  61.8 4.7075   4 307    21.0 396.90
-## 15 0.63796  0.0  8.14    0 0.538 6.096  84.5 4.4619   4 307    21.0 380.02
-##    lstat medv
-## 3   4.03 34.7
-## 6   5.21 28.7
-## 9  29.93 16.5
-## 11 20.45 15.0
-## 14  8.26 20.4
-## 15 10.26 18.2</code></pre>
+<span id="cb84-2"><a href="forecasting.html#cb84-2" tabindex="-1"></a><span class="fu">library</span>(MASS)</span>
+<span id="cb84-3"><a href="forecasting.html#cb84-3" tabindex="-1"></a><span class="fu">library</span>(caret)</span>
+<span id="cb84-4"><a href="forecasting.html#cb84-4" tabindex="-1"></a></span>
+<span id="cb84-5"><a href="forecasting.html#cb84-5" tabindex="-1"></a><span class="co"># Load the Boston housing dataset</span></span>
+<span id="cb84-6"><a href="forecasting.html#cb84-6" tabindex="-1"></a><span class="fu">data</span>(<span class="st">&quot;Boston&quot;</span>)</span>
+<span id="cb84-7"><a href="forecasting.html#cb84-7" tabindex="-1"></a></span>
+<span id="cb84-8"><a href="forecasting.html#cb84-8" tabindex="-1"></a><span class="co"># Splitting the dataset into training (80%) and testing (20%) sets</span></span>
+<span id="cb84-9"><a href="forecasting.html#cb84-9" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb84-10"><a href="forecasting.html#cb84-10" tabindex="-1"></a>train_index <span class="ot">&lt;-</span> <span class="fu">createDataPartition</span>(Boston<span class="sc">$</span>medv, <span class="at">p=</span><span class="fl">0.8</span>, <span class="at">list=</span><span class="cn">FALSE</span>)</span>
+<span id="cb84-11"><a href="forecasting.html#cb84-11" tabindex="-1"></a>train_data <span class="ot">&lt;-</span> Boston[train_index, ]</span>
+<span id="cb84-12"><a href="forecasting.html#cb84-12" tabindex="-1"></a>test_data <span class="ot">&lt;-</span> Boston[<span class="sc">-</span>train_index, ]</span>
+<span id="cb84-13"><a href="forecasting.html#cb84-13" tabindex="-1"></a></span>
+<span id="cb84-14"><a href="forecasting.html#cb84-14" tabindex="-1"></a><span class="co"># Display the first few rows of each dataset to confirm the split</span></span>
+<span id="cb84-15"><a href="forecasting.html#cb84-15" tabindex="-1"></a><span class="fu">head</span>(train_data)</span>
+<span id="cb84-16"><a href="forecasting.html#cb84-16" tabindex="-1"></a><span class="fu">head</span>(test_data)</span></code></pre></div>
 <p>We will now train a Random Forest model using the <code>randomForest</code> package. The algorithm builds multiple decision trees and averages their predictions to improve accuracy and reduce overfitting.</p>
-<div class="sourceCode" id="cb92"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb92-1"><a href="forecasting.html#cb92-1" tabindex="-1"></a><span class="co"># Train a Random Forest model with 100 trees</span></span>
-<span id="cb92-2"><a href="forecasting.html#cb92-2" tabindex="-1"></a>model <span class="ot">&lt;-</span> randomForest<span class="sc">::</span><span class="fu">randomForest</span>(medv <span class="sc">~</span> ., <span class="at">data=</span>train_data, <span class="at">ntree=</span><span class="dv">100</span>)</span>
-<span id="cb92-3"><a href="forecasting.html#cb92-3" tabindex="-1"></a></span>
-<span id="cb92-4"><a href="forecasting.html#cb92-4" tabindex="-1"></a><span class="co"># Make predictions on the test set</span></span>
-<span id="cb92-5"><a href="forecasting.html#cb92-5" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, test_data)</span></code></pre></div>
+<div class="sourceCode" id="cb85"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb85-1"><a href="forecasting.html#cb85-1" tabindex="-1"></a><span class="co"># Train a Random Forest model with 100 trees</span></span>
+<span id="cb85-2"><a href="forecasting.html#cb85-2" tabindex="-1"></a>model <span class="ot">&lt;-</span> randomForest<span class="sc">::</span><span class="fu">randomForest</span>(medv <span class="sc">~</span> ., <span class="at">data=</span>train_data, <span class="at">ntree=</span><span class="dv">100</span>)</span>
+<span id="cb85-3"><a href="forecasting.html#cb85-3" tabindex="-1"></a></span>
+<span id="cb85-4"><a href="forecasting.html#cb85-4" tabindex="-1"></a><span class="co"># Make predictions on the test set</span></span>
+<span id="cb85-5"><a href="forecasting.html#cb85-5" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, test_data)</span></code></pre></div>
 <p>We use Root Mean Square Error (RMSE) to measure the model’s performance as we did in the previous section.</p>
-<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="forecasting.html#cb93-1" tabindex="-1"></a><span class="co"># Calculate RMSE</span></span>
-<span id="cb93-2"><a href="forecasting.html#cb93-2" tabindex="-1"></a>rmse <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((predictions <span class="sc">-</span> test_data<span class="sc">$</span>medv)<span class="sc">^</span><span class="dv">2</span>))</span>
-<span id="cb93-3"><a href="forecasting.html#cb93-3" tabindex="-1"></a></span>
-<span id="cb93-4"><a href="forecasting.html#cb93-4" tabindex="-1"></a><span class="co"># Print RMSE result</span></span>
-<span id="cb93-5"><a href="forecasting.html#cb93-5" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;RMSE:&quot;</span>, <span class="fu">round</span>(rmse, <span class="dv">2</span>)))</span></code></pre></div>
-<pre><code>## [1] &quot;RMSE: 2.96&quot;</code></pre>
+<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="forecasting.html#cb86-1" tabindex="-1"></a><span class="co"># Calculate RMSE</span></span>
+<span id="cb86-2"><a href="forecasting.html#cb86-2" tabindex="-1"></a>rmse <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((predictions <span class="sc">-</span> test_data<span class="sc">$</span>medv)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb86-3"><a href="forecasting.html#cb86-3" tabindex="-1"></a></span>
+<span id="cb86-4"><a href="forecasting.html#cb86-4" tabindex="-1"></a><span class="co"># Print RMSE result</span></span>
+<span id="cb86-5"><a href="forecasting.html#cb86-5" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">paste</span>(<span class="st">&quot;RMSE:&quot;</span>, <span class="fu">round</span>(rmse, <span class="dv">2</span>)))</span></code></pre></div>
 <p>To compare performance of our <code>randomForest</code> model, we train a simple linear regression model using the <code>tidymodels</code> framework. Linear regression attempts to fit a straight line that best represents the relationship between predictors and the target variable.</p>
-<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="forecasting.html#cb95-1" tabindex="-1"></a><span class="co"># Load necessary library</span></span>
-<span id="cb95-2"><a href="forecasting.html#cb95-2" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span></code></pre></div>
-<pre><code>## ── Attaching packages ────────────────────────────────────── tidymodels 1.3.0 ──</code></pre>
-<pre><code>## ✔ dials        1.4.0     ✔ rsample      1.2.1
-## ✔ infer        1.0.7     ✔ tune         1.3.0
-## ✔ modeldata    1.4.0     ✔ workflows    1.2.0
-## ✔ parsnip      1.3.0     ✔ workflowsets 1.1.0
-## ✔ recipes      1.1.1     ✔ yardstick    1.3.2</code></pre>
-<pre><code>## ── Conflicts ───────────────────────────────────────── tidymodels_conflicts() ──
-## ✖ rlang::%@%()             masks purrr::%@%()
-## ✖ yardstick::accuracy()    masks forecast::accuracy()
-## ✖ modelr::bootstrap()      masks broom::bootstrap()
-## ✖ ggalt::bytes()           masks rlang::bytes()
-## ✖ randomForest::combine()  masks dplyr::combine()
-## ✖ scales::discard()        masks purrr::discard()
-## ✖ dplyr::filter()          masks stats::filter()
-## ✖ recipes::fixed()         masks stringr::fixed()
-## ✖ rlang::flatten()         masks purrr::flatten()
-## ✖ rlang::flatten_chr()     masks purrr::flatten_chr()
-## ✖ rlang::flatten_dbl()     masks purrr::flatten_dbl()
-## ✖ rlang::flatten_int()     masks purrr::flatten_int()
-## ✖ rlang::flatten_lgl()     masks purrr::flatten_lgl()
-## ✖ rlang::flatten_raw()     masks purrr::flatten_raw()
-## ✖ rlang::invoke()          masks purrr::invoke()
-## ✖ dplyr::lag()             masks stats::lag()
-## ✖ caret::lift()            masks purrr::lift()
-## ✖ yardstick::mae()         masks modelr::mae()
-## ✖ yardstick::mape()        masks modelr::mape()
-## ✖ randomForest::margin()   masks ggplot2::margin()
-## ✖ yardstick::precision()   masks caret::precision()
-## ✖ yardstick::recall()      masks caret::recall()
-## ✖ .GlobalEnv::rmse()       masks yardstick::rmse(), modelr::rmse()
-## ✖ MASS::select()           masks dplyr::select()
-## ✖ yardstick::sensitivity() masks caret::sensitivity()
-## ✖ xgboost::slice()         masks dplyr::slice()
-## ✖ yardstick::spec()        masks readr::spec()
-## ✖ yardstick::specificity() masks caret::specificity()
-## ✖ rlang::splice()          masks purrr::splice()
-## ✖ recipes::step()          masks stats::step()</code></pre>
-<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="forecasting.html#cb99-1" tabindex="-1"></a><span class="co"># Set a seed for reproducibility</span></span>
-<span id="cb99-2"><a href="forecasting.html#cb99-2" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
-<span id="cb99-3"><a href="forecasting.html#cb99-3" tabindex="-1"></a></span>
-<span id="cb99-4"><a href="forecasting.html#cb99-4" tabindex="-1"></a><span class="co"># Define a linear regression model</span></span>
-<span id="cb99-5"><a href="forecasting.html#cb99-5" tabindex="-1"></a>ml_model <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb99-6"><a href="forecasting.html#cb99-6" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&quot;lm&quot;</span>) <span class="sc">%&gt;%</span> </span>
-<span id="cb99-7"><a href="forecasting.html#cb99-7" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">&quot;regression&quot;</span>)</span>
-<span id="cb99-8"><a href="forecasting.html#cb99-8" tabindex="-1"></a></span>
-<span id="cb99-9"><a href="forecasting.html#cb99-9" tabindex="-1"></a><span class="co"># Create a workflow that includes the model and the formula</span></span>
-<span id="cb99-10"><a href="forecasting.html#cb99-10" tabindex="-1"></a>tidymodels_workflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
-<span id="cb99-11"><a href="forecasting.html#cb99-11" tabindex="-1"></a>  <span class="fu">add_model</span>(ml_model) <span class="sc">%&gt;%</span> </span>
-<span id="cb99-12"><a href="forecasting.html#cb99-12" tabindex="-1"></a>  <span class="fu">add_formula</span>(medv <span class="sc">~</span> .)</span>
-<span id="cb99-13"><a href="forecasting.html#cb99-13" tabindex="-1"></a></span>
-<span id="cb99-14"><a href="forecasting.html#cb99-14" tabindex="-1"></a><span class="co"># Train the linear regression model</span></span>
-<span id="cb99-15"><a href="forecasting.html#cb99-15" tabindex="-1"></a>trained_model <span class="ot">&lt;-</span> tidymodels_workflow <span class="sc">%&gt;%</span> <span class="fu">fit</span>(<span class="at">data =</span> train_data)</span></code></pre></div>
+<div class="sourceCode" id="cb87"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb87-1"><a href="forecasting.html#cb87-1" tabindex="-1"></a><span class="co"># Load necessary library</span></span>
+<span id="cb87-2"><a href="forecasting.html#cb87-2" tabindex="-1"></a><span class="fu">library</span>(tidymodels)</span>
+<span id="cb87-3"><a href="forecasting.html#cb87-3" tabindex="-1"></a></span>
+<span id="cb87-4"><a href="forecasting.html#cb87-4" tabindex="-1"></a><span class="co"># Set a seed for reproducibility</span></span>
+<span id="cb87-5"><a href="forecasting.html#cb87-5" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">123</span>)</span>
+<span id="cb87-6"><a href="forecasting.html#cb87-6" tabindex="-1"></a></span>
+<span id="cb87-7"><a href="forecasting.html#cb87-7" tabindex="-1"></a><span class="co"># Define a linear regression model</span></span>
+<span id="cb87-8"><a href="forecasting.html#cb87-8" tabindex="-1"></a>ml_model <span class="ot">&lt;-</span> <span class="fu">linear_reg</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb87-9"><a href="forecasting.html#cb87-9" tabindex="-1"></a>  <span class="fu">set_engine</span>(<span class="st">&quot;lm&quot;</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb87-10"><a href="forecasting.html#cb87-10" tabindex="-1"></a>  <span class="fu">set_mode</span>(<span class="st">&quot;regression&quot;</span>)</span>
+<span id="cb87-11"><a href="forecasting.html#cb87-11" tabindex="-1"></a></span>
+<span id="cb87-12"><a href="forecasting.html#cb87-12" tabindex="-1"></a><span class="co"># Create a workflow that includes the model and the formula</span></span>
+<span id="cb87-13"><a href="forecasting.html#cb87-13" tabindex="-1"></a>tidymodels_workflow <span class="ot">&lt;-</span> <span class="fu">workflow</span>() <span class="sc">%&gt;%</span> </span>
+<span id="cb87-14"><a href="forecasting.html#cb87-14" tabindex="-1"></a>  <span class="fu">add_model</span>(ml_model) <span class="sc">%&gt;%</span> </span>
+<span id="cb87-15"><a href="forecasting.html#cb87-15" tabindex="-1"></a>  <span class="fu">add_formula</span>(medv <span class="sc">~</span> .)</span>
+<span id="cb87-16"><a href="forecasting.html#cb87-16" tabindex="-1"></a></span>
+<span id="cb87-17"><a href="forecasting.html#cb87-17" tabindex="-1"></a><span class="co"># Train the linear regression model</span></span>
+<span id="cb87-18"><a href="forecasting.html#cb87-18" tabindex="-1"></a>trained_model <span class="ot">&lt;-</span> tidymodels_workflow <span class="sc">%&gt;%</span> <span class="fu">fit</span>(<span class="at">data =</span> train_data)</span></code></pre></div>
 <p>After training the model, we can use it to make predictions on the <code>test_data</code>. The <code>predict()</code> function returns predicted values, which are then combined with the actual test data for comparison.</p>
 <p>The <code>metrics()</code> function calculates various performance metrics, such as RMSE, MAE, and R², to evaluate the model’s predictive accuracy. The <code>truth</code> argument specifies the actual values (<code>medv</code>), and the <code>estimate</code> argument specifies the predicted values (<code>.pred</code>).</p>
-<div class="sourceCode" id="cb100"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb100-1"><a href="forecasting.html#cb100-1" tabindex="-1"></a><span class="co"># Make predictions using the trained model</span></span>
-<span id="cb100-2"><a href="forecasting.html#cb100-2" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(trained_model, test_data) <span class="sc">%&gt;%</span> <span class="fu">bind_cols</span>(test_data)</span>
-<span id="cb100-3"><a href="forecasting.html#cb100-3" tabindex="-1"></a></span>
-<span id="cb100-4"><a href="forecasting.html#cb100-4" tabindex="-1"></a><span class="co"># Evaluate model performance using metrics function</span></span>
-<span id="cb100-5"><a href="forecasting.html#cb100-5" tabindex="-1"></a><span class="fu">metrics</span>(predictions, <span class="at">truth =</span> medv, <span class="at">estimate =</span> .pred)</span></code></pre></div>
-<pre><code>## # A tibble: 3 × 3
-##   .metric .estimator .estimate
-##   &lt;chr&gt;   &lt;chr&gt;          &lt;dbl&gt;
-## 1 rmse    standard       4.59 
-## 2 rsq     standard       0.761
-## 3 mae     standard       3.37</code></pre>
+<div class="sourceCode" id="cb88"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb88-1"><a href="forecasting.html#cb88-1" tabindex="-1"></a><span class="co"># Make predictions using the trained model</span></span>
+<span id="cb88-2"><a href="forecasting.html#cb88-2" tabindex="-1"></a>predictions <span class="ot">&lt;-</span> <span class="fu">predict</span>(trained_model, test_data) <span class="sc">%&gt;%</span> <span class="fu">bind_cols</span>(test_data)</span>
+<span id="cb88-3"><a href="forecasting.html#cb88-3" tabindex="-1"></a></span>
+<span id="cb88-4"><a href="forecasting.html#cb88-4" tabindex="-1"></a><span class="co"># Evaluate model performance using metrics function</span></span>
+<span id="cb88-5"><a href="forecasting.html#cb88-5" tabindex="-1"></a><span class="fu">metrics</span>(predictions, <span class="at">truth =</span> medv, <span class="at">estimate =</span> .pred)</span></code></pre></div>
 <p>As we see, our <code>randomForest</code> model performed much better, with a RMSE of 2.96 compared to 4.58.</p>
 
 </div>
