@@ -5,25 +5,25 @@
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <title>Chapter 14 Bayesian for the common man | R cookbook for the casual dabbler (2nd edition)</title>
-  <meta name="description" content="A practical user guide for R in analysis and visualisation." />
+  <meta name="description" content="A practical guide for using R in analysis and visualisation" />
   <meta name="generator" content="bookdown 0.42 and GitBook 2.6.7" />
 
   <meta property="og:title" content="Chapter 14 Bayesian for the common man | R cookbook for the casual dabbler (2nd edition)" />
   <meta property="og:type" content="book" />
   
-  <meta property="og:description" content="A practical user guide for R in analysis and visualisation." />
+  <meta property="og:description" content="A practical guide for using R in analysis and visualisation" />
   <meta name="github-repo" content="openscapes/series" />
 
   <meta name="twitter:card" content="summary" />
   <meta name="twitter:title" content="Chapter 14 Bayesian for the common man | R cookbook for the casual dabbler (2nd edition)" />
   
-  <meta name="twitter:description" content="A practical user guide for R in analysis and visualisation." />
+  <meta name="twitter:description" content="A practical guide for using R in analysis and visualisation" />
   
 
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-02-24" />
+<meta name="date" content="2025-03-15" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -252,6 +252,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 \]</span></a></li>
 </ul></li>
+<li class="chapter" data-level="14.2" data-path="bayesian-for-the-common-man.html"><a href="bayesian-for-the-common-man.html#priors"><i class="fa fa-check"></i><b>14.2</b> Priors</a></li>
 </ul></li>
 <li class="chapter" data-level="15" data-path="causal-inference.html"><a href="causal-inference.html"><i class="fa fa-check"></i><b>15</b> Causal inference</a>
 <ul>
@@ -293,17 +294,35 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <p><em>Note: Chapter under development</em></p>
 <div id="enter-rev.-bayes" class="section level2 hasAnchor" number="14.1">
 <h2><span class="header-section-number">14.1</span> Enter Rev. Bayes<a href="bayesian-for-the-common-man.html#enter-rev.-bayes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Bayes’ Theorem is named after 18th-century British statistician and theologian, Thomas Bayes. The theorem describes how to update the probability of a hypothesis based on new evidence.</p>
+<p>Bayes’ theorem is named after 18th-century British statistician and theologian, Thomas Bayes. His remarkable (yet simple) theorem describes how to update the probability of a hypothesis based on new evidence.</p>
 <p>In traditional frequentist statistics, probability is interpreted as the long-run frequency of events in repeated trials (sampling). A p-value from a sampling distribution tells us: <em>What is the chance of seeing this result, given some hypothesis?</em></p>
 <p>Bayesian statistics, on the other hand, allows us to incorporate <em>prior</em> knowledge or beliefs into our analysis and update those beliefs as we gather more data. The central question of Bayes’ Theorem therefore is: <em>How likely is the hypothesis to be true, given the data I’ve seen?</em></p>
 <p>This isn’t semantics - it’s a completely different way of seeing the world.</p>
-<p>We can write Bayes’ Theorem using probability notation.</p>
+<p>We can write Bayes’ theorem using probability notation.</p>
 <div id="pb-a-fracpa-b-pbpa" class="section level3 hasAnchor" number="14.1.1">
 <h3 class="hasAnchor"><span class="header-section-number">14.1.1</span> <span class="math display">\[
 P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 \]</span><a href="bayesian-for-the-common-man.html#pb-a-fracpa-b-pbpa" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-
+<p>Where:</p>
+<ul>
+<li><span class="math inline">\(P(A | B)\)</span> is the <strong>posterior probability</strong> (updated belief about <span class="math inline">\(A\)</span> after observing <span class="math inline">\(B\)</span>)</li>
+<li><span class="math inline">\(P(B | A)\)</span> is the <strong>likelihood</strong> (probability of observing <span class="math inline">\(B\)</span>, given that <span class="math inline">\(A\)</span> is true)</li>
+<li><span class="math inline">\(P(A)\)</span> is the <strong>prior probability</strong> (initial belief about <span class="math inline">\(A\)</span>, before seeing <span class="math inline">\(B\)</span>)</li>
+<li><span class="math inline">\(P(B)\)</span> is the <strong>evidence</strong> (total probability of observing <span class="math inline">\(B\)</span>, across all possible values of <span class="math inline">\(A\)</span>)</li>
+</ul>
 </div>
+</div>
+<div id="priors" class="section level2 hasAnchor" number="14.2">
+<h2><span class="header-section-number">14.2</span> Priors<a href="bayesian-for-the-common-man.html#priors" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Tom Chivers, in his excellent book <a href="https://www.amazon.com.au/Everything-Predictable-Remarkable-Theorem-Explains/dp/1399604058">Everything Is Predictable</a>, steps through the history of Bayes’ theorem.</p>
+<p>As we can see in the denominator <span class="math inline">\(P(A)\)</span>, Bayes’ theorem relies on our initial belief about A <em>before</em> seeing B. This is implicit in the frequentists approach too - it’s just that they put equal possibility on each possible answer.</p>
+<p>This creates a novel issue, known as Boole’s objection. Tom Chivers steps this through in his book:</p>
+<blockquote>
+<p>Imagine… ’an urn filled with balls, either black or white. If you have a flat prior on the total number of black balls in the urn, then any given mix of black and white balls is equally likely. (If there are only four balls in the urn, you know have three possibilities - two black, one black and zero black - and they’re all equally likely.).</p>
+<p>But if you assume that <em>each ball</em> is equally likely to be black or white - a flat prior on the probability of drawing a white or black each time - then your prior probability favours (very strongly if there are lots of balls) a roughly fifty-fifty mix in the urn as a whole.</p>
+</blockquote>
+<p>The importance of priors becomes obvious when thinking about disease diagnosis.</p>
+
 </div>
 </div>
             </section>

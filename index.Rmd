@@ -10,23 +10,23 @@ bibliography:
 biblio-style: apalike
 link-citations: yes
 github-repo: openscapes/series
-description: A practical user guide for R in analysis and visualisation.
+description: A practical guide for using R in analysis and visualisation
 site: bookdown::bookdown_site
 ---
 
 # Introduction
 
-G'day and welcome to *R cookbook for the casual dabbler (2nd edition).*
+G'day and welcome to *R Cookbook for the Casual Dabbler (2nd edition).*
 
 RCCD 1st edition was originally published in 2020 as a side project during the COVID-19 pandemic in Melbourne.
 
-As I wrote in the midst of lockdown:
+As I wrote in the midst of lock down:
 
 > I use R a lot for work and for side projects. Over the years I've collated a bunch of useful scripts, from macroeconomic analysis to quick hacks for making map legends format properly.
 >
 > Historically my code has been stored in random Rpubs documents, medium articles, and a bunch of .Rmd files on my hardrive. Occasionally I feel like doing things properly - and upload code to a repository on github.
 >
-> It doesn't take a genius to realize this isn't a very sustainable solution - and it also isn't very useful for sharing code with others. It turns out 2-years of lockdown in Melbourne was enough incentive to sit down and collate my best and most useful code into a single place. In the spirit of open source, a book seemed like the most logical format.
+> It doesn't take a genius to realize this isn't a very sustainable solution - and it also isn't very useful for sharing code with others. It turns out 2-years of lock down in Melbourne was enough incentive to sit down and collate my best and most useful code into a single place. In the spirit of open source, a book seemed like the most logical format.
 
 RCCD1e had surprisingly good (and long-lasting reviews). Alas, five-years on, a lot has changed - in both the R community, and the world more broadly. As such, RCCD2e includes significant revisions. The most major of these is a restructure to make the chapters flow more logically. Additionally:
 

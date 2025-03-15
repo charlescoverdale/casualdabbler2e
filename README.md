@@ -1,8 +1,8 @@
 # R Cookbook for the Casual Dabbler (2nd edition)
 
-This repo contains the code use to publish [R Cookbook for the Casual Dabbler (2nd edition)](https://charlescoverdale.github.io/casualdabbler2e/). The philosophy of this book remains that *a little R knowledge can go a long way*.
+This repo contains the code use to publish [R Cookbook for the Casual Dabbler (2nd edition)](https://charlescoverdale.github.io/casualdabbler2e/).
 
-RCCD1e edition was originally published in 2020 as a side project during the COVID-19 lockdowns in Melbourne. A lot has changed in the R community since, and as such the 2025 update of RCCD2e includes significant revisions.
+RCCD1e edition was originally published in 2020 as a side project during the COVID-19 lock downs in Melbourne. A lot has changed in the R community since, and as such the 2025 update of RCCD2e includes significant revisions.
 
 The book is 100% written in R, and published using [Rmarkdown](https://rmarkdown.rstudio.com/) and [Bookdown](https://bookdown.org/).
 
@@ -45,9 +45,9 @@ All bugs and mistakes remain my own. Please open up an issue on github or email 
 
 ## How to cite this text
 
-*Coverdale, C 2025, 'R Cookbook for the Casual Dabbler (2nd edition)', Melbourne, Australia*
+*Coverdale, C 2025, 'R Cookbook for the Casual Dabbler (2nd edition)', London, England*
 
-## Other useful cookbooks
+## Other useful R cookbooks
 
 -   <https://bookdown.org/yihui/rmarkdown-cookbook/>
 
