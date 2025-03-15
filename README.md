@@ -29,7 +29,7 @@ The book is 100% written in R, and published using [Rmarkdown](https://rmarkdown
 
 #### Section 4: Australian economy
 
-11. ABS economic indicators
+11. ABS economic data
 12. Australian election data
 
 ## Upcoming chapters (mid-2025)
@@ -38,6 +38,7 @@ The book is 100% written in R, and published using [Rmarkdown](https://rmarkdown
 14. Causal inference
 15. Functions
 16. Packages
+17. UK economic data
 
 ## Limitations
 
