@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-03-15" />
+<meta name="date" content="2025-04-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -271,6 +271,8 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <li class="chapter" data-level="18" data-path="uk-economic-data.html"><a href="uk-economic-data.html"><i class="fa fa-check"></i><b>18</b> UK Economic Data</a>
 <ul>
 <li class="chapter" data-level="18.1" data-path="uk-economic-data.html"><a href="uk-economic-data.html#ons"><i class="fa fa-check"></i><b>18.1</b> ONS</a></li>
+<li class="chapter" data-level="18.2" data-path="uk-economic-data.html"><a href="uk-economic-data.html#nomis"><i class="fa fa-check"></i><b>18.2</b> Nomis</a></li>
+<li class="chapter" data-level="18.3" data-path="uk-economic-data.html"><a href="uk-economic-data.html#trade"><i class="fa fa-check"></i><b>18.3</b> Trade</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://www.linkedin.com/in/charlescoverdale/" target="blank">Connect with me on linkedin</a></li>
@@ -301,13 +303,13 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <div id="components" class="section level2 hasAnchor" number="16.1">
 <h2><span class="header-section-number">16.1</span> Components<a href="functions.html#components" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>A function in R is defined using the <code>function</code> keyword. Here is a simple function that adds two numbers:</p>
-<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="functions.html#cb186-1" tabindex="-1"></a>add_numbers <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
-<span id="cb186-2"><a href="functions.html#cb186-2" tabindex="-1"></a>  result <span class="ot">&lt;-</span> a <span class="sc">+</span> b</span>
-<span id="cb186-3"><a href="functions.html#cb186-3" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
-<span id="cb186-4"><a href="functions.html#cb186-4" tabindex="-1"></a>}</span>
-<span id="cb186-5"><a href="functions.html#cb186-5" tabindex="-1"></a></span>
-<span id="cb186-6"><a href="functions.html#cb186-6" tabindex="-1"></a><span class="co"># Using the function</span></span>
-<span id="cb186-7"><a href="functions.html#cb186-7" tabindex="-1"></a><span class="fu">add_numbers</span>(<span class="dv">3</span>, <span class="dv">5</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb184"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb184-1"><a href="functions.html#cb184-1" tabindex="-1"></a>add_numbers <span class="ot">&lt;-</span> <span class="cf">function</span>(a, b) {</span>
+<span id="cb184-2"><a href="functions.html#cb184-2" tabindex="-1"></a>  result <span class="ot">&lt;-</span> a <span class="sc">+</span> b</span>
+<span id="cb184-3"><a href="functions.html#cb184-3" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
+<span id="cb184-4"><a href="functions.html#cb184-4" tabindex="-1"></a>}</span>
+<span id="cb184-5"><a href="functions.html#cb184-5" tabindex="-1"></a></span>
+<span id="cb184-6"><a href="functions.html#cb184-6" tabindex="-1"></a><span class="co"># Using the function</span></span>
+<span id="cb184-7"><a href="functions.html#cb184-7" tabindex="-1"></a><span class="fu">add_numbers</span>(<span class="dv">3</span>, <span class="dv">5</span>)</span></code></pre></div>
 <p>In this example, we see a function consisting of:</p>
 <ol style="list-style-type: decimal">
 <li>A name (e.g., <code>add_numbers</code>)</li>
@@ -316,23 +318,23 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <li>A return statement (optional, but recommended)</li>
 </ol>
 <p>We can also reference functions (from other packages) for use in our own custom functions. This data cleaning functions references <code>dplyr</code>, <code>stringr,</code> and <code>tidyr</code>.</p>
-<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="functions.html#cb187-1" tabindex="-1"></a><span class="co"># Practical Example: Data Cleaning Function</span></span>
-<span id="cb187-2"><a href="functions.html#cb187-2" tabindex="-1"></a></span>
-<span id="cb187-3"><a href="functions.html#cb187-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb187-4"><a href="functions.html#cb187-4" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
-<span id="cb187-5"><a href="functions.html#cb187-5" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
-<span id="cb187-6"><a href="functions.html#cb187-6" tabindex="-1"></a></span>
-<span id="cb187-7"><a href="functions.html#cb187-7" tabindex="-1"></a>data_cleaner <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
-<span id="cb187-8"><a href="functions.html#cb187-8" tabindex="-1"></a>  df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
-<span id="cb187-9"><a href="functions.html#cb187-9" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), </span>
-<span id="cb187-10"><a href="functions.html#cb187-10" tabindex="-1"></a>    stringr<span class="sc">::</span>str_trim)) <span class="sc">%&gt;%</span> <span class="co"># Trim whitespace</span></span>
-<span id="cb187-11"><a href="functions.html#cb187-11" tabindex="-1"></a>    tidyr<span class="sc">::</span><span class="fu">drop_na</span>() <span class="co"># Remove missing values</span></span>
-<span id="cb187-12"><a href="functions.html#cb187-12" tabindex="-1"></a>  <span class="fu">return</span>(df)</span>
-<span id="cb187-13"><a href="functions.html#cb187-13" tabindex="-1"></a>}</span>
-<span id="cb187-14"><a href="functions.html#cb187-14" tabindex="-1"></a></span>
-<span id="cb187-15"><a href="functions.html#cb187-15" tabindex="-1"></a><span class="co"># Example</span></span>
-<span id="cb187-16"><a href="functions.html#cb187-16" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name =</span> <span class="fu">c</span>(<span class="st">&quot;Alice    &quot;</span>, <span class="st">&quot; Bob&quot;</span>, <span class="cn">NA</span>), <span class="at">age =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">22</span>))</span>
-<span id="cb187-17"><a href="functions.html#cb187-17" tabindex="-1"></a><span class="fu">data_cleaner</span>(df)</span></code></pre></div>
+<div class="sourceCode" id="cb185"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb185-1"><a href="functions.html#cb185-1" tabindex="-1"></a><span class="co"># Practical Example: Data Cleaning Function</span></span>
+<span id="cb185-2"><a href="functions.html#cb185-2" tabindex="-1"></a></span>
+<span id="cb185-3"><a href="functions.html#cb185-3" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb185-4"><a href="functions.html#cb185-4" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb185-5"><a href="functions.html#cb185-5" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb185-6"><a href="functions.html#cb185-6" tabindex="-1"></a></span>
+<span id="cb185-7"><a href="functions.html#cb185-7" tabindex="-1"></a>data_cleaner <span class="ot">&lt;-</span> <span class="cf">function</span>(df) {</span>
+<span id="cb185-8"><a href="functions.html#cb185-8" tabindex="-1"></a>  df <span class="ot">&lt;-</span> df <span class="sc">%&gt;%</span> </span>
+<span id="cb185-9"><a href="functions.html#cb185-9" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">where</span>(is.character), </span>
+<span id="cb185-10"><a href="functions.html#cb185-10" tabindex="-1"></a>    stringr<span class="sc">::</span>str_trim)) <span class="sc">%&gt;%</span> <span class="co"># Trim whitespace</span></span>
+<span id="cb185-11"><a href="functions.html#cb185-11" tabindex="-1"></a>    tidyr<span class="sc">::</span><span class="fu">drop_na</span>() <span class="co"># Remove missing values</span></span>
+<span id="cb185-12"><a href="functions.html#cb185-12" tabindex="-1"></a>  <span class="fu">return</span>(df)</span>
+<span id="cb185-13"><a href="functions.html#cb185-13" tabindex="-1"></a>}</span>
+<span id="cb185-14"><a href="functions.html#cb185-14" tabindex="-1"></a></span>
+<span id="cb185-15"><a href="functions.html#cb185-15" tabindex="-1"></a><span class="co"># Example</span></span>
+<span id="cb185-16"><a href="functions.html#cb185-16" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">name =</span> <span class="fu">c</span>(<span class="st">&quot;Alice    &quot;</span>, <span class="st">&quot; Bob&quot;</span>, <span class="cn">NA</span>), <span class="at">age =</span> <span class="fu">c</span>(<span class="dv">25</span>, <span class="dv">30</span>, <span class="dv">22</span>))</span>
+<span id="cb185-17"><a href="functions.html#cb185-17" tabindex="-1"></a><span class="fu">data_cleaner</span>(df)</span></code></pre></div>
 </div>
 <div id="luhn-example" class="section level2 hasAnchor" number="16.2">
 <h2><span class="header-section-number">16.2</span> Luhn example<a href="functions.html#luhn-example" class="anchor-section" aria-label="Anchor link to header"></a></h2>
@@ -345,46 +347,46 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <li>If the total sum is a multiple of 10, the number is valid; otherwise, it is invalid.</li>
 </ol>
 <p>That’s a lot of info… instead let’s write a function to check if a credit card number is valid:</p>
-<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="functions.html#cb188-1" tabindex="-1"></a>validate_credit_card <span class="ot">&lt;-</span> <span class="cf">function</span>(card_number) {</span>
-<span id="cb188-2"><a href="functions.html#cb188-2" tabindex="-1"></a>  digits <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">strsplit</span>(<span class="fu">as.character</span>(card_number), <span class="st">&quot;&quot;</span>)[[<span class="dv">1</span>]])</span>
-<span id="cb188-3"><a href="functions.html#cb188-3" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(digits)</span>
-<span id="cb188-4"><a href="functions.html#cb188-4" tabindex="-1"></a>  </span>
-<span id="cb188-5"><a href="functions.html#cb188-5" tabindex="-1"></a>  <span class="co"># Double every second digit from the right</span></span>
-<span id="cb188-6"><a href="functions.html#cb188-6" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(n <span class="sc">-</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="sc">-</span><span class="dv">2</span>)) {</span>
-<span id="cb188-7"><a href="functions.html#cb188-7" tabindex="-1"></a>    digits[i] <span class="ot">&lt;-</span> digits[i] <span class="sc">*</span> <span class="dv">2</span></span>
-<span id="cb188-8"><a href="functions.html#cb188-8" tabindex="-1"></a>    <span class="cf">if</span> (digits[i] <span class="sc">&gt;</span> <span class="dv">9</span>) {</span>
-<span id="cb188-9"><a href="functions.html#cb188-9" tabindex="-1"></a>      digits[i] <span class="ot">&lt;-</span> digits[i] <span class="sc">-</span> <span class="dv">9</span></span>
-<span id="cb188-10"><a href="functions.html#cb188-10" tabindex="-1"></a>    }</span>
-<span id="cb188-11"><a href="functions.html#cb188-11" tabindex="-1"></a>  }</span>
-<span id="cb188-12"><a href="functions.html#cb188-12" tabindex="-1"></a>  </span>
-<span id="cb188-13"><a href="functions.html#cb188-13" tabindex="-1"></a>  <span class="co"># Check if the sum is a multiple of 10</span></span>
-<span id="cb188-14"><a href="functions.html#cb188-14" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(digits) <span class="sc">%%</span> <span class="dv">10</span> <span class="sc">==</span> <span class="dv">0</span>)</span>
-<span id="cb188-15"><a href="functions.html#cb188-15" tabindex="-1"></a>}</span>
-<span id="cb188-16"><a href="functions.html#cb188-16" tabindex="-1"></a></span>
-<span id="cb188-17"><a href="functions.html#cb188-17" tabindex="-1"></a><span class="co"># Example usage</span></span>
-<span id="cb188-18"><a href="functions.html#cb188-18" tabindex="-1"></a><span class="fu">validate_credit_card</span>(<span class="dv">4532015112830366</span>) <span class="co"># Should return TRUE</span></span>
-<span id="cb188-19"><a href="functions.html#cb188-19" tabindex="-1"></a><span class="fu">validate_credit_card</span>(<span class="dv">1234567812345678</span>) <span class="co"># Should return FALSE</span></span></code></pre></div>
+<div class="sourceCode" id="cb186"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb186-1"><a href="functions.html#cb186-1" tabindex="-1"></a>validate_credit_card <span class="ot">&lt;-</span> <span class="cf">function</span>(card_number) {</span>
+<span id="cb186-2"><a href="functions.html#cb186-2" tabindex="-1"></a>  digits <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(<span class="fu">strsplit</span>(<span class="fu">as.character</span>(card_number), <span class="st">&quot;&quot;</span>)[[<span class="dv">1</span>]])</span>
+<span id="cb186-3"><a href="functions.html#cb186-3" tabindex="-1"></a>  n <span class="ot">&lt;-</span> <span class="fu">length</span>(digits)</span>
+<span id="cb186-4"><a href="functions.html#cb186-4" tabindex="-1"></a>  </span>
+<span id="cb186-5"><a href="functions.html#cb186-5" tabindex="-1"></a>  <span class="co"># Double every second digit from the right</span></span>
+<span id="cb186-6"><a href="functions.html#cb186-6" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="fu">seq</span>(n <span class="sc">-</span> <span class="dv">1</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="sc">-</span><span class="dv">2</span>)) {</span>
+<span id="cb186-7"><a href="functions.html#cb186-7" tabindex="-1"></a>    digits[i] <span class="ot">&lt;-</span> digits[i] <span class="sc">*</span> <span class="dv">2</span></span>
+<span id="cb186-8"><a href="functions.html#cb186-8" tabindex="-1"></a>    <span class="cf">if</span> (digits[i] <span class="sc">&gt;</span> <span class="dv">9</span>) {</span>
+<span id="cb186-9"><a href="functions.html#cb186-9" tabindex="-1"></a>      digits[i] <span class="ot">&lt;-</span> digits[i] <span class="sc">-</span> <span class="dv">9</span></span>
+<span id="cb186-10"><a href="functions.html#cb186-10" tabindex="-1"></a>    }</span>
+<span id="cb186-11"><a href="functions.html#cb186-11" tabindex="-1"></a>  }</span>
+<span id="cb186-12"><a href="functions.html#cb186-12" tabindex="-1"></a>  </span>
+<span id="cb186-13"><a href="functions.html#cb186-13" tabindex="-1"></a>  <span class="co"># Check if the sum is a multiple of 10</span></span>
+<span id="cb186-14"><a href="functions.html#cb186-14" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">sum</span>(digits) <span class="sc">%%</span> <span class="dv">10</span> <span class="sc">==</span> <span class="dv">0</span>)</span>
+<span id="cb186-15"><a href="functions.html#cb186-15" tabindex="-1"></a>}</span>
+<span id="cb186-16"><a href="functions.html#cb186-16" tabindex="-1"></a></span>
+<span id="cb186-17"><a href="functions.html#cb186-17" tabindex="-1"></a><span class="co"># Example usage</span></span>
+<span id="cb186-18"><a href="functions.html#cb186-18" tabindex="-1"></a><span class="fu">validate_credit_card</span>(<span class="dv">4532015112830366</span>) <span class="co"># Should return TRUE</span></span>
+<span id="cb186-19"><a href="functions.html#cb186-19" tabindex="-1"></a><span class="fu">validate_credit_card</span>(<span class="dv">1234567812345678</span>) <span class="co"># Should return FALSE</span></span></code></pre></div>
 </div>
 <div id="loops-in-functions" class="section level2 hasAnchor" number="16.3">
 <h2><span class="header-section-number">16.3</span> Loops in functions<a href="functions.html#loops-in-functions" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <p>The real power of functions comes when we introduce loops. Loops allow us to repeat a calculation for different parameter values. Factorials are a great example where a loop is needed.</p>
 <p>A <em>factorial</em> is a mathematical operation denoted by an exclamation mark (!), used to find the product of all positive integers less than or equal to a given number.</p>
 <p>Let’s write a looping function to calculate 10! (10x9x8x7x6x5x4x3x2x1)</p>
-<div class="sourceCode" id="cb189"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb189-1"><a href="functions.html#cb189-1" tabindex="-1"></a><span class="do">## Calculating Factorial Using a Loop</span></span>
-<span id="cb189-2"><a href="functions.html#cb189-2" tabindex="-1"></a></span>
-<span id="cb189-3"><a href="functions.html#cb189-3" tabindex="-1"></a>factorial_loop <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
-<span id="cb189-4"><a href="functions.html#cb189-4" tabindex="-1"></a>  <span class="cf">if</span> (n <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
-<span id="cb189-5"><a href="functions.html#cb189-5" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Factorial is not defined for negative numbers.&quot;</span>)</span>
-<span id="cb189-6"><a href="functions.html#cb189-6" tabindex="-1"></a>  }</span>
-<span id="cb189-7"><a href="functions.html#cb189-7" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb189-8"><a href="functions.html#cb189-8" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
-<span id="cb189-9"><a href="functions.html#cb189-9" tabindex="-1"></a>    result <span class="ot">&lt;-</span> result <span class="sc">*</span> i</span>
-<span id="cb189-10"><a href="functions.html#cb189-10" tabindex="-1"></a>  }</span>
-<span id="cb189-11"><a href="functions.html#cb189-11" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
-<span id="cb189-12"><a href="functions.html#cb189-12" tabindex="-1"></a>}</span>
-<span id="cb189-13"><a href="functions.html#cb189-13" tabindex="-1"></a></span>
-<span id="cb189-14"><a href="functions.html#cb189-14" tabindex="-1"></a><span class="co"># Example usage</span></span>
-<span id="cb189-15"><a href="functions.html#cb189-15" tabindex="-1"></a><span class="fu">factorial_loop</span>(<span class="dv">10</span>) <span class="co"># Test 10!</span></span></code></pre></div>
+<div class="sourceCode" id="cb187"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb187-1"><a href="functions.html#cb187-1" tabindex="-1"></a><span class="do">## Calculating Factorial Using a Loop</span></span>
+<span id="cb187-2"><a href="functions.html#cb187-2" tabindex="-1"></a></span>
+<span id="cb187-3"><a href="functions.html#cb187-3" tabindex="-1"></a>factorial_loop <span class="ot">&lt;-</span> <span class="cf">function</span>(n) {</span>
+<span id="cb187-4"><a href="functions.html#cb187-4" tabindex="-1"></a>  <span class="cf">if</span> (n <span class="sc">&lt;</span> <span class="dv">0</span>) {</span>
+<span id="cb187-5"><a href="functions.html#cb187-5" tabindex="-1"></a>    <span class="fu">stop</span>(<span class="st">&quot;Factorial is not defined for negative numbers.&quot;</span>)</span>
+<span id="cb187-6"><a href="functions.html#cb187-6" tabindex="-1"></a>  }</span>
+<span id="cb187-7"><a href="functions.html#cb187-7" tabindex="-1"></a>  result <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb187-8"><a href="functions.html#cb187-8" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>n) {</span>
+<span id="cb187-9"><a href="functions.html#cb187-9" tabindex="-1"></a>    result <span class="ot">&lt;-</span> result <span class="sc">*</span> i</span>
+<span id="cb187-10"><a href="functions.html#cb187-10" tabindex="-1"></a>  }</span>
+<span id="cb187-11"><a href="functions.html#cb187-11" tabindex="-1"></a>  <span class="fu">return</span>(result)</span>
+<span id="cb187-12"><a href="functions.html#cb187-12" tabindex="-1"></a>}</span>
+<span id="cb187-13"><a href="functions.html#cb187-13" tabindex="-1"></a></span>
+<span id="cb187-14"><a href="functions.html#cb187-14" tabindex="-1"></a><span class="co"># Example usage</span></span>
+<span id="cb187-15"><a href="functions.html#cb187-15" tabindex="-1"></a><span class="fu">factorial_loop</span>(<span class="dv">10</span>) <span class="co"># Test 10!</span></span></code></pre></div>
 <p>We see factorials blow out in size <em>very</em> quickly. Try inputting 100! and see what happens.</p>
 
 </div>

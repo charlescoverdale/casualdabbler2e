@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-03-15" />
+<meta name="date" content="2025-04-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -271,6 +271,8 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <li class="chapter" data-level="18" data-path="uk-economic-data.html"><a href="uk-economic-data.html"><i class="fa fa-check"></i><b>18</b> UK Economic Data</a>
 <ul>
 <li class="chapter" data-level="18.1" data-path="uk-economic-data.html"><a href="uk-economic-data.html#ons"><i class="fa fa-check"></i><b>18.1</b> ONS</a></li>
+<li class="chapter" data-level="18.2" data-path="uk-economic-data.html"><a href="uk-economic-data.html#nomis"><i class="fa fa-check"></i><b>18.2</b> Nomis</a></li>
+<li class="chapter" data-level="18.3" data-path="uk-economic-data.html"><a href="uk-economic-data.html#trade"><i class="fa fa-check"></i><b>18.3</b> Trade</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://www.linkedin.com/in/charlescoverdale/" target="blank">Connect with me on linkedin</a></li>
@@ -927,9 +929,7 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <p>The data sets must be downloaded using the functions <code>firstpref_pollingbooth_download</code>, <code>twoparty_pollingbooth_download</code> or <code>twocand_pollingbooth_download</code> (depending on the vote type).</p>
 <p>The two files need to be merged to be useful for analysis. Both have a unique ID for the polling place that can be used to match the records. The two party preferred vote, a measure of preference between only the Australian Labor Party (ALP) and the Liberal/National Coalition (LNP), is downloaded using <code>twoparty_pollingbooth_download</code>. The preferred party is the one with the higher percentage, and we use this to colour the points indicating polling places.</p>
 <p>We see that within some big rural electorates (e.g. in Western NSW), there are pockets of ALP preference despite the seat going to the LNP. Note that this data set is on a tpp basis - so we can’t see the booths that were won by minor parties (although it would be fascinating).We see that within some big rural electorates (e.g. in Western NSW), there are pockets of ALP preference despite the seat going to the LNP. Note that this data set is on a tpp basis - so we can’t see the booths that were won by minor parties (although it would be fascinating).</p>
-<pre><code>## Error in utils::download.file(url_git, tmp, ...): cannot open URL &#39;https://github.com/jforbes14/eechidna/raw/master/extra-data/nat_map16.rda&#39;</code></pre>
-<pre><code>## Error in `geom_map()`:
-## ! `map` must have the columns `x`, `y`, and `id`.</code></pre>
+<p><img src="_main_files/figure-html/tpp_map-1.png" width="672" /></p>
 <p>The two candidate preferred vote (downloaded with <code>twocand_pollingbooth_download</code>) is a measure of preference between the two candidates who received the most votes through the division of preferences, where the winner has the higher percentage.</p>
 <p><img src="_main_files/figure-html/tcp_map-1.png" width="672" /></p>
 </div>

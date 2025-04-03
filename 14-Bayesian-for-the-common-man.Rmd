@@ -37,4 +37,4 @@ This creates a novel issue, known as Boole's objection. Tom Chivers steps this t
 >
 > But if you assume that *each ball* is equally likely to be black or white - a flat prior on the probability of drawing a white or black each time - then your prior probability favours (very strongly if there are lots of balls) a roughly fifty-fifty mix in the urn as a whole.
 
-The importance of priors becomes obvious when thinking about disease diagnosis.
+The importance of priors becomes obvious when thinking about disease diagnosis. Let's work through an example:

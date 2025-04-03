@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-03-15" />
+<meta name="date" content="2025-04-03" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -271,6 +271,8 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <li class="chapter" data-level="18" data-path="uk-economic-data.html"><a href="uk-economic-data.html"><i class="fa fa-check"></i><b>18</b> UK Economic Data</a>
 <ul>
 <li class="chapter" data-level="18.1" data-path="uk-economic-data.html"><a href="uk-economic-data.html#ons"><i class="fa fa-check"></i><b>18.1</b> ONS</a></li>
+<li class="chapter" data-level="18.2" data-path="uk-economic-data.html"><a href="uk-economic-data.html#nomis"><i class="fa fa-check"></i><b>18.2</b> Nomis</a></li>
+<li class="chapter" data-level="18.3" data-path="uk-economic-data.html"><a href="uk-economic-data.html#trade"><i class="fa fa-check"></i><b>18.3</b> Trade</a></li>
 </ul></li>
 <li class="divider"></li>
 <li><a href="https://www.linkedin.com/in/charlescoverdale/" target="blank">Connect with me on linkedin</a></li>
@@ -298,7 +300,124 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 <p><em>Note: Chapter under development</em></p>
 <div id="ons" class="section level2 hasAnchor" number="18.1">
 <h2><span class="header-section-number">18.1</span> ONS<a href="uk-economic-data.html#ons" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p><a href="https://www.ons.gov.uk/" class="uri">https://www.ons.gov.uk/</a></p>
+<p>The <a href="https://www.ons.gov.uk/">Office of National Statistics</a> (ONS) collates and publishes most of the UK’s economic data sets.</p>
+<p>There’s two main ways to access this data. Option 1, poorly formatted <a href="https://www.ons.gov.uk/economy/grossdomesticproductgdp/timeseries/abmi/pn2">spreadsheets</a>. Option 2, an <a href="https://developer.ons.gov.uk/">API</a> (which has been in beta for over 5 years). We’ll step through both.</p>
+<p>There’s several R packages out there that either ping the ONS’ API or web scrape the data. Kostas Vasilopoulos has produced one of the better ones (and it’s on CRAN) called <code>onsr</code>.</p>
+<div class="sourceCode" id="cb188"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb188-1"><a href="uk-economic-data.html#cb188-1" tabindex="-1"></a><span class="fu">library</span>(onsr)</span>
+<span id="cb188-2"><a href="uk-economic-data.html#cb188-2" tabindex="-1"></a></span>
+<span id="cb188-3"><a href="uk-economic-data.html#cb188-3" tabindex="-1"></a><span class="co">#Get a list of all datasets available</span></span>
+<span id="cb188-4"><a href="uk-economic-data.html#cb188-4" tabindex="-1"></a><span class="fu">ons_ids</span>()</span></code></pre></div>
+<pre><code>##  [1] &quot;wellbeing-quarterly&quot;                          
+##  [2] &quot;wellbeing-local-authority&quot;                    
+##  [3] &quot;weekly-deaths-region&quot;                         
+##  [4] &quot;weekly-deaths-local-authority&quot;                
+##  [5] &quot;weekly-deaths-health-board&quot;                   
+##  [6] &quot;weekly-deaths-age-sex&quot;                        
+##  [7] &quot;uk-spending-on-cards&quot;                         
+##  [8] &quot;uk-business-by-enterprises-and-local-units&quot;   
+##  [9] &quot;traffic-camera-activity&quot;                      
+## [10] &quot;trade&quot;                                        
+## [11] &quot;tax-benefits-statistics&quot;                      
+## [12] &quot;suicides-in-the-uk&quot;                           
+## [13] &quot;sexual-orientation-by-region&quot;                 
+## [14] &quot;sexual-orientation-by-age-and-sex&quot;            
+## [15] &quot;retail-sales-index-large-and-small-businesses&quot;
+## [16] &quot;retail-sales-index-all-businesses&quot;            
+## [17] &quot;retail-sales-index&quot;                           
+## [18] &quot;regional-gdp-by-year&quot;                         
+## [19] &quot;regional-gdp-by-quarter&quot;                      
+## [20] &quot;projections-older-people-sex-ratios&quot;          
+## [21] &quot;projections-older-people-in-single-households&quot;
+## [22] &quot;output-in-the-construction-industry&quot;          
+## [23] &quot;online-job-advert-estimates&quot;                  
+## [24] &quot;older-people-sex-ratios&quot;                      
+## [25] &quot;older-people-net-internal-migration&quot;          
+## [26] &quot;older-people-economic-activity&quot;               
+## [27] &quot;mid-year-pop-est&quot;                             
+## [28] &quot;life-expectancy-by-local-authority&quot;           
+## [29] &quot;labour-market&quot;                                
+## [30] &quot;index-private-housing-rental-prices&quot;          
+## [31] &quot;house-prices-local-authority&quot;                 
+## [32] &quot;health-accounts&quot;                              
+## [33] &quot;gva-by-industry-by-local-authority&quot;           
+## [34] &quot;generational-income&quot;                          
+## [35] &quot;gdp-to-four-decimal-places&quot;                   
+## [36] &quot;gdp-by-local-authority&quot;                       
+## [37] &quot;faster-indicators-shipping-data&quot;              
+## [38] &quot;cpih01&quot;                                       
+## [39] &quot;childrens-wellbeing&quot;                          
+## [40] &quot;ashe-tables-9-and-10&quot;                         
+## [41] &quot;ashe-tables-7-and-8&quot;                          
+## [42] &quot;ashe-tables-3&quot;                                
+## [43] &quot;ashe-tables-27-and-28&quot;                        
+## [44] &quot;ashe-tables-26&quot;                               
+## [45] &quot;ashe-tables-25&quot;                               
+## [46] &quot;ashe-tables-20&quot;                               
+## [47] &quot;ashe-tables-11-and-12&quot;                        
+## [48] &quot;ashe-table-5&quot;                                 
+## [49] &quot;ageing-population-projections&quot;                
+## [50] &quot;ageing-population-estimates&quot;                  
+## [51] &quot;TS079&quot;                                        
+## [52] &quot;TS078&quot;                                        
+## [53] &quot;TS077&quot;                                        
+## [54] &quot;TS076&quot;                                        
+## [55] &quot;TS075&quot;                                        
+## [56] &quot;TS074&quot;                                        
+## [57] &quot;TS073&quot;                                        
+## [58] &quot;TS072&quot;                                        
+## [59] &quot;TS071&quot;                                        
+## [60] &quot;TS070&quot;</code></pre>
+<div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="uk-economic-data.html#cb190-1" tabindex="-1"></a><span class="fu">ons_datasets</span>()</span></code></pre></div>
+<pre><code>## # A tibble: 60 × 22
+##    contacts     description     keywords id    links$editions$href methodologies
+##    &lt;list&gt;       &lt;chr&gt;           &lt;list&gt;   &lt;chr&gt; &lt;chr&gt;               &lt;list&gt;       
+##  1 &lt;df [1 × 3]&gt; Seasonally and… &lt;chr&gt;    well… https://api.beta.o… &lt;df [1 × 2]&gt; 
+##  2 &lt;df [1 × 3]&gt; Estimates of l… &lt;chr&gt;    well… https://api.beta.o… &lt;NULL&gt;       
+##  3 &lt;df [1 × 3]&gt; Provisional co… &lt;chr&gt;    week… https://api.beta.o… &lt;NULL&gt;       
+##  4 &lt;df [1 × 3]&gt; Provisional co… &lt;chr&gt;    week… https://api.beta.o… &lt;NULL&gt;       
+##  5 &lt;df [1 × 3]&gt; Provisional co… &lt;chr&gt;    week… https://api.beta.o… &lt;NULL&gt;       
+##  6 &lt;df [1 × 3]&gt; Provisional co… &lt;chr&gt;    week… https://api.beta.o… &lt;NULL&gt;       
+##  7 &lt;df [1 × 3]&gt; These data ser… &lt;NULL&gt;   uk-s… https://api.beta.o… &lt;NULL&gt;       
+##  8 &lt;df [1 × 3]&gt; The data conta… &lt;chr&gt;    uk-b… https://api.beta.o… &lt;NULL&gt;       
+##  9 &lt;df [1 × 3]&gt; Experimental d… &lt;NULL&gt;   traf… https://api.beta.o… &lt;NULL&gt;       
+## 10 &lt;df [1 × 3]&gt; Country by com… &lt;chr&gt;    trade https://api.beta.o… &lt;NULL&gt;       
+## # ℹ 50 more rows
+## # ℹ 19 more variables: links$latest_version &lt;df[,2]&gt;, $self &lt;df[,1]&gt;,
+## #   $taxonomy &lt;df[,1]&gt;, national_statistic &lt;lgl&gt;, next_release &lt;chr&gt;,
+## #   qmi &lt;tibble[,1]&gt;, related_datasets &lt;list&gt;, release_frequency &lt;chr&gt;,
+## #   state &lt;chr&gt;, title &lt;chr&gt;, unit_of_measure &lt;chr&gt;, type &lt;chr&gt;,
+## #   publications &lt;list&gt;, license &lt;chr&gt;, is_based_on &lt;df[,2]&gt;,
+## #   canonical_topic &lt;chr&gt;, subtopics &lt;list&gt;, survey &lt;chr&gt;, …</code></pre>
+<div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="uk-economic-data.html#cb192-1" tabindex="-1"></a>onsgdp <span class="ot">&lt;-</span> onsr<span class="sc">::</span><span class="fu">ons_get</span>(<span class="at">id =</span> <span class="st">&quot;gdp-to-four-decimal-places&quot;</span>)</span>
+<span id="cb192-2"><a href="uk-economic-data.html#cb192-2" tabindex="-1"></a></span>
+<span id="cb192-3"><a href="uk-economic-data.html#cb192-3" tabindex="-1"></a><span class="fu">head</span>(onsgdp,<span class="dv">100</span>)</span></code></pre></div>
+<pre><code>## # A tibble: 100 × 7
+##     v4_0 `mmm-yy` Time   `uk-only` Geography      `sic-unofficial`
+##    &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;          &lt;chr&gt;           
+##  1  95.9 Jan-25   Jan-25 K02000001 United Kingdom B--E            
+##  2 102.  Jan-25   Jan-25 K02000001 United Kingdom A--T            
+##  3 103.  Jan-25   Jan-25 K02000001 United Kingdom F               
+##  4 103.  Jan-25   Jan-25 K02000001 United Kingdom A               
+##  5 102.  Jan-25   Jan-25 K02000001 United Kingdom G--T            
+##  6 102.  Dec-24   Dec-24 K02000001 United Kingdom A--T            
+##  7 103.  Dec-24   Dec-24 K02000001 United Kingdom F               
+##  8 102.  Dec-24   Dec-24 K02000001 United Kingdom G--T            
+##  9  96.8 Dec-24   Dec-24 K02000001 United Kingdom B--E            
+## 10 103.  Dec-24   Dec-24 K02000001 United Kingdom A               
+## # ℹ 90 more rows
+## # ℹ 1 more variable: UnofficialStandardIndustrialClassification &lt;chr&gt;</code></pre>
+</div>
+<div id="nomis" class="section level2 hasAnchor" number="18.2">
+<h2><span class="header-section-number">18.2</span> Nomis<a href="uk-economic-data.html#nomis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>Census data, as well as economic and social data sets that take into account location, are produced by the ONS’ <a href="https://www.nomisweb.co.uk/">Nomis</a> service. Nomis has it’s <a href="https://github.com/ropensci/nomisr">very own R package</a> called <code>nomisr</code>.</p>
+<p>The last UK census was in 2021. While there is a census slated for 2031, there is a <a href="https://www.bbc.co.uk/news/uk-51468919">growing consensus</a> that this may not be necessary, with new administrative data sets providing a more accurate picture of the UK’s population.</p>
+</div>
+<div id="trade" class="section level2 hasAnchor" number="18.3">
+<h2><span class="header-section-number">18.3</span> Trade<a href="uk-economic-data.html#trade" class="anchor-section" aria-label="Anchor link to header"></a></h2>
+<p>In April 2025, trade is well and truly the talk of the town.</p>
+<p>UK trade data is collated by HM Revenue &amp; Customs (HMRC) and published on the website <a href="https://www.uktradeinfo.com/" class="uri">https://www.uktradeinfo.com/</a>.</p>
+<p><a href="https://github.com/pvdmeulen">Peter van der Meulen</a> has developed a wonderful R package <a href="https://github.com/pvdmeulen/uktrade"><code>uktrade</code></a> to query HMRC’s database and stitch together tables.</p>
+<p>Here’s a worked example:</p>
 
 </div>
 </div>
