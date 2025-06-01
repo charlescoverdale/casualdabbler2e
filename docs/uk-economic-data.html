@@ -23,7 +23,7 @@
 <meta name="author" content="Charles Coverdale" />
 
 
-<meta name="date" content="2025-04-03" />
+<meta name="date" content="2025-06-01" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -368,44 +368,79 @@ P(B| A) = \frac{P(A | B) P(B)}{P(A)}
 ## [59] &quot;TS071&quot;                                        
 ## [60] &quot;TS070&quot;</code></pre>
 <div class="sourceCode" id="cb190"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb190-1"><a href="uk-economic-data.html#cb190-1" tabindex="-1"></a><span class="fu">ons_datasets</span>()</span></code></pre></div>
-<pre><code>## # A tibble: 60 × 22
-##    contacts     description     keywords id    links$editions$href methodologies
-##    &lt;list&gt;       &lt;chr&gt;           &lt;list&gt;   &lt;chr&gt; &lt;chr&gt;               &lt;list&gt;       
-##  1 &lt;df [1 × 3]&gt; Seasonally and… &lt;chr&gt;    well… https://api.beta.o… &lt;df [1 × 2]&gt; 
-##  2 &lt;df [1 × 3]&gt; Estimates of l… &lt;chr&gt;    well… https://api.beta.o… &lt;NULL&gt;       
-##  3 &lt;df [1 × 3]&gt; Provisional co… &lt;chr&gt;    week… https://api.beta.o… &lt;NULL&gt;       
-##  4 &lt;df [1 × 3]&gt; Provisional co… &lt;chr&gt;    week… https://api.beta.o… &lt;NULL&gt;       
-##  5 &lt;df [1 × 3]&gt; Provisional co… &lt;chr&gt;    week… https://api.beta.o… &lt;NULL&gt;       
-##  6 &lt;df [1 × 3]&gt; Provisional co… &lt;chr&gt;    week… https://api.beta.o… &lt;NULL&gt;       
-##  7 &lt;df [1 × 3]&gt; These data ser… &lt;NULL&gt;   uk-s… https://api.beta.o… &lt;NULL&gt;       
-##  8 &lt;df [1 × 3]&gt; The data conta… &lt;chr&gt;    uk-b… https://api.beta.o… &lt;NULL&gt;       
-##  9 &lt;df [1 × 3]&gt; Experimental d… &lt;NULL&gt;   traf… https://api.beta.o… &lt;NULL&gt;       
-## 10 &lt;df [1 × 3]&gt; Country by com… &lt;chr&gt;    trade https://api.beta.o… &lt;NULL&gt;       
+<pre><code>## # A tibble: 60 × 23
+##    contacts     description      keywords id    last_updated links$editions$href
+##    &lt;list&gt;       &lt;chr&gt;            &lt;list&gt;   &lt;chr&gt; &lt;chr&gt;        &lt;chr&gt;              
+##  1 &lt;df [1 × 3]&gt; Seasonally and … &lt;chr&gt;    well… 2023-12-13T… https://api.beta.o…
+##  2 &lt;df [1 × 3]&gt; Estimates of li… &lt;chr&gt;    well… 2023-12-13T… https://api.beta.o…
+##  3 &lt;df [1 × 3]&gt; Provisional cou… &lt;chr&gt;    week… 2025-05-30T… https://api.beta.o…
+##  4 &lt;df [1 × 3]&gt; Provisional cou… &lt;chr&gt;    week… 2024-01-09T… https://api.beta.o…
+##  5 &lt;df [1 × 3]&gt; Provisional cou… &lt;chr&gt;    week… 2024-01-09T… https://api.beta.o…
+##  6 &lt;df [1 × 3]&gt; Provisional cou… &lt;chr&gt;    week… 2025-05-30T… https://api.beta.o…
+##  7 &lt;df [1 × 3]&gt; These data seri… &lt;NULL&gt;   uk-s… 2024-05-16T… https://api.beta.o…
+##  8 &lt;df [1 × 3]&gt; The data contai… &lt;chr&gt;    uk-b… 2022-11-03T… https://api.beta.o…
+##  9 &lt;df [1 × 3]&gt; Experimental da… &lt;NULL&gt;   traf… 2024-06-20T… https://api.beta.o…
+## 10 &lt;df [1 × 3]&gt; Country by comm… &lt;chr&gt;    trade 2025-05-19T… https://api.beta.o…
 ## # ℹ 50 more rows
-## # ℹ 19 more variables: links$latest_version &lt;df[,2]&gt;, $self &lt;df[,1]&gt;,
-## #   $taxonomy &lt;df[,1]&gt;, national_statistic &lt;lgl&gt;, next_release &lt;chr&gt;,
-## #   qmi &lt;tibble[,1]&gt;, related_datasets &lt;list&gt;, release_frequency &lt;chr&gt;,
-## #   state &lt;chr&gt;, title &lt;chr&gt;, unit_of_measure &lt;chr&gt;, type &lt;chr&gt;,
-## #   publications &lt;list&gt;, license &lt;chr&gt;, is_based_on &lt;df[,2]&gt;,
+## # ℹ 20 more variables: links$latest_version &lt;df[,2]&gt;, $self &lt;df[,1]&gt;,
+## #   $taxonomy &lt;df[,1]&gt;, methodologies &lt;list&gt;, national_statistic &lt;lgl&gt;,
+## #   next_release &lt;chr&gt;, qmi &lt;tibble[,1]&gt;, related_datasets &lt;list&gt;,
+## #   release_frequency &lt;chr&gt;, state &lt;chr&gt;, title &lt;chr&gt;, unit_of_measure &lt;chr&gt;,
+## #   type &lt;chr&gt;, publications &lt;list&gt;, license &lt;chr&gt;, is_based_on &lt;df[,2]&gt;,
 ## #   canonical_topic &lt;chr&gt;, subtopics &lt;list&gt;, survey &lt;chr&gt;, …</code></pre>
 <div class="sourceCode" id="cb192"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb192-1"><a href="uk-economic-data.html#cb192-1" tabindex="-1"></a>onsgdp <span class="ot">&lt;-</span> onsr<span class="sc">::</span><span class="fu">ons_get</span>(<span class="at">id =</span> <span class="st">&quot;gdp-to-four-decimal-places&quot;</span>)</span>
 <span id="cb192-2"><a href="uk-economic-data.html#cb192-2" tabindex="-1"></a></span>
 <span id="cb192-3"><a href="uk-economic-data.html#cb192-3" tabindex="-1"></a><span class="fu">head</span>(onsgdp,<span class="dv">100</span>)</span></code></pre></div>
-<pre><code>## # A tibble: 100 × 7
-##     v4_0 `mmm-yy` Time   `uk-only` Geography      `sic-unofficial`
-##    &lt;dbl&gt; &lt;chr&gt;    &lt;chr&gt;  &lt;chr&gt;     &lt;chr&gt;          &lt;chr&gt;           
-##  1  95.9 Jan-25   Jan-25 K02000001 United Kingdom B--E            
-##  2 102.  Jan-25   Jan-25 K02000001 United Kingdom A--T            
-##  3 103.  Jan-25   Jan-25 K02000001 United Kingdom F               
-##  4 103.  Jan-25   Jan-25 K02000001 United Kingdom A               
-##  5 102.  Jan-25   Jan-25 K02000001 United Kingdom G--T            
-##  6 102.  Dec-24   Dec-24 K02000001 United Kingdom A--T            
-##  7 103.  Dec-24   Dec-24 K02000001 United Kingdom F               
-##  8 102.  Dec-24   Dec-24 K02000001 United Kingdom G--T            
-##  9  96.8 Dec-24   Dec-24 K02000001 United Kingdom B--E            
-## 10 103.  Dec-24   Dec-24 K02000001 United Kingdom A               
-## # ℹ 90 more rows
-## # ℹ 1 more variable: UnofficialStandardIndustrialClassification &lt;chr&gt;</code></pre>
+<pre><code>## $message
+##                                              
+## &quot;`file` is not one of the supported inputs:&quot; 
+## 
+## $trace
+##      ▆
+##   1. └─onsr::ons_get(id = &quot;gdp-to-four-decimal-places&quot;)
+##   2.   └─onsr:::read_csv_silent(raw$downloads$csv$href, ons_read, ...)
+##   3.     ├─base::tryCatch(...)
+##   4.     │ └─base (local) tryCatchList(expr, classes, parentenv, handlers)
+##   5.     │   └─base (local) tryCatchOne(expr, names, parentenv, handlers[[1L]])
+##   6.     │     └─base (local) doTryCatch(return(expr), name, parentenv, handler)
+##   7.     ├─base::suppressMessages(...)
+##   8.     │ └─base::withCallingHandlers(...)
+##   9.     └─readr::read_csv(x, ...)
+##  10.       └─vroom::vroom(...)
+##  11.         └─vroom:::standardise_path(file)
+##  12.           └─cli::cli_abort(...)
+##  13.             └─rlang::abort(...)
+## 
+## $parent
+## NULL
+## 
+## $body
+##                                             * 
+## &quot;A filepath or character vector of filepaths&quot; 
+##                                             * 
+##         &quot;A connection or list of connections&quot; 
+##                                             * 
+##                        &quot;Literal or raw input&quot; 
+## 
+## $rlang
+## $rlang$inherit
+## [1] TRUE
+## 
+## 
+## $call
+## vroom::vroom(file, delim = &quot;,&quot;, col_names = col_names, col_types = col_types, 
+##     col_select = {
+##         {
+##             col_select
+##         }
+##     }, id = id, .name_repair = name_repair, skip = skip, n_max = n_max, 
+##     na = na, quote = quote, comment = comment, skip_empty_rows = skip_empty_rows, 
+##     trim_ws = trim_ws, escape_double = TRUE, escape_backslash = FALSE, 
+##     locale = locale, guess_max = guess_max, show_col_types = show_col_types, 
+##     progress = progress, altrep = lazy, num_threads = num_threads)
+## 
+## $use_cli_format
+## [1] TRUE</code></pre>
 </div>
 <div id="nomis" class="section level2 hasAnchor" number="18.2">
 <h2><span class="header-section-number">18.2</span> Nomis<a href="uk-economic-data.html#nomis" class="anchor-section" aria-label="Anchor link to header"></a></h2>
